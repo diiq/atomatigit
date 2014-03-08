@@ -1,0 +1,15 @@
+{
+  "name": "atomatigit",
+  "main": "./lib/atomatigit",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "activationEvents": ["atomatigit:toggle"],
+  "repository": "https://github.com/atom/atomatigit",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+    "gift": "0.2.0"
+  }
+}
