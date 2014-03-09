@@ -15,7 +15,11 @@ class Branch extends Model
     @get("commit").id.substr(0, 6)
 
   short_commit_message: ->
-    @get("commit").message.substr(0, 30)
+    message = @get("commit").message
+    message = message.split("\n")[0]
+    if message.length > 50
+       message = message.substr(0, 50) + "..."
+     message
 
   name: ->
     @get "name"
