@@ -1,7 +1,7 @@
 # See https://atom.io/docs/latest/creating-a-package#menus for more details
 'context-menu':
   '.overlayer':
-      'Enable atomatigit': 'atomatigit:toggle'
+      'Enable atomatigit': 'atomatigit:show'
 
 'menu': [
   {
@@ -9,8 +9,7 @@
     'submenu': [
       'label': 'atomatigit'
       'submenu': [
-        { 'label': 'Toggle', 'command': 'atomatigit:toggle' }
-        { 'label': 'Next', 'command': 'atomatigit:next' }
+        { 'label': 'Show', 'command': 'atomatigit:show' }
       ]
     ]
   }

@@ -8,15 +8,17 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/advanced/keymaps
 '.workspace':
-  'cmd-shift-z': 'atomatigit:toggle'
+  'cmd-shift-z': 'atomatigit:show'
 
 '.atomatigit':
   'down': 'atomatigit:next'
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
-  'escape': 'atomatigit:toggle'
+  'escape': 'atomatigit:close'
   's': 'atomatigit:stage'
+  'enter': 'atomatigit:open'
+
 # Main screen:
 # branch -> loc
 # untracked

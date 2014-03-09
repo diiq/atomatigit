@@ -12,15 +12,18 @@ module.exports =
     @insert_commands()
 
   insert_commands: ->
-    atom.workspaceView.command "atomatigit:toggle", => @toggle()
+    atom.workspaceView.command "atomatigit:show", => @focus()
+    atom.workspaceView.command "atomatigit:close", => @close()
 
-  toggle: ->
+  close: ->
     if @repo_view.hasParent()
       @repo_view.detach()
-    else
-      @repo.refresh()
+
+  focus: ->
+    if !@repo_view.hasParent()
       atom.workspaceView.appendToRight(@repo_view)
-      @repo_view.focus()
+    @repo.refresh()
+    @repo_view.focus()
 
   deactivate: ->
     @repo_view.destroy()

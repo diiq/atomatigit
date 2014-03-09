@@ -11,7 +11,7 @@ module.exports =
 class File extends Model
   initialize: ->
     @set selected: false
-
+    console.log @get "type"
   # Accessors
 
   unstaged: ->

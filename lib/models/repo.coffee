@@ -20,3 +20,7 @@ class Repo extends Model
     @git.add @file_list.selection().filename(), (errors) =>
       console.log errors if errors
       @refresh()
+
+  open: ->
+    filename = @file_list.selection().filename()
+    atom.workspaceView.open(filename)

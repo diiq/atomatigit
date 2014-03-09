@@ -8,19 +8,26 @@ class FileList extends Collection
   selected: 0
 
   refresh: (filehash) ->
-    files = _.map filehash, (status, filename) =>
-      new File
+    @reset()
+    _.each filehash, (status, filename) =>
+      @add
         filename: filename
+        type: status.type
         tracked: status.tracked
         staged: status.staged
 
-    sorted_files = _.sortBy files, (f) ->
-      f.sort_value()
-
-    @reset(sorted_files)
+      if status.type && status.type.length == 2
+        @add
+          filename: filename
+          type: status.type
+          tracked: status.tracked
+          staged: false
 
     @trigger "refresh"
-    @select 0
+    @select @selected
+
+  comparator: (file) ->
+    file.sort_value()
 
   selection: ->
     @at @selected
