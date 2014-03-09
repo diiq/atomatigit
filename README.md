@@ -18,3 +18,9 @@ I'm still puttering around at this stage. You can view the current status of the
 repo -- which branch you're on, the last commit, and which files are staged,
 unstaged, and untracked. You can't actually do anything about it, yet. It's not
 a tool I'd reccomend for others, yet.
+
+## Key bindings
+
+- `ctrl-shift-z` to toggle open atomatigit
+- `escape` to close
+- `up` (or `i`) and `down` (or `k`) to navigate between files
