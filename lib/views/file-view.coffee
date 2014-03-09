@@ -9,7 +9,9 @@ class FileView extends View
     @file = file
     @file.on "change", @select
 
+  beforeRemove: ->
+    @file.off "change", @select
+
   select: =>
-    console.log "selected view", @file
     @removeClass("selected")
     @addClass("selected") if @file.selected()

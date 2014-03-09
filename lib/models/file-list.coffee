@@ -13,6 +13,7 @@ class FileList extends Collection
         filename: filename
         tracked: status.tracked
         staged: status.staged
+    @trigger "refresh"
     @select 0
 
   select: (i) ->

@@ -15,16 +15,17 @@ class FileListView extends View
 
   initialize: (file_list) ->
     @file_list = file_list
-    @file_list.on 'add', =>
-      console.log "changed!"
-      @repaint()
+    @file_list.on "refresh", @repaint
+
+  beforeRemove: ->
+    @file_list.off "refresh", @repaint
 
   empty_lists: ->
     @untracked_dom.empty()
     @unstaged_dom.empty()
     @staged_dom.empty()
 
-  repaint: ->
+  repaint: =>
     @empty_lists()
     for file in @file_list.untracked()
       @untracked_dom.append new FileView file
