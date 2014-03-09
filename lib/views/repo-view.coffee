@@ -5,7 +5,7 @@ BranchBriefView = require './branch-brief-view'
 module.exports =
 class RepoView extends View
   @content: (repo) ->
-    @div class: 'atomatigit', =>
+    @div class: 'atomatigit', tabindex: -1, =>
       @subview "branch_brief_view", new BranchBriefView repo.current_branch
       @subview "file_list_view", new FileListView repo.file_list
 
@@ -15,6 +15,7 @@ class RepoView extends View
 
   insert_commands: ->
     atom.workspaceView.command "atomatigit:next", => @repo.file_list.next()
+    atom.workspaceView.command "atomatigit:previous", => @repo.file_list.previous()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->

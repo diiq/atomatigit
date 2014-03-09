@@ -20,6 +20,7 @@ module.exports =
     else
       @repo.refresh()
       atom.workspaceView.appendToRight(@repo_view)
+      @repo_view.focus()
 
   deactivate: ->
     @repo_view.destroy()
