@@ -8,7 +8,10 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/advanced/keymaps
 '.workspace':
-  'ctrl-alt-o': 'atomatigit:toggle'
+  'cmd-shift-z': 'atomatigit:toggle'
+
+'.atomatigit':
+  'down': 'atomatigit:next'
 
 # Main screen:
 # branch -> loc

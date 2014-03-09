@@ -10,6 +10,7 @@
       'label': 'atomatigit'
       'submenu': [
         { 'label': 'Toggle', 'command': 'atomatigit:toggle' }
+        { 'label': 'Next', 'command': 'atomatigit:next' }
       ]
     ]
   }

@@ -6,8 +6,25 @@
 
 .atomatigit {
   width: 250px;
+  padding: 10px;
+  border-left: 1px solid #999;
   .file {
-    padding: 2px;
-    border: 1px solid #eee;
+    padding: 5px;
+    padding-left: 10px;
+    &.selected {
+      background-color: #999
+    }
+  }
+
+  .branch-brief-view {
+    .name {
+      padding: 5px;
+      font-weight: bold;
+    }
+    .commit {
+      padding: 5px;
+      padding-left: 15px;
+      font-style: italic;
+    }
   }
 }

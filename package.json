@@ -10,6 +10,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "gift": "0.2.0"
+    "gift": "0.2.0",
+    "backbone": "1.x"
   }
 }
