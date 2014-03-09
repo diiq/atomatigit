@@ -15,6 +15,7 @@
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
+  'escape': 'atomatigit:toggle'
 
 # Main screen:
 # branch -> loc
