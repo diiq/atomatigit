@@ -12,6 +12,8 @@ It's hard to imagine how useful that ability is until you have it. The [magit]()
 emacs package is my inspiration. In magit, staging, committing, and pushing take
 only a few keystrokes.
 
+![screenshot](https://www.dropbox.com/s/71plblpeoinm965/Screenshot%202014-03-09%2013.39.33.png)
+
 ## Current status
 
 I'm still puttering around at this stage. You can view the current status of the

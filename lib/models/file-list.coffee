@@ -1,20 +1,29 @@
 {Collection} = require 'backbone'
 File = require './file'
+_ = require 'underscore'
 
 module.exports =
 class FileList extends Collection
   model: File
   selected: 0
 
-  refresh: (files) ->
-    @reset()
-    for filename, status of files
-      @add
+  refresh: (filehash) ->
+    files = _.map filehash, (status, filename) =>
+      new File
         filename: filename
         tracked: status.tracked
         staged: status.staged
+
+    sorted_files = _.sortBy files, (f) ->
+      f.sort_value()
+
+    @reset(sorted_files)
+
     @trigger "refresh"
     @select 0
+
+  selection: ->
+    @at @selected
 
   select: (i) ->
     if @at @selected

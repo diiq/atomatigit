@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "gift": "0.2.0",
-    "backbone": "1.x"
+    "backbone": "1.x",
+    "underscore": "1.x"
   }
 }

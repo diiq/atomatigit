@@ -15,3 +15,8 @@ class Repo extends Model
       @file_list.refresh repo_status.files
     @git.branch (_, head) =>
       @current_branch.refresh head
+
+  stage: ->
+    @git.add @file_list.selection().filename(), (errors) =>
+      console.log errors if errors
+      @refresh()

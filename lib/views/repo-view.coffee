@@ -16,7 +16,7 @@ class RepoView extends View
   insert_commands: ->
     atom.workspaceView.command "atomatigit:next", => @repo.file_list.next()
     atom.workspaceView.command "atomatigit:previous", => @repo.file_list.previous()
-
+    atom.workspaceView.command "atomatigit:stage", => @repo.stage()
   # Returns an object that can be retrieved when package is activated
   serialize: ->
 

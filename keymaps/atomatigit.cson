@@ -16,7 +16,7 @@
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
   'escape': 'atomatigit:toggle'
-
+  's': 'atomatigit:stage'
 # Main screen:
 # branch -> loc
 # untracked
