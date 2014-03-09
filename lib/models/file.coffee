@@ -30,6 +30,8 @@ class File extends Model
     @get "filename"
 
   # Methods
+  self_select: =>
+    @collection.select @collection.indexOf(this)
 
   # We get files in any old order, and want to sort them by staged, unstaged,
   # untracked. This value makes that easier.

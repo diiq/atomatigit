@@ -3,7 +3,7 @@
 module.exports =
 class FileView extends View
   @content: (file) ->
-    @div class: "file", "#{file.get 'filename'}"
+    @div class: "file", click: "clicked", "#{file.get 'filename'}"
 
   initialize: (file) ->
     @file = file
@@ -11,6 +11,9 @@ class FileView extends View
 
   beforeRemove: ->
     @file.off "change", @select
+
+  clicked: ->
+    @file.self_select()
 
   select: =>
     @removeClass("selected")

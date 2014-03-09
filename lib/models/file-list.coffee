@@ -10,21 +10,20 @@ class FileList extends Collection
   refresh: (filehash) ->
     @reset()
     _.each filehash, (status, filename) =>
-      @add
-        filename: filename
-        type: status.type
-        tracked: status.tracked
-        staged: status.staged
-
+      @add_from_refresh filename, status
       if status.type && status.type.length == 2
-        @add
-          filename: filename
-          type: status.type
-          tracked: status.tracked
-          staged: false
+        status.staged = false
+        @add_from_refresh filename, status
 
     @trigger "refresh"
     @select @selected
+
+  add_from_refresh: (filename, status) ->
+    file = @add
+      filename: filename
+      type: status.type
+      tracked: status.tracked
+      staged: status.staged
 
   comparator: (file) ->
     file.sort_value()
@@ -35,9 +34,7 @@ class FileList extends Collection
   select: (i) ->
     if @at @selected
       @at(@selected).unselect()
-
     @selected = Math.max(Math.min(i, @length - 1), 0)
-
     if @at @selected
       @at(@selected).select()
 
