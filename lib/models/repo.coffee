@@ -17,10 +17,23 @@ class Repo extends Model
       @current_branch.refresh head
 
   stage: ->
-    @git.add @file_list.selection().filename(), (errors) =>
+    @git.add @current_file().filename(), (errors) =>
       console.log errors if errors
       @refresh()
 
   open: ->
-    filename = @file_list.selection().filename()
+    filename = @current_file().filename()
     atom.workspaceView.open(filename)
+
+  current_file: ->
+    @file_list.selection()
+
+  toggle_file_diff: ->
+    file = @current_file()
+    if file.diff()
+      file.set_diff ""
+
+    else
+      @git.diff "", "", file.filename(), (e, diffs) =>
+        if not e
+          file.set_diff diffs[0].diff

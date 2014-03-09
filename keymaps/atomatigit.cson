@@ -18,7 +18,7 @@
   'escape': 'atomatigit:close'
   's': 'atomatigit:stage'
   'enter': 'atomatigit:open'
-
+  'tab': 'atomatigit:toggle_file_diff'
 # Main screen:
 # branch -> loc
 # untracked

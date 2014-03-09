@@ -18,7 +18,9 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:previous", => @repo.file_list.previous()
     atom.workspaceView.command "atomatigit:stage", => @repo.stage()
     atom.workspaceView.command "atomatigit:open", => @repo.open()
+    atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
   # Returns an object that can be retrieved when package is activated
+
   serialize: ->
 
   # Tear down any state and detach

@@ -10,8 +10,11 @@ module.exports =
 # }
 class File extends Model
   initialize: ->
-    @set selected: false
-    console.log @get "type"
+    @set
+      selected: false
+      diff: ""
+
+
   # Accessors
 
   unstaged: ->
@@ -29,7 +32,14 @@ class File extends Model
   filename: ->
     @get "filename"
 
+  diff: ->
+    @get "diff"
+
   # Methods
+  set_diff: (diff) ->
+    console.log "here", diff
+    @set "diff", diff
+
   self_select: =>
     @collection.select @collection.indexOf(this)
 
