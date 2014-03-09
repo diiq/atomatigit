@@ -3,7 +3,7 @@
   "main": "./lib/atomatigit",
   "version": "0.0.0",
   "description": "A short description of your package",
-  "activationEvents": ["atomatigit:toggle"],
+  "activationEvents": ["atomatigit:show"],
   "repository": "https://github.com/atom/atomatigit",
   "license": "MIT",
   "engines": {

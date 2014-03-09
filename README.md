@@ -23,6 +23,6 @@ a tool I'd reccomend for others, yet.
 
 ## Key bindings
 
-- `ctrl-shift-z` to toggle open atomatigit
+- `ctrl-shift-z` to open/focus atomatigit
 - `escape` to close
 - `up` (or `i`) and `down` (or `k`) to navigate between files
