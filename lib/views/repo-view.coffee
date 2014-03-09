@@ -6,12 +6,11 @@ module.exports =
 class RepoView extends View
   @content: (repo) ->
     @div class: 'atomatigit', =>
+      @subview "branch_brief_view", new BranchBriefView repo.current_branch
       @subview "file_list_view", new FileListView repo.file_list
-#      @subview "branch_brief_view", new BranchBriefView
 
   initialize: (repo) ->
     @repo = repo
-    console.log @file_list_view
     @insert_commands()
 
   insert_commands: ->

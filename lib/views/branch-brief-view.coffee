@@ -7,9 +7,16 @@ module.exports =
 class BranchBriefView extends View
   @content: ->
     @div class: "branch-brief-view", =>
-      @div class: "name", outlet: "name"
+      @h1 class: "name", outlet: "name"
       @div class: "commit", outlet: "commit"
 
-  refresh: (head) ->
-    @name.html("#{head.name}")
-    @commit.html("(#{head.commit.id.substr(0, 6)}: #{head.commit.message})")
+  initialize: (branch) ->
+    @branch = branch
+    @branch.on "change", @repaint
+
+  beforeRemove: ->
+    @branch.off "change", @repaint
+
+  repaint: =>
+    @name.html("#{@branch.name()}")
+    @commit.html("(#{@branch.short_commit_id()}: #{@branch.short_commit_message()})")

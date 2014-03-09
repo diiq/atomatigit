@@ -5,25 +5,31 @@
 @import "ui-variables";
 
 .atomatigit {
-  width: 250px;
-  padding: 10px;
+  width: 400px;
+  padding: 0px;
   border-left: 1px solid #999;
+  background-color: #eee;
   .file {
     padding: 5px;
-    padding-left: 10px;
+    padding-left: 20px;
     &.selected {
-      background-color: #999
+      background-color: #6aa5e9
     }
   }
-
+  h2 {
+    padding-left: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
   .branch-brief-view {
+    text-align: right;
+    padding: 15px;
     .name {
-      padding: 5px;
+      margin: 0px;
+      padding: 5px 0px;
       font-weight: bold;
     }
     .commit {
-      padding: 5px;
-      padding-left: 15px;
       font-style: italic;
     }
   }

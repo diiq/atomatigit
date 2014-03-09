@@ -6,11 +6,11 @@ module.exports =
 class FileListView extends View
   @content: ->
     @div =>
-      @div "untracked:"
+      @h2 "untracked:"
       @div outlet: "untracked_dom"
-      @div "unstaged:"
+      @h2 "unstaged:"
       @div outlet: "unstaged_dom"
-      @div "staged:"
+      @h2 "staged:"
       @div outlet: "staged_dom"
 
   initialize: (file_list) ->
@@ -27,6 +27,7 @@ class FileListView extends View
 
   repaint: =>
     @empty_lists()
+
     for file in @file_list.untracked()
       @untracked_dom.append new FileView file
 
