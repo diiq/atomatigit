@@ -9,6 +9,7 @@ module.exports =
     path = atom_git.getWorkingDirectory()
     @repo = new Repo({path: path})
     @repo_view = new RepoView(@repo)
+
     @insert_commands()
 
   insert_commands: ->

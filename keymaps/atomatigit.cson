@@ -17,6 +17,7 @@
   'i': 'atomatigit:previous'
   'escape': 'atomatigit:close'
   's': 'atomatigit:stage'
+  'u': 'atomatigit:unstage'
   'enter': 'atomatigit:open'
   'tab': 'atomatigit:toggle_file_diff'
   'cmd-shift-z': 'atomatigit:show'

@@ -21,6 +21,11 @@ class Repo extends Model
       console.log errors if errors
       @refresh()
 
+  unstage: ->
+    @git.remove @current_file().filename(), (errors) =>
+      console.log errors if errors
+      @refresh()
+
   open: ->
     filename = @current_file().filename()
     atom.workspaceView.open(filename)
@@ -42,4 +47,6 @@ class Repo extends Model
     @trigger "need_input", (message) => @finish_commit(message)
 
   finish_commit: (message) ->
-    @git.commit message, => @refresh()
+    @git.commit message, (errors) =>
+      console.log errors if errors
+      @refresh()

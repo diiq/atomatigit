@@ -19,10 +19,14 @@ class RepoView extends View
     @repo.on "need_input", @get_input
     @on 'core:confirm', => @complete_input()
 
+    atom_git = atom.project.getRepo()
+    @subscribe atom_git, 'status-changed', => @repo.refresh()
+
   insert_commands: ->
     atom.workspaceView.command "atomatigit:next", => @repo.file_list.next()
     atom.workspaceView.command "atomatigit:previous", => @repo.file_list.previous()
     atom.workspaceView.command "atomatigit:stage", => @repo.stage()
+    atom.workspaceView.command "atomatigit:unstage", => @repo.unstage()
     atom.workspaceView.command "atomatigit:open", => @repo.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:cancel_commit", => @cancel_commit()
