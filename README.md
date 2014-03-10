@@ -12,7 +12,7 @@ It's hard to imagine how useful that ability is until you have it. The [magit]()
 emacs package is my inspiration. In magit, staging, committing, and pushing take
 only a few keystrokes.
 
-![screenshot](https://www.dropbox.com/s/gt8wr0c1quluf16/Screenshot%202014-03-09%2023.04.57.png)
+![screenshot](http://i.imgur.com/U5WJzE8.png)
 
 ## Current status
 
