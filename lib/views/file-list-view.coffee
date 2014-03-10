@@ -5,7 +5,7 @@ FileList = require '../models/file-list'
 module.exports =
 class FileListView extends View
   @content: ->
-    @div =>
+    @div class: "file-list-view", tabindex: -1, =>
       @h2 "untracked:"
       @div outlet: "untracked_dom"
       @h2 "unstaged:"

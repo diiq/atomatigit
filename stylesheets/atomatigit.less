@@ -9,6 +9,15 @@
   padding: 0px;
   border-left: 1px solid #999;
   background-color: #eee;
+  .block-input {
+    width: 370px;
+    margin: 0px 15px;
+    visibility: hidden;
+    &.active {
+      display: block;
+      visibility: visible;
+    }
+  }
   .file {
     .filename {
       padding: 5px;
@@ -16,6 +25,10 @@
     }
     &.selected .filename {
       background-color: #6aa5e9
+    }
+    .diff {
+      font-family: monospace;
+      padding-left: 25px;
     }
   }
   h2 {

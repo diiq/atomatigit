@@ -10,7 +10,7 @@
 '.workspace':
   'cmd-shift-z': 'atomatigit:show'
 
-'.atomatigit':
+'.atomatigit .file-list-view':
   'down': 'atomatigit:next'
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
@@ -19,6 +19,13 @@
   's': 'atomatigit:stage'
   'enter': 'atomatigit:open'
   'tab': 'atomatigit:toggle_file_diff'
+  'cmd-shift-z': 'atomatigit:show'
+  'r': 'atomatigit:show'
+  'c': 'atomatigit:commit'
+
+  '.block_input':
+    'enter': 'atomatigit:finish_commit'
+
 # Main screen:
 # branch -> loc
 # untracked

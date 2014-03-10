@@ -37,3 +37,9 @@ class Repo extends Model
       @git.diff "", "", file.filename(), (e, diffs) =>
         if not e
           file.set_diff diffs[0].diff
+
+  initiate_commit: ->
+    @trigger "need_message"
+
+  finish_commit: (message) ->
+    @git.commit message, => @refresh()
