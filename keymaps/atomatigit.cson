@@ -15,3 +15,4 @@
   'r': 'atomatigit:show'
   'c': 'atomatigit:commit'
   'k': 'atomatigit:kill'
+  'shift-p': 'atomatigit:push'

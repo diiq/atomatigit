@@ -55,3 +55,9 @@ class Repo extends Model
     @git.commit message, (errors) =>
       console.log errors if errors
       @refresh()
+
+  push: (remote) ->
+    remote ?= "origin"
+    @git.remote_push remote, (errors) =>
+      console.log errors if errors
+      @refresh()

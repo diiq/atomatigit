@@ -32,6 +32,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:open", => @repo.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
+    atom.workspaceView.command "atomatigit:push", => @repo.push()
 
   get_input: (callback) =>
     @input_callback = callback
