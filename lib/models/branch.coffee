@@ -8,6 +8,9 @@ module.exports =
 #   commit: object
 # }
 class Branch extends Model
+  initialize: ->
+    @set unpushed: false
+
   refresh: (head) ->
     @set head
 
@@ -23,3 +26,6 @@ class Branch extends Model
 
   name: ->
     @get "name"
+
+  unpushed: ->
+    @get "unpushed"

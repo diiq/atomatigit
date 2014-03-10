@@ -15,6 +15,9 @@ class Repo extends Model
       @file_list.refresh repo_status.files
     @git.branch (_, head) =>
       @current_branch.refresh head
+    @git.git "log @{u}..", "", "", (e, v) =>
+      console.log e if e
+      @current_branch.set unpushed: (v != "")
 
   stage: ->
     @git.add @current_file().filename(), (errors) =>
