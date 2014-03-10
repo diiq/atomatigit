@@ -26,6 +26,11 @@ class Repo extends Model
       console.log errors if errors
       @refresh()
 
+  kill: ->
+    @git.git "checkout #{@current_file().filename()}", (errors) =>
+      console.log errors if errors
+      @refresh()
+
   open: ->
     filename = @current_file().filename()
     atom.workspaceView.open(filename)

@@ -28,6 +28,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:previous", => @repo.file_list.previous()
     atom.workspaceView.command "atomatigit:stage", => @repo.stage()
     atom.workspaceView.command "atomatigit:unstage", => @repo.unstage()
+    atom.workspaceView.command "atomatigit:kill", => @repo.kill()
     atom.workspaceView.command "atomatigit:open", => @repo.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()

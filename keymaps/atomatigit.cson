@@ -14,3 +14,4 @@
   'cmd-shift-z': 'atomatigit:show'
   'r': 'atomatigit:show'
   'c': 'atomatigit:commit'
+  'k': 'atomatigit:kill'
