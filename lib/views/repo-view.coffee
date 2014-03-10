@@ -18,6 +18,7 @@ class RepoView extends View
     @insert_commands()
     @repo.on "need_input", @get_input
     @on 'core:confirm', => @complete_input()
+    @on 'core:cancel', => @cancel_input()
 
     atom_git = atom.project.getRepo()
     @subscribe atom_git, 'status-changed', => @repo.refresh()
@@ -29,18 +30,22 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:unstage", => @repo.unstage()
     atom.workspaceView.command "atomatigit:open", => @repo.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
-    atom.workspaceView.command "atomatigit:cancel_commit", => @cancel_commit()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
 
   get_input: (callback) =>
     @input_callback = callback
-    @block_input.setText "goo"
+    @block_input.setText ""
     @block_input.addClass "active"
     @block_input.focus()
 
   complete_input: ->
     @block_input.removeClass "active"
     @input_callback @block_input.getText()
+
+  cancel_input: ->
+    @block_input.removeClass "active"
+    @input_callback = null
+    @focus()
 
   focus: ->
     @file_list_view.focus()

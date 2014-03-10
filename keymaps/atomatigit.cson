@@ -24,9 +24,6 @@
   'r': 'atomatigit:show'
   'c': 'atomatigit:commit'
 
-  '.block_input':
-    'enter': 'atomatigit:finish_commit'
-
 # Main screen:
 # branch -> loc
 # untracked
