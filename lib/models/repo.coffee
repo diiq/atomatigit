@@ -22,7 +22,7 @@ class Repo extends Model
       @refresh()
 
   unstage: ->
-    @git.remove @current_file().filename(), (errors) =>
+    @git.git "reset HEAD #{@current_file().filename()}", (errors) =>
       console.log errors if errors
       @refresh()
 
