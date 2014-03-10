@@ -39,7 +39,7 @@ class Repo extends Model
           file.set_diff diffs[0].diff
 
   initiate_commit: ->
-    @trigger "need_message"
+    @trigger "need_input", (message) => @finish_commit(message)
 
   finish_commit: (message) ->
     @git.commit message, => @refresh()
