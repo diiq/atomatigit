@@ -17,7 +17,6 @@ class Repo extends Model
 
     @current_branch.fetch()
 
-
   stage: ->
     @git.add @current_file().filename(), (errors) =>
       console.log errors if errors

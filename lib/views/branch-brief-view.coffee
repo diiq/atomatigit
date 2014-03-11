@@ -20,5 +20,7 @@ class BranchBriefView extends View
   repaint: =>
     @name.html("#{@branch.name()}")
     @commit.html("(#{@branch.short_commit_id()}: #{@branch.short_commit_message()})")
+
+    @commit.removeClass "unpushed"
     if @branch.unpushed()
       @commit.addClass "unpushed"
