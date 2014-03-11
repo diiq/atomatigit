@@ -11,10 +11,14 @@ class Repo extends Model
     @current_branch = new Branch {}
 
   refresh: ->
-    @git.status (_, repo_status) =>
+    @git.status (e, repo_status) =>
+      console.log e if e
       @file_list.refresh repo_status.files
-    @git.branch (_, head) =>
+
+    @git.branch (e, head) =>
+      console.log e if e
       @current_branch.refresh head
+
     @git.git "log @{u}..", "", "", (e, v) =>
       console.log e if e
       @current_branch.set unpushed: (v != "")

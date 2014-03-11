@@ -37,7 +37,6 @@ class File extends Model
 
   # Methods
   set_diff: (diff) ->
-    console.log "here?", diff
     diff = diff.replace /[\r\n]/g, "<br/>"
     diff = diff.replace /\s(?=\s)/g, "&nbsp;"
     @set "diff", diff

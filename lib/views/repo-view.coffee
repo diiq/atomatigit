@@ -19,6 +19,8 @@ class RepoView extends View
     @repo.on "need_input", @get_input
     @on 'core:confirm', => @complete_input()
     @on 'core:cancel', => @cancel_input()
+    @on 'click', => @focus()
+    @file_list_view.on "focusout", => @unfocus()
 
     atom_git = atom.project.getRepo()
     @subscribe atom_git, 'status-changed', => @repo.refresh()
@@ -50,7 +52,11 @@ class RepoView extends View
     @focus()
 
   focus: ->
+    @addClass "focused"
     @file_list_view.focus()
+
+  unfocus: ->
+    @removeClass "focused"
 
   serialize: ->
 

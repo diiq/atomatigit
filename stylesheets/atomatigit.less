@@ -10,7 +10,8 @@
   width: 400px;
   padding: 0px;
   border-left: 1px solid #999;
-  background-color: #eee;
+  background-color: #ddd;
+  color: #555;
   .block-input {
     width: 370px;
     margin: 0px 15px;
@@ -22,7 +23,6 @@
   }
   .file-list-view {
     padding-bottom: 50px;
-
   }
   .file {
     .filename {
@@ -30,7 +30,7 @@
       padding-left: 25px;
     }
     &.selected .filename {
-      background-color: #6aa5e9
+      background-color: #AAA;
     }
     .diff {
       font-family: monospace;
@@ -55,6 +55,13 @@
       &.unpushed {
         color: #955;
       }
+    }
+  }
+  &.focused {
+    color: #222;
+    background-color: #eee;
+    .selected .filename {
+      background-color: #6aa5e9;
     }
   }
 }

@@ -1,11 +1,10 @@
-{Collection} = require 'backbone'
+ListModel = require './list-model'
 File = require './file'
 _ = require 'underscore'
 
 module.exports =
-class FileList extends Collection
+class FileList extends ListModel
   model: File
-  selected: 0
 
   refresh: (filehash) ->
     @reset()
@@ -28,16 +27,6 @@ class FileList extends Collection
   comparator: (file) ->
     file.sort_value()
 
-  selection: ->
-    @at @selected
-
-  select: (i) ->
-    if @at @selected
-      @at(@selected).unselect()
-    @selected = Math.max(Math.min(i, @length - 1), 0)
-    if @at @selected
-      @at(@selected).select()
-
   staged: ->
     @filter (f) -> f.staged()
 
@@ -46,9 +35,3 @@ class FileList extends Collection
 
   untracked: ->
     @filter (f) -> f.untracked()
-
-  next: ->
-    @select @selected + 1
-
-  previous: ->
-    @select @selected - 1

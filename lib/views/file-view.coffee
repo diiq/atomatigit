@@ -13,7 +13,7 @@ class FileView extends View
     @file.on "change:diff", @show_diff
 
   beforeRemove: ->
-    @file.off "change", @select
+    @file.off "change:selected", @select
     @file.off "change:diff", @show_diff
 
   clicked: ->
@@ -24,5 +24,4 @@ class FileView extends View
     @addClass("selected") if @file.selected()
 
   show_diff: =>
-    console.log "here", @file.diff(), "there"
     @diff.html @file.diff()

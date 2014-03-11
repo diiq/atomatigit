@@ -1,16 +1,15 @@
 {View} = require 'atom'
-FileView = require './file-view'
+BranchView = require './branch-view'
 
 module.exports =
-class FileListView extends View
+class BranchListView extends View
   @content: ->
-    @div class: "file-list-view", tabindex: -1, =>
-      @h2 "untracked:"
-      @div outlet: "untracked_dom"
-      @h2 "unstaged:"
-      @div outlet: "unstaged_dom"
-      @h2 "staged:"
-      @div outlet: "staged_dom"
+    @div class: "branch-list-view", tabindex: -1, =>
+      @h2 "local:"
+      @div outlet: "local_dom"
+      @h2 "remote:"
+      @div outlet: "remote_dom"
+
 
   initialize: (file_list) ->
     @file_list = file_list
