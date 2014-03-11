@@ -11,7 +11,6 @@ class Branch extends Model
   initialize: (args) ->
     @set
       unpushed: false
-      name: ""
 
   repo: ->
     @get "repo"
@@ -42,3 +41,12 @@ class Branch extends Model
 
   unpushed: ->
     @get "unpushed"
+
+  select: ->
+    @set selected: true
+
+  unselect: ->
+    @set selected: false
+
+  self_select: =>
+    @collection.select @collection.indexOf(this)

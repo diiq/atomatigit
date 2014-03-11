@@ -1,6 +1,7 @@
 {View, EditorView} = require 'atom'
 FileListView = require './file-list-view'
 BranchBriefView = require './branch-brief-view'
+BranchListView = require './branch-list-view'
 
 module.exports =
 class RepoView extends View
@@ -11,6 +12,7 @@ class RepoView extends View
       #@input class: "line-input", outlet: "block_input"
       @subview "block_input", new EditorView(mini: true)
       @subview "file_list_view", new FileListView repo.file_list
+      @subview "branch_list_view", new BranchListView repo.branch_list
 
   initialize: (repo) ->
     @repo = repo

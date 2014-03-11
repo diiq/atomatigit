@@ -1,5 +1,5 @@
 {View} = require 'atom'
-BranchView = require './branch-view'
+BranchBriefView = require './branch-brief-view'
 
 module.exports =
 class BranchListView extends View
@@ -11,26 +11,22 @@ class BranchListView extends View
       @div outlet: "remote_dom"
 
 
-  initialize: (file_list) ->
-    @file_list = file_list
-    @file_list.on "refresh", @repaint
+  initialize: (branch_list) ->
+    @branch_list = branch_list
+    @branch_list.on "refresh", @repaint
 
   beforeRemove: ->
-    @file_list.off "refresh", @repaint
+    @branch_list.off "refresh", @repaint
 
   empty_lists: ->
-    @untracked_dom.empty()
-    @unstaged_dom.empty()
-    @staged_dom.empty()
+    @local_dom.empty()
+    @remote_dom.empty()
 
   repaint: =>
     @empty_lists()
 
-    for file in @file_list.untracked()
-      @untracked_dom.append new FileView file
+    for branch in @branch_list.local()
+      @local_dom.append new BranchBriefView branch
 
-    for file in @file_list.unstaged()
-      @unstaged_dom.append new FileView file
-
-    for file in @file_list.staged()
-      @staged_dom.append new FileView file
+    for branch in @branch_list.remote()
+      @remote_dom.append new BranchBriefView branch

@@ -7,13 +7,21 @@
 // TODO: use variables at all.
 
 .atomatigit {
-  width: 400px;
+  overflow: auto;
+  width: 410px;
   padding: 0px;
   border-left: 1px solid #999;
   background-color: #ddd;
   color: #555;
+  > .branch-brief-view {
+    text-align: right;
+    padding: 20px;
+    .name {
+      font-size: 2em;
+    }
+  }
   .block-input {
-    width: 370px;
+    width: 380px;
     margin: 0px 15px;
     visibility: hidden;
     &.active {
@@ -43,8 +51,8 @@
     font-weight: bold;
   }
   .branch-brief-view {
-    text-align: right;
-    padding: 20px;
+    padding: 5px;
+    padding-left: 25px;
     .name {
       margin: 0px;
       padding: 5px 0px;

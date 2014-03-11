@@ -1,5 +1,6 @@
 {Model} = require 'backbone'
 FileList = require './file-list'
+BranchList = require './branch-list'
 Branch = require './branch'
 gift = require 'gift'
 
@@ -8,12 +9,18 @@ class Repo extends Model
   initialize: (opts) ->
     @git = gift(@get "path")
     @file_list = new FileList []
+    @branch_list = new BranchList []
     @current_branch = new Branch {repo: @git}
 
   refresh: ->
     @git.status (e, repo_status) =>
       console.log e if e
       @file_list.refresh repo_status.files
+
+    @git.branches (e, heads) =>
+      console.log heads
+      console.log e if e
+      @branch_list.refresh heads
 
     @current_branch.fetch()
 

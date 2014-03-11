@@ -7,7 +7,7 @@ module.exports =
 class BranchBriefView extends View
   @content: ->
     @div class: "branch-brief-view", =>
-      @h1 class: "name", outlet: "name"
+      @div class: "name", outlet: "name"
       @div class: "commit", outlet: "commit"
 
   initialize: (branch) ->

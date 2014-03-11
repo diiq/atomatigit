@@ -3,15 +3,20 @@ Branch = require './branch'
 _ = require 'underscore'
 
 module.exports =
-class FileList extends ListModel
+class BranchList extends ListModel
   model: Branch
 
-  refresh: (filehash) ->
+  refresh: (heads) ->
     @reset()
-    _.each branch, (branch) => @add branch
+    _.each heads, (branch) =>
+      @add branch
+      #b.fetch()
 
     @trigger "refresh"
     @select @selected
 
-  comparator: (file) ->
-    branch.name
+  local: ->
+    @models
+
+  remote: ->
+    []
