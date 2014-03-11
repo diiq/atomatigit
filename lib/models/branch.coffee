@@ -13,8 +13,17 @@ class Branch extends Model
       unpushed: false
       name: ""
 
-  refresh: (head) ->
-    @set head
+  repo: ->
+    @get "repo"
+
+  fetch: ->
+    @repo().branch (e, head) =>
+      console.log e if e
+      @set head
+
+    @repo().git "log @{u}..", "", "", (e, output) =>
+      console.log e if e
+      @set unpushed: (output != "")
 
   short_commit_id: ->
     commit = @get("commit")

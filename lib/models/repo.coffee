@@ -8,20 +8,15 @@ class Repo extends Model
   initialize: (opts) ->
     @git = gift(@get "path")
     @file_list = new FileList []
-    @current_branch = new Branch {}
+    @current_branch = new Branch {repo: @git}
 
   refresh: ->
     @git.status (e, repo_status) =>
       console.log e if e
       @file_list.refresh repo_status.files
 
-    @git.branch (e, head) =>
-      console.log e if e
-      @current_branch.refresh head
+    @current_branch.fetch()
 
-    @git.git "log @{u}..", "", "", (e, v) =>
-      console.log e if e
-      @current_branch.set unpushed: (v != "")
 
   stage: ->
     @git.add @current_file().filename(), (errors) =>
