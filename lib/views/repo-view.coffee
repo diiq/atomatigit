@@ -66,11 +66,13 @@ class RepoView extends View
   complete_input: ->
     @block_input.removeClass "active"
     @input_callback @block_input.getText()
+    @mode_switch_flag = true
     @focus()
 
   cancel_input: ->
     @block_input.removeClass "active"
     @input_callback = null
+    @mode_switch_flag = true
     @focus()
 
   focus: ->
