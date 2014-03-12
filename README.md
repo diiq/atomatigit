@@ -26,11 +26,24 @@ useful enough to dogfood during its development.
 
 - `ctrl-shift-z` to open/focus atomatigit
 - `escape` to close
-- `up` (or `i`) and `down` (or `k`) to navigate between files
+- `up` (or `i`) and `down` (or `k`) to navigate between items
+- `shift-P` to push to origin
+
+File Mode
 - `enter` to open a selected file
 - `tab` to see an unstaged diff
 - `s` to stage a file
 - `u` to unstage a file
 - `c` to commit
 - `escape` to abort a commit
+- `z` to stash
+- `shift-Z` to unstash
+- `k` to kill an unstaged diff
 - `r` to refresh the view (mostly happens automatically)
+- `b` to go to Branch Mode
+
+Branch Mode
+  `enter` to checkout the selected branch
+  `c` to create a new branch
+  `f` to fetch (experimental)
+  `s` to go to File Mode
