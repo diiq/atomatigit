@@ -38,20 +38,20 @@ class Repo extends Model
   checkout_branch: ->
     @branch_list.checkout_branch => @refresh()
 
+  stash: ->
+    @git.git "stash", @error_callback
+
+  stash_pop: ->
+    @git.git "stash pop", @error_callback
+
   stage: ->
-    @git.add @current_file().filename(), (errors) =>
-      console.log errors if errors
-      @refresh()
+    @git.add @current_file().filename(), @error_callback
 
   unstage: ->
-    @git.git "reset HEAD #{@current_file().filename()}", (errors) =>
-      console.log errors if errors
-      @refresh()
+    @git.git "reset HEAD #{@current_file().filename()}", @error_callback
 
   kill: ->
-    @git.git "checkout #{@current_file().filename()}", (errors) =>
-      console.log errors if errors
-      @refresh()
+    @git.git "checkout #{@current_file().filename()}", @error_callback
 
   open: ->
     filename = @current_file().filename()
@@ -72,18 +72,17 @@ class Repo extends Model
 
   initiate_commit: ->
     @trigger "need_input", (message) =>
-      @git.commit message, (errors) =>
-        console.log errors if errors
-        @refresh()
+      @git.commit message, @error_callback
 
   initiate_create_branch: ->
     @trigger "need_input", (name) =>
-      @git.create_branch name, (e, f, c) =>
-        console.log e, f, c if e
-        @refresh()
+      @git.create_branch name, @error_callback
 
   push: (remote) ->
     remote ?= "origin #{@current_branch.name()}"
-    @git.remote_push remote, (errors) =>
-      console.log errors if errors
-      @refresh()
+    @git.remote_push remote, @error_callback
+
+
+   error_callback: (e, f, c )=>
+     console.log e, f, c if e
+     @refresh()

@@ -8,6 +8,8 @@
   'i': 'atomatigit:previous'
   'escape': 'atomatigit:close'
   's': 'atomatigit:stage'
+  'z': 'atomatigit:stash'
+  'shift-z': 'atomatigit:stash_pop'
   'u': 'atomatigit:unstage'
   'enter': 'atomatigit:open'
   'tab': 'atomatigit:toggle_file_diff'
@@ -28,3 +30,4 @@
   'c': 'atomatigit:create_branch'
   's': 'atomatigit:files'
   'f': 'atomatigit:fetch'
+  'shift-p': 'atomatigit:push'

@@ -40,6 +40,8 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
     atom.workspaceView.command "atomatigit:push", => @repo.push()
     atom.workspaceView.command "atomatigit:fetch", => @repo.fetch()
+    atom.workspaceView.command "atomatigit:stash", => @repo.stash()
+    atom.workspaceView.command "atomatigit:stash_pop", => @repo.stash_pop()
     atom.workspaceView.command "atomatigit:checkout_branch", => @repo.checkout_branch()
     atom.workspaceView.command "atomatigit:create_branch", => @repo.initiate_create_branch()
     atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
