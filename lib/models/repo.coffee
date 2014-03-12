@@ -35,7 +35,7 @@ class Repo extends Model
 
   checkout_branch: ->
     @branch_list.checkout_branch()
-    refresh()
+    @refresh()
 
   stage: ->
     @git.add @current_file().filename(), (errors) =>
