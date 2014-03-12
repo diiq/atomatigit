@@ -25,6 +25,9 @@ class RepoView extends View
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
     @on 'focusout', => @unfocus()
+    @file_list_view.on 'focusin', => @focus()
+    @branch_list_view.on 'focusin', => @focus()
+
 
     atom_git = atom.project.getRepo()
     @subscribe atom_git, 'status-changed', => @repo.refresh()
