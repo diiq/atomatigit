@@ -83,7 +83,7 @@ class Repo extends Model
         @refresh()
 
   push: (remote) ->
-    remote ?= "origin"
+    remote ?= "origin #{@current_branch.name()}"
     @git.remote_push remote, (errors) =>
       console.log errors if errors
       @refresh()
