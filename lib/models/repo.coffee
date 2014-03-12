@@ -33,6 +33,10 @@ class Repo extends Model
       console.log e if e
       @current_branch.set unpushed: (output != "")
 
+  checkout_branch: ->
+    @branch_list.checkout_branch()
+    refresh()
+
   stage: ->
     @git.add @current_file().filename(), (errors) =>
       console.log errors if errors
@@ -66,13 +70,16 @@ class Repo extends Model
           file.set_diff diffs[0].diff
 
   initiate_commit: ->
-    @trigger "need_input", (message) => @finish_commit(message)
+    @trigger "need_input", (message) =>
+      @git.commit message, (errors) =>
+        console.log errors if errors
+        @refresh()
 
-  finish_commit: (message) ->
-    @git.commit message, (errors) =>
-      console.log errors if errors
-      @refresh()
-
+  initiate_create_branch: ->
+    @trigger "need_input", (name) =>
+      @git.create_branch name, (e, f, c) =>
+        console.log e, f, c if e
+        @refresh()
 
   push: (remote) ->
     remote ?= "origin"
