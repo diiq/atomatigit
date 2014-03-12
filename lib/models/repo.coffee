@@ -18,7 +18,6 @@ class Repo extends Model
       @file_list.refresh repo_status.files
 
     @git.branches (e, heads) =>
-      console.log heads
       console.log e if e
       @branch_list.refresh heads
 

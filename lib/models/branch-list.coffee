@@ -9,7 +9,6 @@ class BranchList extends ListModel
   refresh: (heads) ->
     @reset()
     _.each heads, (branch) =>
-      console.log branch
       @add branch
       #b.fetch()
 
@@ -23,7 +22,6 @@ class BranchList extends ListModel
       console.log e, f, s if e
 
   local: ->
-    console.log @models
     @models
 
   remote: ->

@@ -25,7 +25,6 @@ class BranchListView extends View
     @empty_lists()
 
     for branch in @model.local()
-      console.log "IM A BRANCH", branch
       @local_dom.append(new BranchBriefView(branch))
     #
     # for branch in @model.remote()
