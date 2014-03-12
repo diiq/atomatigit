@@ -21,9 +21,9 @@ class Repo extends Model
       console.log e if e
       @branch_list.refresh heads
 
-    @fetch_current_branch()
+    @refresh_current_branch()
 
-  fetch_current_branch: ->
+  refresh_current_branch: ->
     @git.branch (e, head) =>
       console.log e if e
       @current_branch.set head
@@ -31,6 +31,9 @@ class Repo extends Model
     @git.git "log @{u}..", "", "", (e, output) =>
       console.log e if e
       @current_branch.set unpushed: (output != "")
+
+  fetch: ->
+    @git.remote_fetch "", => @refresh
 
   checkout_branch: ->
     @branch_list.checkout_branch => @refresh()

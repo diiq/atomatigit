@@ -26,4 +26,5 @@
   'escape': 'atomatigit:close'
   'enter': 'atomatigit:checkout_branch'
   'c': 'atomatigit:create_branch'
-  'f': 'atomatigit:files'
+  's': 'atomatigit:files'
+  'f': 'atomatigit:fetch'
