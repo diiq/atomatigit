@@ -13,11 +13,11 @@ class FileListView extends View
       @div outlet: "staged_dom"
 
   initialize: (file_list) ->
-    @file_list = file_list
-    @file_list.on "refresh", @repaint
+    @model = file_list
+    @model.on "refresh", @repaint
 
   beforeRemove: ->
-    @file_list.off "refresh", @repaint
+    @model.off "refresh", @repaint
 
   empty_lists: ->
     @untracked_dom.empty()
@@ -27,11 +27,11 @@ class FileListView extends View
   repaint: =>
     @empty_lists()
 
-    for file in @file_list.untracked()
+    for file in @model.untracked()
       @untracked_dom.append new FileView file
 
-    for file in @file_list.unstaged()
+    for file in @model.unstaged()
       @unstaged_dom.append new FileView file
 
-    for file in @file_list.staged()
+    for file in @model.staged()
       @staged_dom.append new FileView file

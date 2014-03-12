@@ -33,6 +33,9 @@ class Branch extends Model
   unpushed: ->
     @get "unpushed"
 
+  selected: ->
+    @get "selected"
+
   select: ->
     @set selected: true
 

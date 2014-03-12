@@ -13,6 +13,9 @@
   border-left: 1px solid #999;
   background-color: #ddd;
   color: #555;
+  .hidden {
+    display: none;
+  }
   .block-input {
     width: 380px;
     margin: 0px 15px;
@@ -46,6 +49,9 @@
   .branch-brief-view {
     padding: 5px;
     padding-left: 25px;
+    &.selected {
+      background-color: #aaa;
+    }
     .name {
       display: inline-block;
       margin: 0px;
@@ -78,7 +84,7 @@
   &.focused {
     color: #222;
     background-color: #eee;
-    .selected .filename {
+    .selected .filename, .branch-brief-view.selected {
       background-color: #6aa5e9;
     }
   }

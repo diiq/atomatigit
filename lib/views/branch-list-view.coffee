@@ -11,11 +11,11 @@ class BranchListView extends View
       @div outlet: "remote_dom"
 
   initialize: (branch_list) ->
-    @branch_list = branch_list
-    @branch_list.on "refresh", @repaint
+    @model = branch_list
+    @model.on "refresh", @repaint
 
   beforeRemove: ->
-    @branch_list.off "refresh", @repaint
+    @model.off "refresh", @repaint
 
   empty_lists: ->
     @local_dom.empty()
@@ -24,9 +24,9 @@ class BranchListView extends View
   repaint: =>
     @empty_lists()
 
-    for branch in @branch_list.local()
+    for branch in @model.local()
       console.log "IM A BRANCH", branch
       @local_dom.append(new BranchBriefView(branch))
     #
-    # for branch in @branch_list.remote()
+    # for branch in @model.remote()
     #   @remote_dom.append new BranchBriefView branch

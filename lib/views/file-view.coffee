@@ -8,20 +8,20 @@ class FileView extends View
       @div class: "diff", outlet: "diff", "#{file.diff()}"
 
   initialize: (file) ->
-    @file = file
-    @file.on "change:selected", @select
-    @file.on "change:diff", @show_diff
+    @model = file
+    @model.on "change:selected", @select
+    @model.on "change:diff", @show_diff
 
   beforeRemove: ->
-    @file.off "change:selected", @select
-    @file.off "change:diff", @show_diff
+    @model.off "change:selected", @select
+    @model.off "change:diff", @show_diff
 
   clicked: ->
-    @file.self_select()
+    @model.self_select()
 
   select: =>
     @removeClass("selected")
-    @addClass("selected") if @file.selected()
+    @addClass("selected") if @model.selected()
 
   show_diff: =>
-    @diff.html @file.diff()
+    @diff.html @model.diff()

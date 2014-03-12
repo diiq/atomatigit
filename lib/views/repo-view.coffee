@@ -17,26 +17,38 @@ class RepoView extends View
   initialize: (repo) ->
     @repo = repo
     @block_input.addClass "block-input"
+    @set_active_view @file_list_view
     @insert_commands()
+
     @repo.on "need_input", @get_input
     @on 'core:confirm', => @complete_input()
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
-    @file_list_view.on "focusout", => @unfocus()
+    @on 'focusout', => @unfocus()
 
     atom_git = atom.project.getRepo()
     @subscribe atom_git, 'status-changed', => @repo.refresh()
 
   insert_commands: ->
-    atom.workspaceView.command "atomatigit:next", => @repo.file_list.next()
-    atom.workspaceView.command "atomatigit:previous", => @repo.file_list.previous()
+    atom.workspaceView.command "atomatigit:next", => @active_view.model.next()
+    atom.workspaceView.command "atomatigit:previous", => @active_view.model.previous()
     atom.workspaceView.command "atomatigit:stage", => @repo.stage()
     atom.workspaceView.command "atomatigit:unstage", => @repo.unstage()
     atom.workspaceView.command "atomatigit:kill", => @repo.kill()
-    atom.workspaceView.command "atomatigit:open", => @repo.open()
+    atom.workspaceView.command "atomatigit:open", => @active_view.model.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
     atom.workspaceView.command "atomatigit:push", => @repo.push()
+    atom.workspaceView.command "atomatigit:checkout_branch", => @branch_list_view.model.checkout_branch()
+    atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
+    atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
+
+  set_active_view: (view) ->
+    @file_list_view.addClass "hidden"
+    @branch_list_view.addClass "hidden"
+    view.removeClass "hidden"
+    @active_view = view
+    @focus()
 
   get_input: (callback) =>
     @input_callback = callback
@@ -56,7 +68,7 @@ class RepoView extends View
 
   focus: ->
     @addClass "focused"
-    @file_list_view.focus()
+    @active_view.focus()
 
   unfocus: ->
     @removeClass "focused"

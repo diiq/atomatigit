@@ -16,3 +16,14 @@
   'c': 'atomatigit:commit'
   'k': 'atomatigit:kill'
   'shift-p': 'atomatigit:push'
+  'b': 'atomatigit:branches'
+
+'.atomatigit .branch-list-view':
+  'down': 'atomatigit:next'
+  'k': 'atomatigit:next'
+  'up': 'atomatigit:previous'
+  'i': 'atomatigit:previous'
+  'escape': 'atomatigit:close'
+  'enter': 'atomatigit:checkout_branch'
+  'c': 'atomatigit:create_branch'
+  'f': 'atomatigit:files'

@@ -11,17 +11,22 @@ class BranchBriefView extends View
       @div class: "commit", outlet: "commit"
 
   initialize: (branch) ->
-    @branch = branch
+    @model = branch
     @repaint()
-    @branch.on "change", @repaint
+    @model.on "change:selected", @select
+    @model.on "change", @repaint
 
   beforeRemove: ->
-    @branch.off "change", @repaint
+    @model.off "change", @repaint
 
   repaint: =>
-    @name.html("#{@branch.name()}")
-    @commit.html("(#{@branch.short_commit_id()}: #{@branch.short_commit_message()})")
+    @name.html("#{@model.name()}")
+    @commit.html("(#{@model.short_commit_id()}: #{@model.short_commit_message()})")
 
     @commit.removeClass "unpushed"
-    if @branch.unpushed()
+    if @model.unpushed()
       @commit.addClass "unpushed"
+
+  select: =>
+    @removeClass("selected")
+    @addClass("selected") if @model.selected()

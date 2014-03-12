@@ -16,6 +16,12 @@ class BranchList extends ListModel
     @trigger "refresh"
     @select @selected
 
+  checkout_branch: ->
+    repo = @selection().get "repo"
+    branch = @selection().name()
+    repo.git "checkout #{branch}", (e, f, s) =>
+      console.log e, f, s if e
+
   local: ->
     console.log @models
     @models
