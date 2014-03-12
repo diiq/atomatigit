@@ -33,8 +33,7 @@ class Repo extends Model
       @current_branch.set unpushed: (output != "")
 
   checkout_branch: ->
-    @branch_list.checkout_branch()
-    @refresh()
+    @branch_list.checkout_branch => @refresh()
 
   stage: ->
     @git.add @current_file().filename(), (errors) =>
