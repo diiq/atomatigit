@@ -12,6 +12,7 @@ class BranchBriefView extends View
 
   initialize: (branch) ->
     @branch = branch
+    @repaint()
     @branch.on "change", @repaint
 
   beforeRemove: ->

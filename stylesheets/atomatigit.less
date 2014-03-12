@@ -13,13 +13,6 @@
   border-left: 1px solid #999;
   background-color: #ddd;
   color: #555;
-  > .branch-brief-view {
-    text-align: right;
-    padding: 20px;
-    .name {
-      font-size: 2em;
-    }
-  }
   .block-input {
     width: 380px;
     margin: 0px 15px;
@@ -54,15 +47,32 @@
     padding: 5px;
     padding-left: 25px;
     .name {
+      display: inline-block;
       margin: 0px;
-      padding: 5px 0px;
       font-weight: bold;
     }
     .commit {
       font-style: italic;
+      display: inline-block;
+      padding-left: 20px;
       &.unpushed {
         color: #955;
       }
+    }
+    &:hover {
+      background-color: #ddd;
+      cursor: pointer;
+    }
+  }
+  >.branch-brief-view {
+    text-align: right;
+    padding: 20px 20px 20px 20px;
+    .name {
+      display: block;
+      font-size: 2em;
+    }
+    .commit {
+      display: block;
     }
   }
   &.focused {

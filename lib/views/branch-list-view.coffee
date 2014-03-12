@@ -10,7 +10,6 @@ class BranchListView extends View
       @h2 "remote:"
       @div outlet: "remote_dom"
 
-
   initialize: (branch_list) ->
     @branch_list = branch_list
     @branch_list.on "refresh", @repaint
@@ -26,7 +25,8 @@ class BranchListView extends View
     @empty_lists()
 
     for branch in @branch_list.local()
-      @local_dom.append new BranchBriefView branch
-
-    for branch in @branch_list.remote()
-      @remote_dom.append new BranchBriefView branch
+      console.log "IM A BRANCH", branch
+      @local_dom.append(new BranchBriefView(branch))
+    #
+    # for branch in @branch_list.remote()
+    #   @remote_dom.append new BranchBriefView branch

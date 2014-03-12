@@ -22,7 +22,16 @@ class Repo extends Model
       console.log e if e
       @branch_list.refresh heads
 
-    @current_branch.fetch()
+    @fetch_current_branch()
+
+  fetch_current_branch: ->
+    @git.branch (e, head) =>
+      console.log e if e
+      @current_branch.set head
+
+    @git.git "log @{u}..", "", "", (e, output) =>
+      console.log e if e
+      @current_branch.set unpushed: (output != "")
 
   stage: ->
     @git.add @current_file().filename(), (errors) =>
@@ -63,6 +72,7 @@ class Repo extends Model
     @git.commit message, (errors) =>
       console.log errors if errors
       @refresh()
+
 
   push: (remote) ->
     remote ?= "origin"

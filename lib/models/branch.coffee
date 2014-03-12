@@ -9,20 +9,11 @@ module.exports =
 # }
 class Branch extends Model
   initialize: (args) ->
-    @set
-      unpushed: false
+    @set unpushed: false
+    @trigger "change"
 
   repo: ->
     @get "repo"
-
-  fetch: ->
-    @repo().branch (e, head) =>
-      console.log e if e
-      @set head
-
-    @repo().git "log @{u}..", "", "", (e, output) =>
-      console.log e if e
-      @set unpushed: (output != "")
 
   short_commit_id: ->
     commit = @get("commit")
