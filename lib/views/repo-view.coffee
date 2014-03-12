@@ -2,6 +2,7 @@
 FileListView = require './file-list-view'
 BranchBriefView = require './branch-brief-view'
 BranchListView = require './branch-list-view'
+_ = require 'underscore'
 
 module.exports =
 class RepoView extends View
@@ -25,9 +26,6 @@ class RepoView extends View
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
     @on 'focusout', => @unfocus()
-    @file_list_view.on 'focusin', => @focus()
-    @branch_list_view.on 'focusin', => @focus()
-
 
     atom_git = atom.project.getRepo()
     @subscribe atom_git, 'status-changed', => @repo.refresh()
@@ -38,7 +36,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:stage", => @repo.stage()
     atom.workspaceView.command "atomatigit:unstage", => @repo.unstage()
     atom.workspaceView.command "atomatigit:kill", => @repo.kill()
-    atom.workspaceView.command "atomatigit:open", => @active_view.model.open()
+    atom.workspaceView.command "atomatigit:open", => @repo.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
     atom.workspaceView.command "atomatigit:push", => @repo.push()
@@ -49,13 +47,15 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:create_branch", => @repo.initiate_create_branch()
     atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
     atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
+    atom.workspaceView.command "atomatigit:git_command", => @repo.initiate_git_command()
 
   set_active_view: (view) ->
+    @mode_switch_flag = true
     @file_list_view.addClass "hidden"
     @branch_list_view.addClass "hidden"
     view.removeClass "hidden"
+    view.focus()
     @active_view = view
-    @focus()
 
   get_input: (callback) =>
     @input_callback = callback
@@ -78,7 +78,10 @@ class RepoView extends View
     @active_view.focus()
 
   unfocus: ->
-    @removeClass "focused"
+    if !@mode_switch_flag
+      @removeClass "focused"
+    else
+      @mode_switch_flag = false
 
   serialize: ->
 

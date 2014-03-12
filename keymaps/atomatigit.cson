@@ -19,6 +19,7 @@
   'k': 'atomatigit:kill'
   'shift-p': 'atomatigit:push'
   'b': 'atomatigit:branches'
+  'g': 'atomatigit:git_command'
 
 '.atomatigit .branch-list-view':
   'down': 'atomatigit:next'
@@ -31,3 +32,4 @@
   's': 'atomatigit:files'
   'f': 'atomatigit:fetch'
   'shift-p': 'atomatigit:push'
+  'g': 'atomatigit:git_command'

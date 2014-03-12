@@ -82,7 +82,10 @@ class Repo extends Model
     remote ?= "origin #{@current_branch.name()}"
     @git.remote_push remote, @error_callback
 
+  initiate_git_command: ->
+    @trigger "need_input", (command) =>
+      @git.git command, @error_callback
 
-   error_callback: (e, f, c )=>
-     console.log e, f, c if e
-     @refresh()
+  error_callback: (e, f, c )=>
+    console.log e, f, c if e
+    @refresh()
