@@ -1,4 +1,5 @@
 {Model} = require 'backbone'
+Diff = require './diff'
 
 module.exports =
 ##
@@ -13,7 +14,6 @@ class File extends Model
     @set
       selected: false
       diff: ""
-
 
   # Accessors
 
@@ -37,9 +37,10 @@ class File extends Model
 
   # Methods
   set_diff: (diff) ->
-    diff = diff.replace /[\r\n]/g, "<br/>"
-    diff = diff.replace /\s(?=\s)/g, "&nbsp;"
-    @set "diff", diff
+    diff = new Diff
+      diff: diff
+      file: self
+      repo: @repo
 
   self_select: =>
     @collection.select @collection.indexOf(this)
