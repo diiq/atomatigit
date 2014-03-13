@@ -51,7 +51,14 @@ class Repo extends Model
     @git.git "reset HEAD #{@current_file().filename()}", @error_callback
 
   kill: ->
-    @git.git "checkout #{@current_file().filename()}", @error_callback
+    if @current_file().unstaged()
+      @git.git "checkout #{@current_file().filename()}", @error_callback
+    else if @current_file().untracked()
+      @git.add @current_file().filename(), =>
+        @git.git "rm -f #{@current_file().filename()}", @error_callback
+    else if @current_file().staged()
+      @git.git "reset HEAD #{@current_file().filename()}", =>
+        @git.git "checkout #{@current_file().filename()}", @error_callback
 
   open: ->
     filename = @current_file().filename()
