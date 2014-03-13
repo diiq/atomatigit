@@ -51,14 +51,15 @@ class Repo extends Model
     @git.git "reset HEAD #{@current_file().filename()}", @error_callback
 
   kill: ->
-    if @current_file().unstaged()
-      @git.git "checkout #{@current_file().filename()}", @error_callback
-    else if @current_file().untracked()
-      @git.add @current_file().filename(), =>
-        @git.git "rm -f #{@current_file().filename()}", @error_callback
-    else if @current_file().staged()
-      @git.git "reset HEAD #{@current_file().filename()}", =>
-        @git.git "checkout #{@current_file().filename()}", @error_callback
+    file = @current_file()
+    if file.unstaged()
+      @git.git "checkout #{file.filename()}", @error_callback
+    else if file.untracked()
+      @git.add file.filename(), =>
+        @git.git "rm -f #{file.filename()}", @error_callback
+    else if file.staged()
+      @git.git "reset HEAD #{file.filename()}", =>
+        @git.git "checkout #{file.filename()}", @error_callback
 
   open: ->
     filename = @current_file().filename()
@@ -73,9 +74,16 @@ class Repo extends Model
       file.set_diff ""
 
     else
-      @git.diff "", "", file.filename(), (e, diffs) =>
-        if not e
-          file.set_diff diffs[0].diff
+      if file.unstaged()
+        @git.diff "", "", file.filename(), (e, diffs) =>
+          if not e
+            file.set_diff diffs[0].diff
+      else if file.staged()
+        @git.diff "--staged", "", file.filename(), (e, diffs) =>
+          if not e
+            file.set_diff diffs[0].diff
+      else
+
 
   initiate_commit: ->
     @trigger "need_input", (message) =>
