@@ -32,5 +32,8 @@ class Diff extends Collection
 
     console.log @models
 
+  chunks: ->
+    @models
+
   diff: ->
     @string

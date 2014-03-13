@@ -1,11 +1,12 @@
 {View} = require 'atom'
+DiffView = require './diff-view'
 
 module.exports =
 class FileView extends View
   @content: (file) ->
     @div class: "file", click: "clicked", =>
       @div class: "filename", "#{file.filename()}"
-      @div class: "diff", outlet: "diff", "#{file.diff()}"
+      @div class: "diff", outlet: "diff_dom"
 
   initialize: (file) ->
     @model = file
@@ -24,4 +25,9 @@ class FileView extends View
     @addClass("selected") if @model.selected()
 
   show_diff: =>
-    @diff.html @model.diff()
+    if !@model.diff()
+      console.log "here"
+      @diff_dom.empty()
+    else
+      console.log "no bu here"
+      @diff_dom.html new DiffView @model.diff()

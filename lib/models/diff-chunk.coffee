@@ -27,4 +27,5 @@ class DiffChunk extends Collection
 
     super lines
 
-    console.log @models
+  lines: ->
+    @models

@@ -37,10 +37,13 @@ class File extends Model
 
   # Methods
   set_diff: (diff) ->
-    diff = new Diff
-      diff: diff
-      file: self
-      repo: @repo
+    if not diff
+      @set diff: null
+    else
+      @set diff: new Diff
+        diff: diff
+        file: self
+        repo: @repo
 
   self_select: =>
     @collection.select @collection.indexOf(this)

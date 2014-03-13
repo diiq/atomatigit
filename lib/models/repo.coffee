@@ -71,7 +71,7 @@ class Repo extends Model
   toggle_file_diff: ->
     file = @current_file()
     if file.diff()
-      file.set_diff ""
+      file.set_diff null
 
     else
       if file.unstaged()
