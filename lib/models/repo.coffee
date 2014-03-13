@@ -76,7 +76,8 @@ class Repo extends Model
 
   initiate_create_branch: ->
     @trigger "need_input", (name) =>
-      @git.create_branch name, @error_callback
+      @git.create_branch name, =>
+        @git.git "checkout #{name}", @error_callback
 
   push: (remote) ->
     remote ?= "origin #{@current_branch.name()}"
