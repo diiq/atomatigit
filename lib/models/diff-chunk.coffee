@@ -1,4 +1,6 @@
-{Model} = require 'backbone'
+{Collection} = require 'backbone'
+DiffLine = require './diff-line'
+_ = require 'underscore'
 
 module.exports =
 ##
@@ -9,16 +11,20 @@ module.exports =
 #   file: File
 # }
 
-class DiffChunk extends Model
-  markup: ->
-    diff = diff.replace /[\r\n]/g, "<br/>"
-    diff = diff.replace /\s(?=\s)/g, "&nbsp;"
+class DiffChunk extends Collection
+  model: DiffLine
 
-  string: ->
-    @get "chunk"
+  constructor: (args) ->
+    lines = args.diff.split /\n/g
+    lines = _.map lines, (string) =>
+      diff: string
+      file: args.file
+      repo: args.repo
 
-  repo: ->
-    @get "repo"
+    @string = args.diff
+    @file = args.file
+    @repo = args.repo
 
-  diff: ->
-    @get "diff"
+    super lines
+
+    console.log @models
