@@ -72,18 +72,16 @@ class Repo extends Model
     file = @current_file()
     if file.diff()
       file.set_diff null
+      return
 
-    else
-      if file.unstaged()
-        @git.diff "", "", file.filename(), (e, diffs) =>
-          if not e
-            file.set_diff diffs[0].diff
-      else if file.staged()
-        @git.diff "--staged", "", file.filename(), (e, diffs) =>
-          if not e
-            file.set_diff diffs[0].diff
-      else
-
+    if file.unstaged()
+      @git.diff "", "", file.filename(), (e, diffs) =>
+        if not e
+          file.set_diff diffs[0].diff
+    else if file.staged()
+      @git.diff "--staged", "", file.filename(), (e, diffs) =>
+        if not e
+          file.set_diff diffs[0].diff
 
   initiate_commit: ->
     @trigger "need_input", "Commit message:", (message) =>

@@ -7,6 +7,7 @@
 // TODO: use variables at all.
 
 .atomatigit {
+  position: relative;
   overflow: auto;
   width: 410px;
   padding: 0px;
@@ -15,6 +16,14 @@
   color: #555;
   .hidden {
     display: none;
+  }
+  .resize-handle {
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 10px;
+    cursor: col-resize;
   }
   .block-input {
     width: 380px;

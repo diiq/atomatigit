@@ -3,6 +3,7 @@ FileListView = require './file-list-view'
 BranchBriefView = require './branch-brief-view'
 BranchListView = require './branch-list-view'
 _ = require 'underscore'
+$ = require 'jquery'
 
 module.exports =
 class RepoView extends View
@@ -11,6 +12,7 @@ class RepoView extends View
       @subview "branch_brief_view", new BranchBriefView repo.current_branch
       #@textarea class: "block-input editor", outlet: "block_input"
       #@input class: "line-input", outlet: "block_input"
+      @div class: "resize-handle", outlet: "resize_handle"
       @div class: "block-input", outlet: "block_input", =>
         @div class: "query", outlet: "block_input_query"
         @subview "block_input_editor", new EditorView(mini: true)
@@ -27,6 +29,7 @@ class RepoView extends View
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
     @on 'focusout', => @unfocus()
+    @resize_handle.on "mousedown", @resize_started
 
     atom_git = atom.project.getRepo()
     @subscribe atom_git, 'status-changed', => @repo.refresh()
@@ -57,6 +60,18 @@ class RepoView extends View
     view.removeClass "hidden"
     view.focus()
     @active_view = view
+
+  resize_started: =>
+    $(document.body).on 'mousemove', @resize
+    $(document.body).on 'mouseup', @resize_stopped
+
+  resize_stopped: =>
+    $(document.body).off 'mousemove', @resize
+    $(document.body).off 'mouseup', @resize_stopped
+
+  resize: ({pageX}) =>
+    width = $(document.body).width() - pageX
+    @width(width)
 
   get_input: (query, callback) =>
     @input_callback = callback
