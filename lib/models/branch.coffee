@@ -30,6 +30,12 @@ class Branch extends Model
   name: ->
     @get "name"
 
+  local_name: ->
+    if @local()
+      @name()
+    else
+      @name().replace /.*?\//, ""
+
   unpushed: ->
     @get "unpushed"
 
@@ -41,6 +47,12 @@ class Branch extends Model
 
   unselect: ->
     @set selected: false
+
+  remote: ->
+    @get "remote"
+
+  local: ->
+    !@remote()
 
   self_select: =>
     @collection.select @collection.indexOf(this)

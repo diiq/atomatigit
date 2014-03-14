@@ -6,24 +6,28 @@ module.exports =
 class BranchList extends ListModel
   model: Branch
 
-  refresh: (heads) ->
+  refresh: (locals, remotes) ->
     @reset()
-    _.each heads, (branch) =>
+    _.each locals, (branch) =>
+      branch.remote = false
       @add branch
-      #b.fetch()
+
+    _.each remotes, (branch) =>
+      branch.remote = true
+      @add branch
 
     @trigger "refresh"
     @select @selected
 
   checkout_branch: (callback)->
     repo = @selection().get "repo"
-    branch = @selection().name()
+    branch = @selection().local_name()
     repo.git "checkout #{branch}", (e, f, s) =>
       console.log e, f, s if e
       callback()
 
   local: ->
-    @models
+    @filter (branch) -> branch.local()
 
   remote: ->
-    []
+    @filter (branch) -> branch.remote()

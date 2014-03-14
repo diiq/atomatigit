@@ -17,9 +17,12 @@ class Repo extends Model
       console.log e if e
       @file_list.refresh repo_status.files
 
-    @git.branches (e, heads) =>
+    @git.branches (e, locals) =>
       console.log e if e
-      @branch_list.refresh heads
+      @git.remotes (e, remotes) =>
+        console.log e if e
+        @branch_list.refresh locals, remotes
+
 
     @refresh_current_branch()
 
@@ -33,7 +36,7 @@ class Repo extends Model
       @current_branch.set unpushed: (output != "")
 
   fetch: ->
-    @git.remote_fetch "", => @refresh
+    @git.remote_fetch "origin", => @refresh
 
   checkout_branch: ->
     @branch_list.checkout_branch => @refresh()
@@ -52,6 +55,14 @@ class Repo extends Model
 
   kill: ->
     file = @current_file()
+    if file.untracked()
+      message = "Delete untracked file \"#{file.filename()}\"?"
+    else
+      message = "Discard all changes to \"#{file.filename()}\"?"
+
+    @trigger "need_confirmation", message, => @kill_no_confirm(file)
+
+  kill_no_confirm: (file) ->
     if file.unstaged()
       @git.git "checkout #{file.filename()}", @error_callback
     else if file.untracked()

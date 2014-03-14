@@ -25,6 +25,7 @@ class RepoView extends View
     @insert_commands()
 
     @repo.on "need_input", @get_input
+    @repo.on "need_confirmation", @confirm
     @on 'core:confirm', => @complete_input()
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
@@ -77,6 +78,7 @@ class RepoView extends View
     @input_callback = callback
     @block_input.show 100, () =>
       @block_input_query.html query
+      @block_input_editor.redraw()
       @block_input_editor.setText ""
       @block_input_editor.focus()
 
@@ -91,6 +93,15 @@ class RepoView extends View
     @input_callback = null
     @mode_switch_flag = true
     @focus()
+
+  confirm: (message, ok_callback, options) ->
+    options = options || {}
+    atom.confirm
+      message: message
+      detailedMessage: options.detailed_message || ""
+      buttons:
+        "OK": ok_callback
+        "Cancel": null
 
   focus: ->
     @addClass "focused"
