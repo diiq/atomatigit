@@ -1,5 +1,8 @@
 '.workspace':
-  'cmd-shift-z': 'atomatigit:show'
+  'cmd-alt-g': 'atomatigit:show'
+
+'.atomatigit':
+  'cm-alt-g': 'atomatigit:close'
 
 '.atomatigit .file-list-view':
   'down': 'atomatigit:next'
