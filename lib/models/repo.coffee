@@ -86,11 +86,11 @@ class Repo extends Model
 
 
   initiate_commit: ->
-    @trigger "need_input", (message) =>
+    @trigger "need_input", "Commit message:", (message) =>
       @git.commit message, @error_callback
 
   initiate_create_branch: ->
-    @trigger "need_input", (name) =>
+    @trigger "need_input", "Branch name:", (name) =>
       @git.create_branch name, =>
         @git.git "checkout #{name}", @error_callback
 
@@ -99,7 +99,7 @@ class Repo extends Model
     @git.remote_push remote, @error_callback
 
   initiate_git_command: ->
-    @trigger "need_input", (command) =>
+    @trigger "need_input", "Git command:", (command) =>
       @git.git command, @error_callback
 
   error_callback: (e, f, c )=>

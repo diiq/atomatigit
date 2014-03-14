@@ -9,15 +9,16 @@ class RepoView extends View
   @content: (repo) ->
     @div class: 'atomatigit', =>
       @subview "branch_brief_view", new BranchBriefView repo.current_branch
-      #@textarea class: "block-input", outlet: "block_input"
+      #@textarea class: "block-input editor", outlet: "block_input"
       #@input class: "line-input", outlet: "block_input"
-      @subview "block_input", new EditorView(mini: true)
+      @div class: "block-input", outlet: "block_input", =>
+        @div class: "query", outlet: "block_input_query"
+        @subview "block_input_editor", new EditorView(mini: true)
       @subview "file_list_view", new FileListView repo.file_list
       @subview "branch_list_view", new BranchListView repo.branch_list
 
   initialize: (repo) ->
     @repo = repo
-    @block_input.addClass "block-input"
     @set_active_view @file_list_view
     @insert_commands()
 
@@ -57,20 +58,21 @@ class RepoView extends View
     view.focus()
     @active_view = view
 
-  get_input: (callback) =>
+  get_input: (query, callback) =>
     @input_callback = callback
-    @block_input.setText ""
-    @block_input.addClass "active"
-    @block_input.focus()
+    @block_input.show 100, () =>
+      @block_input_query.html query
+      @block_input_editor.setText ""
+      @block_input_editor.focus()
 
   complete_input: ->
-    @block_input.removeClass "active"
-    @input_callback @block_input.getText()
+    @block_input.hide()
+    @input_callback @block_input_editor.getText()
     @mode_switch_flag = true
     @focus()
 
   cancel_input: ->
-    @block_input.removeClass "active"
+    @block_input.hide()
     @input_callback = null
     @mode_switch_flag = true
     @focus()
