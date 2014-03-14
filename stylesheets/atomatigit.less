@@ -19,11 +19,6 @@
   .block-input {
     width: 380px;
     margin: 0px 15px;
-    visibility: hidden;
-    &.active {
-      display: block;
-      visibility: visible;
-    }
   }
   .file-list-view {
     padding-bottom: 50px;
@@ -39,6 +34,12 @@
     .diff {
       font-family: monospace;
       padding-left: 25px;
+      .addition {
+        background-color: #9F9;
+      }
+      .subtraction {
+        background-color: #F99;
+      }
     }
   }
   h2 {

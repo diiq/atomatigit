@@ -15,6 +15,7 @@ class DiffLine extends Model
     @set
       addition: !!(string.match /^\s*\+/)
       subtraction: !!(string.match /^\s*\-/)
+      string: string
 
   diff: ->
     @get "diff"
@@ -31,5 +32,5 @@ class DiffLine extends Model
   repo: ->
     @get "repo"
 
-  diff: ->
-    @get "diff"
+  markup: ->
+    @get("string").replace /\ /, "&nbsp;"

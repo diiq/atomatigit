@@ -3,14 +3,15 @@
 module.exports =
 class DiffLineView extends View
   @content: (line) ->
-    @div class: "diff-line", click: "clicked", line.diff()
+    @div class: "diff-line", click: "clicked", =>
+      @raw(line.markup())
 
   initialize: (file) ->
     @model = file
-    if @model.addition
+    if @model.addition()
       @addClass "addition"
 
-    if @model.subtraction
+    if @model.subtraction()
       @addClass "subtraction"
 
     @model.on "change:selected", @select
