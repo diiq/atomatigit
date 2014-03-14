@@ -15,7 +15,9 @@ class DiffChunk extends Collection
   model: DiffLine
 
   constructor: (args) ->
-    lines = args.diff.split /\n/g
+    changes = args.diff.replace /.*?\n(\s*?\n)*/, ""
+    changes = changes.replace /\s*$/, ""
+    lines = changes.split /\n/g
     lines = _.map lines, (string) =>
       diff: string
       file: args.file

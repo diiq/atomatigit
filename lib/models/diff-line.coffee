@@ -27,10 +27,10 @@ class DiffLine extends Model
     @get "subtraction"
 
   context: ->
-    !(@addition() || @subtraction)
+    !(@addition() || @subtraction())
 
   repo: ->
     @get "repo"
 
   markup: ->
-    @get("string").replace /\ /, "&nbsp;"
+    @get("string").replace /\ /g, "&nbsp;"

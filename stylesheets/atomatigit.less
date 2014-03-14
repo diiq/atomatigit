@@ -33,12 +33,21 @@
     }
     .diff {
       font-family: monospace;
-      padding-left: 25px;
-      .addition {
-        background-color: #9F9;
-      }
-      .subtraction {
-        background-color: #F99;
+      .diff-chunk {
+        padding: 10px 0px;
+        border-bottom: 1px solid #ddd;
+        .diff-line {
+          padding-left: 20px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space:nowrap;
+          &.addition {
+            background-color: #ded;
+          }
+          &.subtraction {
+            background-color: #edd;
+          }
+        }
       }
     }
   }
