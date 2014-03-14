@@ -3,20 +3,27 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+.box-sizing (@type: border-box) {
+	-webkit-box-sizing: @type;
+	-moz-box-sizing: @type;
+	box-sizing: @type;
+}
+@units: 0.1em;
 
-// TODO: use variables at all.
 
 .atomatigit {
   position: relative;
   overflow: auto;
-  width: 410px;
+  width: 400 * @units;
   padding: 0px;
-  border-left: 1px solid #999;
-  background-color: #ddd;
-  color: #555;
+  border-left: 1px solid @tree-view-border-color;
+  background-color: lighten(@tree-view-background-color, 5%);
+  color: @text-color;
+
   .hidden {
     display: none;
   }
+
   .resize-handle {
     position:absolute;
     top: 0;
@@ -25,73 +32,86 @@
     width: 10px;
     cursor: col-resize;
   }
+
   .block-input {
-    width: 380px;
-    margin: 0px 15px;
+    .box-sizing();
+    width: 100%;
+    padding: 0px 15px;
   }
-  .file-list-view {
-    padding-bottom: 50px;
-  }
+
   .file {
     .filename {
-      padding: 5px;
-      padding-left: 25px;
+      padding: 5 * @units;
+      padding-left: 25 * @units;
     }
+
     &.selected .filename {
-      background-color: #AAA;
+      background-color: @button-background-color;
     }
+
     .diff {
       font-family: monospace;
+
       .diff-chunk {
-        padding: 10px 0px;
-        border-bottom: 1px solid #ddd;
+        padding: 10*@units 0px;
+        border-bottom: 1px solid @tree-view-border-color;
         .diff-line {
-          padding-left: 20px;
+          padding-left: 25 * @units;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space:nowrap;
+
           &.addition {
-            background-color: #ded;
+            background-color: mix(@background-color-success,
+                                  @tree-view-background-color, 15%);
           }
+
           &.subtraction {
-            background-color: #edd;
+            background-color: mix(@background-color-error,
+                                  @tree-view-background-color, 15%);
           }
         }
       }
     }
   }
+
   h2 {
-    padding-left: 15px;
+    padding-left: 15 * @units;
     font-size: 1.2em;
     font-weight: bold;
   }
+
   .branch-brief-view {
-    padding: 5px;
-    padding-left: 25px;
+    padding: 5 * @units;
+    padding-left: 25 * @units;
     &.selected {
-      background-color: #aaa;
+      background-color: @button-background-color;
     }
+
     .name {
       display: inline-block;
       margin: 0px;
       font-weight: bold;
     }
+
     .commit {
       font-style: italic;
       display: inline-block;
-      padding-left: 20px;
+      padding-left: 20 * @units;
       &.unpushed {
-        color: #955;
+        color: @text-color-warning;
       }
     }
+
     &:hover {
-      background-color: #ddd;
+      background-color: @button-background-color-hover;
       cursor: pointer;
     }
   }
+
   >.branch-brief-view {
     text-align: right;
-    padding: 20px 20px 20px 20px;
+    padding: 20 * @units;
     .name {
       display: block;
       font-size: 2em;
@@ -100,11 +120,11 @@
       display: block;
     }
   }
+
   &.focused {
-    color: #222;
-    background-color: #eee;
+    background-color: @tree-view-background-color;
     .selected .filename, .branch-brief-view.selected {
-      background-color: #6aa5e9;
+      background-color: @background-color-selected;
     }
   }
 }
