@@ -56,7 +56,7 @@ class Repo extends Model
     @branch_list.selection()
 
   toggle_file_diff: ->
-    file = @current_file()
+    file = @selected_file()
     if file.diff()
       file.set_diff null
       return

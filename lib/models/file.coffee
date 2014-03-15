@@ -1,4 +1,4 @@
-{Model} = require 'backbone'
+ListItemModel = require './list-item-model'
 Diff = require './diff'
 
 module.exports =
@@ -9,7 +9,7 @@ module.exports =
 #   staged: bool,
 #   tracked: bool
 # }
-class File extends Model
+class File extends ListItemModel
   initialize: ->
     @set
       selected: false
@@ -25,9 +25,6 @@ class File extends Model
 
   staged: ->
     @get "staged"
-
-  selected: ->
-    @get "selected"
 
   filename: ->
     @get "filename"
@@ -80,21 +77,12 @@ class File extends Model
         file: self
         repo: @repo
 
-  self_select: =>
-    @collection.select @collection.indexOf(this)
-
   # We get files in any old order, and want to sort them by staged, unstaged,
   # untracked. This value makes that easier.
   sort_value: ->
     return 2 if @staged()
     return 0 if @untracked()
     return 1
-
-  select: ->
-    @set selected: true
-
-  unselect: ->
-    @set selected: false
 
   error_callback: (e, f, c )=>
     console.log e, f, c if e

@@ -1,4 +1,4 @@
-{Model} = require 'backbone'
+ListItemModel = require './list-item-model'
 
 module.exports =
 ##
@@ -7,7 +7,7 @@ module.exports =
 #   name: "string",
 #   commit: object
 # }
-class Branch extends Model
+class Branch extends ListItemModel
   initialize: (args) ->
     @set unpushed: false
     @trigger "change"
@@ -45,9 +45,6 @@ class Branch extends Model
   unpushed: ->
     @get "unpushed"
 
-  selected: ->
-    @get "selected"
-
   kill: ->
     atom.confirm
       message: "Delete branch #{@name()}?"
@@ -61,20 +58,11 @@ class Branch extends Model
     else
       @repo().git "push -f #{@remote_name()} :#{@local_name()}", @error_callback
 
-  select: ->
-    @set selected: true
-
-  unselect: ->
-    @set selected: false
-
   remote: ->
     @get "remote"
 
   local: ->
     !@remote()
-
-  self_select: =>
-    @collection.select @collection.indexOf(this)
 
   error_callback: (e, f, c )=>
     console.log e, f, c if e
