@@ -10,14 +10,18 @@ class BranchList extends ListModel
     @reset()
     _.each locals, (branch) =>
       branch.remote = false
-      @add branch
+      @add_branch branch
 
     _.each remotes, (branch) =>
       branch.remote = true
-      @add branch
+      @add_branch branch
 
     @trigger "refresh"
     @select @selected
+
+  add_branch: (branch) ->
+    branch = @add branch
+    branch.on "repo:reload", => @trigger "repo:reload"
 
   checkout_branch: (callback)->
     repo = @selection().get "repo"

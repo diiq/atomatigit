@@ -36,11 +36,30 @@ class Branch extends Model
     else
       @name().replace /.*?\//, ""
 
+  remote_name: ->
+    if @local()
+      ""
+    else
+      @name().replace /\/.*/, ""
+
   unpushed: ->
     @get "unpushed"
 
   selected: ->
     @get "selected"
+
+  kill: ->
+    atom.confirm
+      message: "Delete branch #{@name()}?"
+      buttons:
+        "Delete": => @kill_on_sight()
+        "Cancel": null
+
+  kill_on_sight: ->
+    if @local()
+      @repo().git "branch -D #{@name()}", @error_callback
+    else
+      @repo().git "push -f #{@remote_name()} :#{@local_name()}", @error_callback
 
   select: ->
     @set selected: true
@@ -56,3 +75,7 @@ class Branch extends Model
 
   self_select: =>
     @collection.select @collection.indexOf(this)
+
+  error_callback: (e, f, c )=>
+    console.log e, f, c if e
+    @trigger "repo:reload"

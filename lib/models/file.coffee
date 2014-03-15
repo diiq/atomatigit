@@ -55,10 +55,10 @@ class File extends Model
     atom.confirm
       message: message
       buttons:
-        "Discard": => @kill_no_confirm()
+        "Discard": => @kill_on_sight()
         "Cancel": null
 
-  kill_no_confirm: ->
+  kill_on_sight: ->
     if @unstaged()
       @repo().git "checkout #{@filename()}", @error_callback
     else if @untracked()

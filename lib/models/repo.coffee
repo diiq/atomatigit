@@ -12,9 +12,8 @@ class Repo extends Model
     @branch_list = new BranchList [], repo: @git
     @current_branch = new Branch {repo: @git}
 
-    @file_list.on "repo:reload", =>
-      @refresh()
-
+    @branch_list.on "repo:reload", => @refresh()
+    @file_list.on "repo:reload", => @refresh()
 
   refresh: ->
     @git.status (e, repo_status) =>
@@ -26,7 +25,6 @@ class Repo extends Model
       @git.remotes (e, remotes) =>
         console.log e if e
         @branch_list.refresh locals, remotes
-
 
     @refresh_current_branch()
 
@@ -51,34 +49,11 @@ class Repo extends Model
   stash_pop: ->
     @git.git "stash pop", @error_callback
 
-  kill: ->
-    file = @current_file()
-    if file.untracked()
-      message = "Delete untracked file \"#{file.filename()}\"?"
-    else
-      message = "Discard all changes to \"#{file.filename()}\"?"
-
-    @trigger "need_confirmation", message, => @kill_no_confirm(file)
-
-  kill_no_confirm: (file) ->
-    if file.unstaged()
-      @git.git "checkout #{file.filename()}", @error_callback
-    else if file.untracked()
-      @git.add file.filename(), =>
-        @git.git "rm -f #{file.filename()}", @error_callback
-    else if file.staged()
-      @git.git "reset HEAD #{file.filename()}", =>
-        @git.git "checkout #{file.filename()}", @error_callback
-
-  open: ->
-    filename = @current_file().filename()
-    atom.workspaceView.open(filename)
-
   selected_file: ->
     @file_list.selection()
 
   selected_branch: ->
-    @file_list.selection()
+    @branch_list.selection()
 
   toggle_file_diff: ->
     file = @current_file()

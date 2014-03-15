@@ -19,10 +19,10 @@
   'cmd-shift-z': 'atomatigit:show'
   'r': 'atomatigit:show'
   'c': 'atomatigit:commit'
-  'k': 'atomatigit:kill'
   'shift-p': 'atomatigit:push'
   'b': 'atomatigit:branches'
   ':': 'atomatigit:git_command'
+  'backspace': 'atomatigit:kill_file'
 
 '.atomatigit .branch-list-view':
   'down': 'atomatigit:next'
@@ -36,3 +36,4 @@
   'f': 'atomatigit:fetch'
   'shift-p': 'atomatigit:push'
   ':': 'atomatigit:git_command'
+  'backspace': 'atomatigit:kill_branch'

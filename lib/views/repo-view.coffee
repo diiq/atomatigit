@@ -25,7 +25,6 @@ class RepoView extends View
     @insert_commands()
 
     @repo.on "need_input", @get_input
-    @repo.on "need_confirmation", @confirm
 
     @on 'core:confirm', => @complete_input()
     @on 'core:cancel', => @cancel_input()
@@ -41,8 +40,9 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:previous", => @active_view.model.previous()
     atom.workspaceView.command "atomatigit:stage", => @repo.selected_file().stage()
     atom.workspaceView.command "atomatigit:unstage", => @repo.selected_file().unstage()
-    atom.workspaceView.command "atomatigit:kill", => @repo.selected_file().kill()
-    atom.workspaceView.command "atomatigit:open", => @repo.open()
+    atom.workspaceView.command "atomatigit:kill_file", => @repo.selected_file().kill()
+    atom.workspaceView.command "atomatigit:kill_branch", => @repo.selected_branch().kill()
+    atom.workspaceView.command "atomatigit:open", => @repo.selected_file().open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
     atom.workspaceView.command "atomatigit:push", => @repo.push()
@@ -94,15 +94,6 @@ class RepoView extends View
     @input_callback = null
     @mode_switch_flag = true
     @focus()
-
-  confirm: (message, ok_callback, options) ->
-    options = options || {}
-    atom.confirm
-      message: message
-      detailedMessage: options.detailed_message || ""
-      buttons:
-        "OK": ok_callback
-        "Cancel": null
 
   focus: ->
     @addClass "focused"
