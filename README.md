@@ -24,7 +24,7 @@ useful enough to dogfood during its development.
 
 ## Key bindings
 
-- `ctrl-shift-z` to open/focus atomatigit
+- `alt-shift-g` to open/focus/close atomatigit
 - `escape` to close
 - `up` (or `i`) and `down` (or `k`) to navigate between items
 - `shift-P` to push to origin
@@ -38,12 +38,13 @@ File Mode
 - `escape` to abort a commit
 - `z` to stash
 - `shift-Z` to unstash
-- `k` to kill an unstaged diff
+- `backspace` to kill an unstaged diff
 - `r` to refresh the view (mostly happens automatically)
 - `b` to go to Branch Mode
 
 Branch Mode
-  `enter` to checkout the selected branch
-  `c` to create a new branch
-  `f` to fetch (experimental)
-  `s` to go to File Mode
+- `enter` to checkout the selected branch
+- `c` to create a new branch
+- `f` to fetch (experimental)
+- `backspace` to delete a branch
+- `s` to go to File Mode
