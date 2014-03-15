@@ -26,6 +26,7 @@ class RepoView extends View
 
     @repo.on "need_input", @get_input
     @repo.on "need_confirmation", @confirm
+
     @on 'core:confirm', => @complete_input()
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
@@ -40,7 +41,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:previous", => @active_view.model.previous()
     atom.workspaceView.command "atomatigit:stage", => @repo.selected_file().stage()
     atom.workspaceView.command "atomatigit:unstage", => @repo.selected_file().unstage()
-    atom.workspaceView.command "atomatigit:kill", => @repo.kill()
+    atom.workspaceView.command "atomatigit:kill", => @repo.selected_file().kill()
     atom.workspaceView.command "atomatigit:open", => @repo.open()
     atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()

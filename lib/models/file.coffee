@@ -46,6 +46,32 @@ class File extends Model
   unstage: ->
     @repo().git "reset HEAD #{@filename()}", @error_callback
 
+  kill: ->
+    if @untracked()
+      message = "Delete untracked file \"#{@filename()}\"?"
+    else
+      message = "Discard all changes to \"#{@filename()}\"?"
+
+    atom.confirm
+      message: message
+      buttons:
+        "Discard": => @kill_no_confirm()
+        "Cancel": null
+
+  kill_no_confirm: ->
+    if @unstaged()
+      @repo().git "checkout #{@filename()}", @error_callback
+    else if @untracked()
+      @repo().add @filename(), =>
+        @repo().git "rm -f #{@filename()}", @error_callback
+    else if @staged()
+      @repo().git "reset HEAD #{@filename()}", =>
+        @repo().git "checkout #{@filename()}", @error_callback
+
+  open: ->
+    filename = @current_file().filename()
+    atom.workspaceView.open(filename)
+
   set_diff: (diff) ->
     if not diff
       @set diff: null
