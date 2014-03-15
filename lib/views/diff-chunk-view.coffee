@@ -19,7 +19,6 @@ class DiffChunkView extends View
     @list_dom.empty()
 
   repaint: =>
-    console.log @model, @model.lines()
     @empty_list()
 
     for line in @model.lines()

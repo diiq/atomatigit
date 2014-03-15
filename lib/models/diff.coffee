@@ -16,7 +16,6 @@ class Diff extends Collection
   model: DiffChunk
 
   constructor: (args) ->
-    console.log args.diff
     chunkstrings = args.diff.split /\n@@/g
     chunkstrings = chunkstrings.slice 1, chunkstrings.length
     chunks = _.map chunkstrings, (string) =>
@@ -29,8 +28,6 @@ class Diff extends Collection
     @repo = args.repo
 
     super chunks
-
-    console.log @models
 
   chunks: ->
     @models

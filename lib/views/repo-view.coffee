@@ -43,7 +43,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:kill_file", => @repo.selected_file().kill()
     atom.workspaceView.command "atomatigit:kill_branch", => @repo.selected_branch().kill()
     atom.workspaceView.command "atomatigit:open", => @repo.selected_file().open()
-    atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.toggle_file_diff()
+    atom.workspaceView.command "atomatigit:toggle_file_diff", => @repo.selected_file().toggle_diff()
     atom.workspaceView.command "atomatigit:commit", => @repo.initiate_commit()
     atom.workspaceView.command "atomatigit:push", => @repo.push()
     atom.workspaceView.command "atomatigit:fetch", => @repo.fetch()

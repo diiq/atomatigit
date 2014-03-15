@@ -26,8 +26,6 @@ class FileView extends View
 
   show_diff: =>
     if !@model.diff()
-      console.log "here"
       @diff_dom.empty()
     else
-      console.log "no bu here"
       @diff_dom.html new DiffView @model.diff()

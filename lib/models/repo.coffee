@@ -55,21 +55,6 @@ class Repo extends Model
   selected_branch: ->
     @branch_list.selection()
 
-  toggle_file_diff: ->
-    file = @selected_file()
-    if file.diff()
-      file.set_diff null
-      return
-
-    if file.unstaged()
-      @git.diff "", "", file.filename(), (e, diffs) =>
-        if not e
-          file.set_diff diffs[0].diff
-    else if file.staged()
-      @git.diff "--staged", "", file.filename(), (e, diffs) =>
-        if not e
-          file.set_diff diffs[0].diff
-
   initiate_commit: ->
     @trigger "need_input", "Commit message:", (message) =>
       @git.commit message, @error_callback

@@ -19,10 +19,7 @@ class DiffView extends View
     @list_dom.empty()
 
   repaint: =>
-    console.log "REPAINT DIFF", @model.chunks()
-
     @empty_list()
 
     for chunk in @model.chunks()
-      console.log "one"
       @list_dom.append new DiffChunkView chunk

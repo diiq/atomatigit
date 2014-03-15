@@ -65,6 +65,25 @@ class File extends ListItemModel
       @repo().git "reset HEAD #{@filename()}", =>
         @repo().git "checkout #{@filename()}", @error_callback
 
+
+  toggle_diff: ->
+    if @diff()
+      @set diff: null
+      return
+
+    flags = ""
+    if @staged()
+      flags += "--staged "
+
+    @repo().diff flags, "", @filename(), (e, diffs) =>
+      console.log e
+      if not e
+        @set diff: new Diff
+          diff: diffs[0].diff
+          file: self
+          repo: @repo()
+
+
   open: ->
     atom.workspaceView.open @filename()
 
