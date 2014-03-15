@@ -6,6 +6,9 @@ module.exports =
 class FileList extends ListModel
   model: File
 
+  initialize: (models, options) ->
+    @repo = options.repo
+
   refresh: (filehash) ->
     @reset()
     _.each filehash, (status, filename) =>
@@ -23,6 +26,9 @@ class FileList extends ListModel
       type: status.type
       tracked: status.tracked
       staged: status.staged
+      repo: @repo
+    file.on "repo:reload", =>
+      @trigger "repo:reload"
 
   comparator: (file) ->
     file.sort_value()

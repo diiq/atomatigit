@@ -35,7 +35,17 @@ class File extends Model
   diff: ->
     @get "diff"
 
+  repo: ->
+    @get "repo"
+
   # Methods
+
+  stage: ->
+    @repo().add @filename(), @error_callback
+
+  unstage: ->
+    @repo().git "reset HEAD #{@filename()}", @error_callback
+
   set_diff: (diff) ->
     if not diff
       @set diff: null
@@ -60,3 +70,7 @@ class File extends Model
 
   unselect: ->
     @set selected: false
+
+  error_callback: (e, f, c )=>
+    console.log e, f, c if e
+    @trigger "repo:reload"

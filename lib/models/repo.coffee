@@ -8,9 +8,13 @@ module.exports =
 class Repo extends Model
   initialize: (opts) ->
     @git = gift(@get "path")
-    @file_list = new FileList []
-    @branch_list = new BranchList []
+    @file_list = new FileList [], repo: @git
+    @branch_list = new BranchList [], repo: @git
     @current_branch = new Branch {repo: @git}
+
+    @file_list.on "repo:reload", =>
+      @refresh()
+
 
   refresh: ->
     @git.status (e, repo_status) =>
@@ -36,7 +40,7 @@ class Repo extends Model
       @current_branch.set unpushed: (output != "")
 
   fetch: ->
-    @git.remote_fetch "origin", => @refresh
+    @git.remote_fetch "origin", => @refresh()
 
   checkout_branch: ->
     @branch_list.checkout_branch => @refresh()
@@ -46,12 +50,6 @@ class Repo extends Model
 
   stash_pop: ->
     @git.git "stash pop", @error_callback
-
-  stage: ->
-    @git.add @current_file().filename(), @error_callback
-
-  unstage: ->
-    @git.git "reset HEAD #{@current_file().filename()}", @error_callback
 
   kill: ->
     file = @current_file()
@@ -76,7 +74,10 @@ class Repo extends Model
     filename = @current_file().filename()
     atom.workspaceView.open(filename)
 
-  current_file: ->
+  selected_file: ->
+    @file_list.selection()
+
+  selected_branch: ->
     @file_list.selection()
 
   toggle_file_diff: ->
