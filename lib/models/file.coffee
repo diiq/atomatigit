@@ -69,8 +69,7 @@ class File extends Model
         @repo().git "checkout #{@filename()}", @error_callback
 
   open: ->
-    filename = @current_file().filename()
-    atom.workspaceView.open(filename)
+    atom.workspaceView.open @filename()
 
   set_diff: (diff) ->
     if not diff
