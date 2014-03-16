@@ -4,6 +4,8 @@ BranchBriefView = require './branch-brief-view'
 BranchListView = require './branch-list-view'
 _ = require 'underscore'
 $ = require 'jquery'
+ErrorView = require './error-view'
+error_model = require '../error-model'
 
 module.exports =
 class RepoView extends View
@@ -17,6 +19,7 @@ class RepoView extends View
         @subview "input_editor", new EditorView(mini: true)
       @subview "file_list_view", new FileListView repo.file_list
       @subview "branch_list_view", new BranchListView repo.branch_list
+      @subview "error", new ErrorView error_model
 
   initialize: (repo) ->
     @repo = repo

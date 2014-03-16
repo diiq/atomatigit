@@ -36,7 +36,7 @@
 	.input {
 		.box-sizing();
 		width: 100%;
-		padding: 0px 15px;
+		padding: 0px 15 * @units;
 		display: none;
 		&.block {
 			.editor {
@@ -125,6 +125,9 @@
     .commit {
       display: block;
     }
+		&:hover {
+			background-color: @button-background-color
+		}
   }
 
   &.focused {
@@ -133,4 +136,17 @@
       background-color: @background-color-selected;
     }
   }
+
+	.atomatigit-error {
+		display: none;
+		margin: 20 * @units;
+		.close-button {
+			float: right;
+			cursor: pointer;
+		}
+		.error-message {
+			background-color: #000;
+			color: #fff;
+		}
+	}
 }

@@ -1,5 +1,6 @@
 ListItemModel = require './list-item-model'
 Diff = require './diff'
+error_model = require '../error-model'
 
 module.exports =
 ##
@@ -103,6 +104,6 @@ class File extends ListItemModel
     return 0 if @untracked()
     return 1
 
-  error_callback: (e, f, c )=>
-    console.log e, f, c if e
+  error_callback: (e, f, c)=>
+    error_model.set_message "#{e}\n#{f}\n#{c}" if e
     @trigger "repo:reload"

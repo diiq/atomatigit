@@ -11,7 +11,9 @@ class ListModel extends Collection
   select: (i) ->
     if @at @selected
       @at(@selected).unselect()
+
     @selected = Math.max(Math.min(i, @length - 1), 0)
+
     if @at @selected
       @at(@selected).select()
 

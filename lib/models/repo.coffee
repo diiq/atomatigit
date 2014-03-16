@@ -3,6 +3,7 @@ FileList = require './file-list'
 BranchList = require './branch-list'
 Branch = require './branch'
 gift = require 'gift'
+error_model = require '../error-model'
 
 module.exports =
 class Repo extends Model
@@ -78,8 +79,12 @@ class Repo extends Model
     @trigger "need_input",
       query: "Git command"
       callback: (command) =>
-        @git.git command, @error_callback
+        @git.git command, "", @output_callback
 
-  error_callback: (e, f, c )=>
-    console.log e, f, c if e
+  output_callback: (e, f) ->
+    error_model.set_message "#{f}"
+    @refresh()
+
+  error_callback: (e, f)=>
+    error_model.set_message "#{f}" if e
     @refresh()

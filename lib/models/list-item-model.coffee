@@ -3,7 +3,8 @@
 module.exports =
 class ListItemModel extends Model
   self_select: =>
-    @collection.select @collection.indexOf(this)
+    if @collection
+      @collection.select @collection.indexOf(this)
 
   select: ->
     @set selected: true
