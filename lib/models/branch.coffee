@@ -1,4 +1,5 @@
 ListItemModel = require './list-item-model'
+error_model = require '../error-model'
 
 module.exports =
 ##
@@ -64,6 +65,9 @@ class Branch extends ListItemModel
   local: ->
     !@remote()
 
+  checkout: (callback)->
+    @repo().git "checkout #{@local_name()}", @error_callback
+
   error_callback: (e, f, c )=>
-    console.log e, f, c if e
+    error_model.set_message "#{e}" if e
     @trigger "repo:reload"

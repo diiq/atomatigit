@@ -38,12 +38,14 @@ class BranchList extends ListModel
   checkout_branch: (callback)->
     repo = @selection().get "repo"
     branch = @selection().local_name()
-    repo.git "checkout #{branch}", (e, f, s) =>
-      console.log e, f, s if e
-      callback()
+    repo.git "checkout #{branch}", @error_callback
 
   local: ->
     @filter (branch) -> branch.local()
 
   remote: ->
     @filter (branch) -> branch.remote()
+
+  error_callback: (e, f)=>
+    error_model.set_message "#{f}" if e
+    @trigger "repo:reload"
