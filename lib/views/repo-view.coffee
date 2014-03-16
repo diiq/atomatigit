@@ -2,6 +2,7 @@
 FileListView = require './file-list-view'
 BranchBriefView = require './branch-brief-view'
 BranchListView = require './branch-list-view'
+CommitListView = require './commit-list-view'
 _ = require 'underscore'
 $ = require 'jquery'
 ErrorView = require './error-view'
@@ -19,6 +20,7 @@ class RepoView extends View
         @subview "input_editor", new EditorView(mini: true)
       @subview "file_list_view", new FileListView repo.file_list
       @subview "branch_list_view", new BranchListView repo.branch_list
+      @subview "commit_list_view", new CommitListView repo.commit_list
       @subview "error", new ErrorView error_model
 
   initialize: (repo) ->
@@ -54,17 +56,19 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:stash_pop", => @repo.stash_pop()
     atom.workspaceView.command "atomatigit:checkout_branch", => @repo.checkout_branch()
     atom.workspaceView.command "atomatigit:create_branch", => @repo.initiate_create_branch()
-    atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
-    atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
     atom.workspaceView.command "atomatigit:git_command", => @repo.initiate_git_command()
     atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
     atom.workspaceView.command "atomatigit:input:up", => @input_up()
     atom.workspaceView.command "atomatigit:input:down", => @input_down()
+    atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
+    atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
+    atom.workspaceView.command "atomatigit:commit_log", => @set_active_view @commit_list_view
 
   set_active_view: (view) ->
     @mode_switch_flag = true
     @file_list_view.addClass "hidden"
     @branch_list_view.addClass "hidden"
+    @commit_list_view.addClass "hidden"
     view.removeClass "hidden"
     view.focus()
     @active_view = view

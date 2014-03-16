@@ -1,6 +1,7 @@
 {Model} = require 'backbone'
 FileList = require './file-list'
 BranchList = require './branch-list'
+CommitList = require './commit-list'
 Branch = require './branch'
 gift = require 'gift'
 error_model = require '../error-model'
@@ -11,6 +12,8 @@ class Repo extends Model
     @git = gift(@get "path")
     @file_list = new FileList [], repo: @git
     @branch_list = new BranchList [], repo: @git
+    @commit_list = new CommitList [], repo: @git
+
     @current_branch = new Branch {repo: @git}
 
     @branch_list.on "repo:reload", => @refresh()
@@ -21,11 +24,8 @@ class Repo extends Model
       console.log e if e
       @file_list.refresh repo_status.files
 
-    @git.branches (e, locals) =>
-      console.log e if e
-      @git.remotes (e, remotes) =>
-        console.log e if e
-        @branch_list.refresh locals, remotes
+    @branch_list.reload()
+    @commit_list.reload(@current_branch)
 
     @refresh_current_branch()
 

@@ -1,7 +1,5 @@
 {Model} = require 'backbone'
 
-console.log "I GOT HERE"
-
 module.exports =
 class Error extends Model
   initialize: ->

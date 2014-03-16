@@ -1,19 +1,22 @@
-istItemModel = require './list-item-model'
+ListItemModel = require './list-item-model'
 
 module.exports =
-##
-# Branch expects to be initialized with an object:
-# {
-#   name: "string",
-#   commit: object
-# }
 class Commit extends ListItemModel
+  initialize: (com) ->
+    console.log com
 
   repo: ->
     @get "repo"
 
-  id: ->
+  commit_id: ->
     @get "id"
 
   short_id: ->
-    @id().substr(0, 6)
+    @commit_id().substr(0, 6)
+
+  short_commit_message: ->
+    message = @get "message"
+    message = message.split("\n")[0]
+    if message.length > 50
+      message = message.substr(0, 50) + "..."
+    message

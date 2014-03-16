@@ -4,39 +4,38 @@
 '.atomatigit':
   'cmd-alt-g': 'atomatigit:close'
 
-'.atomatigit .file-list-view':
+'.atomatigit .file-list-view, .atomatigit .branch-list-view, .atomatigit .commit-list-view':
   'down': 'atomatigit:next'
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
   'escape': 'atomatigit:close'
-  's': 'atomatigit:stage'
+  'b': 'atomatigit:branches'
+  's': 'atomatigit:files'
+  'l': 'atomatigit:commit_log'
+  ':': 'atomatigit:git_command'
+  'r': 'atomatigit:show'
+  'shift-p': 'atomatigit:push'
+
+'.atomatigit .file-list-view':
+  'shift-s': 'atomatigit:stage'
   'z': 'atomatigit:stash'
   'shift-z': 'atomatigit:stash_pop'
   'u': 'atomatigit:unstage'
   'enter': 'atomatigit:open'
   'tab': 'atomatigit:toggle_file_diff'
   'cmd-shift-z': 'atomatigit:show'
-  'r': 'atomatigit:show'
   'c': 'atomatigit:commit'
-  'shift-p': 'atomatigit:push'
-  'b': 'atomatigit:branches'
-  ':': 'atomatigit:git_command'
   'backspace': 'atomatigit:kill_file'
 
 '.atomatigit .branch-list-view':
-  'down': 'atomatigit:next'
-  'k': 'atomatigit:next'
-  'up': 'atomatigit:previous'
-  'i': 'atomatigit:previous'
-  'escape': 'atomatigit:close'
   'enter': 'atomatigit:checkout_branch'
   'c': 'atomatigit:create_branch'
-  's': 'atomatigit:files'
   'f': 'atomatigit:fetch'
-  'shift-p': 'atomatigit:push'
-  ':': 'atomatigit:git_command'
   'backspace': 'atomatigit:kill_branch'
+
+'.atomatigit .commit-list-view':
+  'enter': ''
 
 '.atomatigit .input.block .editor':
   'enter': 'atomatigit:input:newline'
