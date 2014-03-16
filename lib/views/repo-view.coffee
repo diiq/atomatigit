@@ -77,11 +77,13 @@ class RepoView extends View
 
   get_input: (options) =>
     @input.removeClass "block"
+    extra_query = ""
     if options.block
       @input.addClass "block"
+      extra_query = " (shift+enter to finish)"
 
     @input_callback = options.callback
-    @input_editor.setPlaceholderText options.query
+    @input_editor.setPlaceholderText options.query + extra_query
     @input_editor.setText ""
     @input.show 100, () =>
       @input_editor.redraw()
