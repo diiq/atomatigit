@@ -29,14 +29,14 @@ class Commit extends ListItemModel
           @trigger "repo:reload"
         "Cancel": null
 
-  reset_hard_to: ->
+  hard_reset_to: ->
     atom.confirm
       message: "Do you REALLY want to HARD-reset head to #{@short_id()}?"
       detailedMessage: "Commit message: \"#{@get("message")}\""
       buttons:
         "Cancel": null
         "Reset": =>
-          @repo().git "reset --HARD #{@commit_id()}", @error_callback
+          @repo().git "reset --hard #{@commit_id()}", @error_callback
           @trigger "repo:reload"
 
   error_callback: (e)=>
