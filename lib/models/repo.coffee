@@ -18,6 +18,7 @@ class Repo extends Model
 
     @branch_list.on "repo:reload", => @refresh()
     @file_list.on "repo:reload", => @refresh()
+    @commit_list.on "repo:reload", => @refresh()
 
   refresh: ->
     @git.status (e, repo_status) =>
@@ -56,6 +57,9 @@ class Repo extends Model
   selected_branch: ->
     @branch_list.selection()
 
+  selected_commit: ->
+    @commit_list.selection()
+
   initiate_commit: ->
     @trigger "need_input",
       query: "Commit message"
@@ -81,10 +85,10 @@ class Repo extends Model
       callback: (command) =>
         @git.git command, "", @output_callback
 
-  output_callback: (e, f) ->
+  output_callback: (e, f) =>
     error_model.set_message "#{f}"
     @refresh()
 
-  error_callback: (e, f)=>
+  error_callback: (e, f) =>
     error_model.set_message "#{f}" if e
     @refresh()

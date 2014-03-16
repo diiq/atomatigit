@@ -35,7 +35,8 @@
   'backspace': 'atomatigit:kill_branch'
 
 '.atomatigit .commit-list-view':
-  'enter': ''
+  'enter': 'atomatigit:reset_to_commit'
+  'shift-enter': 'atomatigit:hard_reset_to_commit'
 
 '.atomatigit .input.block .editor':
   'enter': 'atomatigit:input:newline'
