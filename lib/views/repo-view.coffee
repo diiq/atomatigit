@@ -29,6 +29,7 @@ class RepoView extends View
     @on 'core:cancel', => @cancel_input()
     @on 'click', => @focus()
     @on 'focusout', => @unfocus()
+    @input_editor.on "click", -> false
     @resize_handle.on "mousedown", @resize_started
 
     atom_git = atom.project.getRepo()
@@ -53,7 +54,9 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
     atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
     atom.workspaceView.command "atomatigit:git_command", => @repo.initiate_git_command()
-    atom.workspaceView.command "atomatigit:block_newline", => @block_newline()
+    atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
+    atom.workspaceView.command "atomatigit:input:up", => @input_up()
+    atom.workspaceView.command "atomatigit:input:down", => @input_down()
 
   set_active_view: (view) ->
     @mode_switch_flag = true
@@ -88,7 +91,7 @@ class RepoView extends View
     @input.show 100, () =>
       @input_editor.redraw()
       @input_editor.focus()
-      @input_editor.on 'focusout', @cancel_input
+      #@input_editor.on 'focusout', @cancel_input
 
   complete_input: ->
     @input.hide()
@@ -103,9 +106,17 @@ class RepoView extends View
     @input_editor.off 'focusout', @cancel_input
     @focus()
 
-  block_newline: ->
+  input_newline: ->
     text = @input_editor.getText()
     @input_editor.setText text + "\n"
+
+  input_up: ->
+    ed = @input_editor.getEditor()
+    ed.moveCursorUp 1
+
+  input_down: ->
+    ed = @input_editor.getEditor()
+    ed.moveCursorDown 1
 
   focus: ->
     @addClass "focused"

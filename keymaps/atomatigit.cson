@@ -39,5 +39,7 @@
   'backspace': 'atomatigit:kill_branch'
 
 '.atomatigit .input .editor':
-  'enter': 'atomatigit:block_newline'
+  'enter': 'atomatigit:input:newline'
   'shift-enter': 'core:confirm'
+  'up': 'atomatigit:input:up'
+  'down': 'atomatigit:input:down'
