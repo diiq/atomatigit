@@ -37,3 +37,7 @@
   'shift-p': 'atomatigit:push'
   ':': 'atomatigit:git_command'
   'backspace': 'atomatigit:kill_branch'
+
+'.atomatigit .input .editor':
+  'enter': 'atomatigit:block_newline'
+  'shift-enter': 'core:confirm'

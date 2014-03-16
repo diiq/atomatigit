@@ -13,9 +13,8 @@ class RepoView extends View
       #@textarea class: "block-input editor", outlet: "block_input"
       #@input class: "line-input", outlet: "block_input"
       @div class: "resize-handle", outlet: "resize_handle"
-      @div class: "block-input", outlet: "block_input", =>
-        @div class: "query", outlet: "block_input_query"
-        @subview "block_input_editor", new EditorView(mini: true)
+      @div class: "input", outlet: "input", =>
+        @subview "input_editor", new EditorView(mini: true)
       @subview "file_list_view", new FileListView repo.file_list
       @subview "branch_list_view", new BranchListView repo.branch_list
 
@@ -54,6 +53,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
     atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
     atom.workspaceView.command "atomatigit:git_command", => @repo.initiate_git_command()
+    atom.workspaceView.command "atomatigit:block_newline", => @block_newline()
 
   set_active_view: (view) ->
     @mode_switch_flag = true
@@ -75,25 +75,35 @@ class RepoView extends View
     width = $(document.body).width() - pageX
     @width(width)
 
-  get_input: (query, callback) =>
-    @input_callback = callback
-    @block_input.show 100, () =>
-      @block_input_query.html query
-      @block_input_editor.redraw()
-      @block_input_editor.setText ""
-      @block_input_editor.focus()
+  get_input: (options) =>
+    @input.removeClass "block"
+    if options.block
+      @input.addClass "block"
+
+    @input_callback = options.callback
+    @input_editor.setPlaceholderText options.query
+    @input_editor.setText ""
+    @input.show 100, () =>
+      @input_editor.redraw()
+      @input_editor.focus()
+      @input_editor.on 'focusout', @cancel_input
 
   complete_input: ->
-    @block_input.hide()
-    @input_callback @block_input_editor.getText()
+    @input.hide()
+    @input_callback @input_editor.getText()
     @mode_switch_flag = true
     @focus()
 
-  cancel_input: ->
-    @block_input.hide()
+  cancel_input: =>
+    @input.hide()
     @input_callback = null
     @mode_switch_flag = true
+    @input_editor.off 'focusout', @cancel_input
     @focus()
+
+  block_newline: ->
+    text = @input_editor.getText()
+    @input_editor.setText text + "\n"
 
   focus: ->
     @addClass "focused"

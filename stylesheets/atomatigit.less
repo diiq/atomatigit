@@ -33,12 +33,17 @@
     cursor: col-resize;
   }
 
-  .block-input {
-    .box-sizing();
-    width: 100%;
-    padding: 0px 15px;
+	.input {
+		.box-sizing();
+		width: 100%;
+		padding: 0px 15px;
 		display: none;
-  }
+		&.block {
+			.editor {
+				height: 100px;
+			}
+		}
+	}
 
   .file {
     .filename {

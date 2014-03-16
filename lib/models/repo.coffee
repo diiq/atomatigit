@@ -56,21 +56,28 @@ class Repo extends Model
     @branch_list.selection()
 
   initiate_commit: ->
-    @trigger "need_input", "Commit message:", (message) =>
-      @git.commit message, @error_callback
+    @trigger "need_input",
+      query: "Commit message"
+      callback: (message) =>
+        @git.commit message, @error_callback
+      block: true
 
   initiate_create_branch: ->
-    @trigger "need_input", "Branch name:", (name) =>
-      @git.create_branch name, =>
-        @git.git "checkout #{name}", @error_callback
+    @trigger "need_input",
+      query: "Branch name"
+      callback: (name) =>
+        @git.create_branch name, =>
+          @git.git "checkout #{name}", @error_callback
 
   push: (remote) ->
     remote ?= "origin #{@current_branch.name()}"
     @git.remote_push remote, @error_callback
 
   initiate_git_command: ->
-    @trigger "need_input", "Git command:", (command) =>
-      @git.git command, @error_callback
+    @trigger "need_input",
+      query: "Git command"
+      callback: (command) =>
+        @git.git command, @error_callback
 
   error_callback: (e, f, c )=>
     console.log e, f, c if e
