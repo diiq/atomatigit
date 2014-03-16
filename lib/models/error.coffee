@@ -9,6 +9,7 @@ class Error extends Model
 
   set_message: (message) ->
     @set message: message
+    @trigger "change"
 
   markup: ->
     message = @get "message"

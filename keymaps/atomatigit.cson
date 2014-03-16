@@ -38,7 +38,7 @@
   ':': 'atomatigit:git_command'
   'backspace': 'atomatigit:kill_branch'
 
-'.atomatigit .input .editor.block':
+'.atomatigit .input.block .editor':
   'enter': 'atomatigit:input:newline'
   'shift-enter': 'core:confirm'
   'up': 'atomatigit:input:up'
