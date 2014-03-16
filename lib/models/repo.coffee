@@ -59,6 +59,7 @@ class Repo extends Model
     @trigger "need_input",
       query: "Commit message"
       callback: (message) =>
+        message = '"'+message.replace(/(["\s'$`\\])/g,'\\$1')+'"'
         @git.commit message, @error_callback
       block: true
 
