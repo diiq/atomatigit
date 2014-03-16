@@ -28,17 +28,12 @@ class BranchList extends ListModel
       branch.remote = true
       @add_branch branch
 
-    @select @selected
     @trigger "refresh"
+    @select @selected
 
   add_branch: (branch) ->
     branch = @add branch
     branch.on "repo:reload", => @trigger "repo:reload"
-
-  checkout_branch: (callback)->
-    repo = @selection().get "repo"
-    branch = @selection().local_name()
-    repo.git "checkout #{branch}", @error_callback
 
   local: ->
     @filter (branch) -> branch.local()

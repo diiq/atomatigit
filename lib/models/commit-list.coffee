@@ -20,9 +20,8 @@ class CommitList extends ListModel
     @reset()
     _.each commit_hashes, (commit) =>
       commit = @add commit
-      console.log commit
       commit.on "repo:reload", =>
         @trigger "repo:reload"
 
-    @select @selected
     @trigger "refresh"
+    @select @selected

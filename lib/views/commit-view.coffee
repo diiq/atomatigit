@@ -4,9 +4,9 @@ DiffView = require './diff-view'
 module.exports =
 class FileView extends View
   @content: (commit) ->
-    @div class: "file", click: "clicked", =>
+    @div class: "commit", click: "clicked", =>
       @div class: "id", "#{commit.short_id()}"
-      @div class: "message", "#{commit.short_commit_message()}"
+      @div class: "message", "(#{commit.short_commit_message()})"
 
   initialize: (commit) ->
     @model = commit

@@ -2,9 +2,6 @@ ListItemModel = require './list-item-model'
 
 module.exports =
 class Commit extends ListItemModel
-  initialize: (com) ->
-    console.log com
-
   repo: ->
     @get "repo"
 

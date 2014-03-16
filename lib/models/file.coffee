@@ -77,7 +77,7 @@ class File extends ListItemModel
       flags += "--staged "
 
     @repo().diff flags, "", @filename(), (e, diffs) =>
-      console.log e
+      error_model.set_message "#{e}" if e
       if not e
         @set diff: new Diff
           diff: diffs[0].diff

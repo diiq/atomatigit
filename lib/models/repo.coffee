@@ -21,7 +21,7 @@ class Repo extends Model
 
   refresh: ->
     @git.status (e, repo_status) =>
-      console.log e if e
+      error_model.set_message "#{e}" if e
       @file_list.refresh repo_status.files
 
     @branch_list.reload()
@@ -31,11 +31,11 @@ class Repo extends Model
 
   refresh_current_branch: ->
     @git.branch (e, head) =>
-      console.log e if e
+      error_model.set_message "#{e}" if e
       @current_branch.set head
 
     @git.git "log @{u}..", "", "", (e, output) =>
-      console.log e if e
+      error_model.set_message "#{e}" if e
       @current_branch.set unpushed: (output != "")
 
   fetch: ->

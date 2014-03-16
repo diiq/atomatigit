@@ -15,6 +15,5 @@ class CommitListView extends View
 
   repaint: =>
     @empty()
-    console.log "OK", @model.models
     for commit in @model.models
       @append new CommitView commit
