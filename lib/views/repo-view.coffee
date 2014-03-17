@@ -12,12 +12,19 @@ module.exports =
 class RepoView extends View
   @content: (repo) ->
     @div class: 'atomatigit', =>
-      @subview "branch_brief_view", new BranchBriefView repo.current_branch
-      #@textarea class: "block-input editor", outlet: "block_input"
-      #@input class: "line-input", outlet: "block_input"
       @div class: "resize-handle", outlet: "resize_handle"
+      @subview "branch_brief_view", new BranchBriefView repo.current_branch
       @div class: "input", outlet: "input", =>
         @subview "input_editor", new EditorView(mini: true)
+
+      @ul class: "list-inline tab-bar inset-panel", =>
+        @li outlet: "files_tab", class: "tab active", click: "goto_file_view", =>
+          @div class: 'title', "Staging"
+        @li outlet: "branches_tab", class: "tab", click: "goto_branch_view", =>
+          @div class: 'title', "Branches"
+        @li outlet: "commits_tab", class: "tab", click: "goto_commit_log", =>
+          @div class: 'title', "Log"
+
       @subview "file_list_view", new FileListView repo.file_list
       @subview "branch_list_view", new BranchListView repo.branch_list
       @subview "commit_list_view", new CommitListView repo.commit_list
@@ -62,9 +69,29 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
     atom.workspaceView.command "atomatigit:input:up", => @input_up()
     atom.workspaceView.command "atomatigit:input:down", => @input_down()
-    atom.workspaceView.command "atomatigit:branches", => @set_active_view @branch_list_view
-    atom.workspaceView.command "atomatigit:files", => @set_active_view @file_list_view
-    atom.workspaceView.command "atomatigit:commit_log", => @set_active_view @commit_list_view
+    atom.workspaceView.command "atomatigit:branches", => @goto_branch_view()
+    atom.workspaceView.command "atomatigit:files", => @goto_file_view()
+    atom.workspaceView.command "atomatigit:commit_log", => @goto_commit_log()
+
+  deactivate_tabs: ->
+    @commits_tab.removeClass "active"
+    @files_tab.removeClass "active"
+    @branches_tab.removeClass "active"
+
+  goto_branch_view: ->
+    @deactivate_tabs()
+    @branches_tab.addClass "active"
+    @set_active_view @branch_list_view
+
+  goto_file_view: ->
+    @deactivate_tabs()
+    @files_tab.addClass "active"
+    @set_active_view @file_list_view
+
+  goto_commit_log: ->
+    @deactivate_tabs()
+    @commits_tab.addClass "active"
+    @set_active_view @commit_list_view
 
   set_active_view: (view) ->
     @mode_switch_flag = true

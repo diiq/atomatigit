@@ -3,13 +3,15 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@import "octicon-mixins";
 .box-sizing (@type: border-box) {
 	-webkit-box-sizing: @type;
 	-moz-box-sizing: @type;
 	box-sizing: @type;
 }
 @units: 0.1em;
-
+@close-icon-size: 12px;
+@dark-background: darken(@tree-view-background-color, 5%);
 
 .atomatigit {
   position: relative;
@@ -34,9 +36,11 @@
   }
 
 	.input {
+		background-color: darken(@tree-view-background-color, 5%);
 		.box-sizing();
 		width: 100%;
-		padding: 0px 15 * @units;
+		padding: 0px 15 * @units 10 * @units;
+		margin: 0px;
 		display: none;
 		&.block {
 			.editor {
@@ -44,6 +48,7 @@
 			}
 		}
 	}
+
 	.commit-list-view {
 		.commit {
 			padding: 5 * @units 0px;
@@ -141,6 +146,8 @@
   >.branch-brief-view {
     text-align: right;
     padding: 20 * @units;
+		padding-bottom: 10 * @units;
+		background-color: @dark-background;
     .name {
       display: block;
       font-size: 2em;
@@ -149,7 +156,7 @@
       display: block;
     }
 		&:hover {
-			background-color: @button-background-color
+			background-color: @dark-background;
 		}
   }
 
@@ -174,5 +181,37 @@
 			background-color: #000;
 			color: #fff;
 		}
+	}
+
+
+	.tab-bar {
+		display: -webkit-flex;
+  	margin: 0px;
+		margin-bottom: 30 * @units;
+		border-bottom: 0px #fff;
+		background: @dark-background;
+		&:after {
+			border-bottom: 0px;
+		}
+	  .tab {
+	    -webkit-flex: 1;
+	    font-size: 11px;
+	    position: relative;
+	    padding-left: 10px;
+	    padding-right: 10px;
+	    max-width: 175px;
+	    min-width: 40px;
+      &.active {
+				-webkit-flex: 2;
+			}
+	    .title {
+	      overflow: hidden;
+	      white-space: nowrap;
+	      text-overflow: ellipsis;
+				&:first-letter {
+					text-decoration: underline;
+				}
+	    }
+	  }
 	}
 }

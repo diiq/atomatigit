@@ -4,7 +4,7 @@ BranchBriefView = require './branch-brief-view'
 module.exports =
 class BranchListView extends View
   @content: ->
-    @div class: "branch-list-view", tabindex: -1, =>
+    @div class: "branch-list-view list-view", tabindex: -1, =>
       @h2 "local:"
       @div outlet: "local_dom"
       @h2 "remote:"
