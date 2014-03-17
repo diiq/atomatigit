@@ -5,9 +5,9 @@
 @import "ui-variables";
 @import "octicon-mixins";
 .box-sizing (@type: border-box) {
-	-webkit-box-sizing: @type;
-	-moz-box-sizing: @type;
-	box-sizing: @type;
+  -webkit-box-sizing: @type;
+  -moz-box-sizing: @type;
+  box-sizing: @type;
 }
 @units: 0.1em;
 @close-icon-size: 12px;
@@ -26,6 +26,13 @@
     display: none;
   }
 
+  .spinner {
+    position: absolute;
+    top: 15 * @units;
+    left: 15 * @units;
+    display: none;
+  }
+
   .resize-handle {
     position:absolute;
     top: 0;
@@ -35,44 +42,44 @@
     cursor: col-resize;
   }
 
-	.input {
-		background-color: @dark-background;
-		.box-sizing();
-		width: 100%;
-		padding: 0px 15 * @units 10 * @units;
-		margin: 0px;
-		display: none;
-		&.block {
-			.editor {
-				height: 100px;
-			}
-		}
-	}
+  .input {
+    background-color: @dark-background;
+    .box-sizing();
+    width: 100%;
+    padding: 0px 15 * @units 10 * @units;
+    margin: 0px;
+    display: none;
+    &.block {
+      .editor {
+        height: 100px;
+      }
+    }
+  }
 
-	.commit-list-view {
-		.commit {
-			padding: 5 * @units 0px;
-			&.selected {
-				background-color: @button-background-color;
-			}
-			.id {
-				font-weight: bold;
-				display: inline-block;
+  .commit-list-view {
+    .commit {
+      padding: 5 * @units 0px;
+      &.selected {
+        background-color: @button-background-color;
+      }
+      .id {
+        font-weight: bold;
+        display: inline-block;
         padding-left: 15 * @units;
-			}
-			.author-name {
-				font-style: italic;
-				display: inline-block;
-				padding-left: 5 * @units;
-			}
-			.message {
-				padding-left: 15 * @units;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space:nowrap;
-			}
-		}
-	}
+      }
+      .author-name {
+        font-style: italic;
+        display: inline-block;
+        padding-left: 5 * @units;
+      }
+      .message {
+        padding-left: 15 * @units;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space:nowrap;
+      }
+    }
+  }
   .file {
     .filename {
       padding: 5 * @units;
@@ -129,9 +136,9 @@
 
     .commit {
       font-style: italic;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space:nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space:nowrap;
     }
 
     &:hover {
@@ -143,11 +150,11 @@
   >.branch-brief-view {
     text-align: right;
     padding: 20 * @units;
-		padding-bottom: 10 * @units;
-		background-color: @dark-background;
-		&.unpushed {
-			color: @text-color-warning;
-		}
+    padding-bottom: 10 * @units;
+    background-color: @dark-background;
+    &.unpushed {
+      color: @text-color-warning;
+    }
     .name {
       display: block;
       font-size: 2em;
@@ -155,60 +162,60 @@
     .commit {
       display: block;
     }
-		&:hover {
-			background-color: @dark-background;
-		}
+    &:hover {
+      background-color: @dark-background;
+    }
   }
 
   &.focused {
     background-color: darken(@tree-view-background-color, 2%);
     .selected .filename, .branch-brief-view.selected, .commit.selected {
       background-color: @background-color-selected;
-			.message {
-				color: @text-color;
-			}
+      .message {
+        color: @text-color;
+      }
     }
   }
 
-	.atomatigit-error {
-		display: none;
-		margin: 20 * @units;
-		.close-button {
-			float: right;
-			cursor: pointer;
-		}
-		.error-message {
-			background-color: #000;
-			color: #fff;
-		}
-	}
+  .atomatigit-error {
+    display: none;
+    margin: 20 * @units;
+    .close-button {
+      float: right;
+      cursor: pointer;
+    }
+    .error-message {
+      background-color: #000;
+      color: #fff;
+    }
+  }
 
 
-	.tab-bar {
-		display: -webkit-flex;
+  .tab-bar {
+    display: -webkit-flex;
   	margin: 0px;
-		margin-bottom: 30 * @units;
-		border-bottom: 0px #fff;
-		background: @dark-background;
-	  .tab {
-	    -webkit-flex: 1;
-	    font-size: 11px;
-	    position: relative;
-	    padding-left: 10px;
-	    padding-right: 10px;
-	    max-width: 100px;
-	    min-width: 40px;
+    margin-bottom: 30 * @units;
+    border-bottom: 0px #fff;
+    background: @dark-background;
+    .tab {
+      -webkit-flex: 1;
+      font-size: 11px;
+      position: relative;
+      padding-left: 10px;
+      padding-right: 10px;
+      max-width: 100px;
+      min-width: 40px;
       &.active {
-				-webkit-flex: 2;
-			}
-	    .title {
-	      overflow: hidden;
-	      white-space: nowrap;
-	      text-overflow: ellipsis;
-				&:first-letter {
-					text-decoration: underline;
-				}
-	    }
-	  }
-	}
+        -webkit-flex: 2;
+      }
+      .title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        &:first-letter {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }

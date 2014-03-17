@@ -40,7 +40,10 @@ class Repo extends Model
       @current_branch.set unpushed: (output != "")
 
   fetch: ->
-    @git.remote_fetch "origin", => @refresh()
+    error_model.increment_task_counter()
+    @git.remote_fetch "origin", =>
+      error_model.decrement_task_counter()
+      @refresh()
 
   checkout_branch: ->
     @branch_list.checkout_branch => @refresh()
@@ -76,8 +79,11 @@ class Repo extends Model
           @git.git "checkout #{name}", @error_callback
 
   push: (remote) ->
+    error_model.increment_task_counter()
     remote ?= "origin #{@current_branch.name()}"
-    @git.remote_push remote, @error_callback
+    @git.remote_push remote, (e, f) =>
+      error_model.decrement_task_counter()
+      @error_callback e, f
 
   initiate_git_command: ->
     @trigger "need_input",

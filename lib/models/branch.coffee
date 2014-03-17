@@ -68,6 +68,6 @@ class Branch extends ListItemModel
   checkout: (callback)->
     @repo().git "checkout #{@local_name()}", @error_callback
 
-  error_callback: (e, f, c )=>
+  error_callback: (e, f)=>
     error_model.set_message "#{e}" if e
     @trigger "repo:reload"
