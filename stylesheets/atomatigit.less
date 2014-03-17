@@ -16,10 +16,10 @@
 .atomatigit {
   position: relative;
   overflow: auto;
-  width: 400 * @units;
+  width: 300 * @units;
   padding: 0px;
   border-left: 1px solid @tree-view-border-color;
-  background-color: @tree-view-background-color;
+  background-color: darken(@tree-view-background-color, 5%);
   color: @text-color;
 
   .hidden {
@@ -36,7 +36,7 @@
   }
 
 	.input {
-		background-color: darken(@tree-view-background-color, 5%);
+		background-color: @dark-background;
 		.box-sizing();
 		width: 100%;
 		padding: 0px 15 * @units 10 * @units;
@@ -123,18 +123,15 @@
     }
 
     .name {
-      display: inline-block;
       margin: 0px;
       font-weight: bold;
     }
 
     .commit {
       font-style: italic;
-      display: inline-block;
-      padding-left: 20 * @units;
-      &.unpushed {
-        color: @text-color-warning;
-      }
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space:nowrap;
     }
 
     &:hover {
@@ -148,6 +145,9 @@
     padding: 20 * @units;
 		padding-bottom: 10 * @units;
 		background-color: @dark-background;
+		&.unpushed {
+			color: @text-color-warning;
+		}
     .name {
       display: block;
       font-size: 2em;
@@ -161,7 +161,7 @@
   }
 
   &.focused {
-    background-color: @tree-view-background-color;
+    background-color: darken(@tree-view-background-color, 2%);
     .selected .filename, .branch-brief-view.selected, .commit.selected {
       background-color: @background-color-selected;
 			.message {
@@ -190,16 +190,13 @@
 		margin-bottom: 30 * @units;
 		border-bottom: 0px #fff;
 		background: @dark-background;
-		&:after {
-			border-bottom: 0px;
-		}
 	  .tab {
 	    -webkit-flex: 1;
 	    font-size: 11px;
 	    position: relative;
 	    padding-left: 10px;
 	    padding-right: 10px;
-	    max-width: 175px;
+	    max-width: 100px;
 	    min-width: 40px;
       &.active {
 				-webkit-flex: 2;
