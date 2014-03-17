@@ -12,11 +12,14 @@ class Commit extends ListItemModel
   short_id: ->
     @commit_id().substr(0, 6)
 
+  author_name: ->
+    @get("author").name
+
   short_commit_message: ->
     message = @get "message"
     message = message.split("\n")[0]
-    if message.length > 50
-      message = message.substr(0, 50) + "..."
+    if message.length > 80
+      message = message.substr(0, 80) + "..."
     message
 
   reset_to: ->

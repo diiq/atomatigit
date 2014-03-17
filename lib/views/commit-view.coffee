@@ -6,7 +6,8 @@ class FileView extends View
   @content: (commit) ->
     @div class: "commit", click: "clicked", =>
       @div class: "id", "#{commit.short_id()}"
-      @div class: "message", "(#{commit.short_commit_message()})"
+      @div class: "author-name", "(#{commit.author_name()})"
+      @div class: "message text-subtle", "#{commit.short_commit_message()}"
 
   initialize: (commit) ->
     @model = commit
