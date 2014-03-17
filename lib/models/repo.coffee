@@ -36,7 +36,7 @@ class Repo extends Model
       @current_branch.set head
 
     @git.git "log @{u}..", "", "", (e, output) =>
-      error_model.set_message "#{e}" if e
+      #error_model.set_message "#{e}" if e
       @current_branch.set unpushed: (output != "")
 
   fetch: ->
