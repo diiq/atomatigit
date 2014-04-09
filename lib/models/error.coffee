@@ -14,11 +14,12 @@ class Error extends Model
 
   increment_task_counter: ->
     @set task_counter: @get("task_counter") + 1
-    console.log "inc!", @get("task_counter")
 
   decrement_task_counter: ->
     @set task_counter: Math.max @get("task_counter") - 1, 0
-    console.log @get("task_counter")
+
+  clear_task_counter: ->
+    @set task_counter: 0
 
   working: ->
     console.log "counter:", @get("task_counter")

@@ -5,6 +5,7 @@ CommitList = require './commit-list'
 Branch = require './branch'
 gift = require 'gift'
 error_model = require '../error-model'
+{spawn} = require 'child_process'
 
 module.exports =
 class Repo extends Model
@@ -64,12 +65,18 @@ class Repo extends Model
     @commit_list.selection()
 
   initiate_commit: ->
-    @trigger "need_input",
-      query: "Commit message"
-      callback: (message) =>
-        message = '"'+message.replace(/(["\s'$`\\])/g,'\\$1')+'"'
-        @git.commit message, @error_callback
-      block: true
+    error_model.increment_task_counter()
+    @git.git "commit", @error_callback
+
+
+  complete_commit: ->
+    atom.workspaceView.trigger("core:save")
+    atom.workspaceView.trigger("core:close")
+    spawn "/Users/diiq/utils/atom_commit_editor_complete.sh",
+          ["done"],
+          stdio: 'pipe',
+          env: process.env
+    @refresh()
 
   initiate_create_branch: ->
     @trigger "need_input",

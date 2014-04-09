@@ -72,6 +72,15 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:branches", => @goto_branch_view()
     atom.workspaceView.command "atomatigit:files", => @goto_file_view()
     atom.workspaceView.command "atomatigit:commit_log", => @goto_commit_log()
+    atom.workspaceView.command "atomatigit:commit_complete", => @commit_and_close()
+    atom.workspaceView.command "atomatigit:refresh", => @refresh()
+
+  commit_and_close: ->
+    @repo.complete_commit()
+
+  refresh: ->
+    @repo.refresh()
+    error_model.clear_task_counter()
 
   deactivate_tabs: ->
     @commits_tab.removeClass "active"

@@ -1,5 +1,6 @@
 {Collection} = require 'backbone'
 DiffChunk = require './diff-chunk'
+ListModel = require './list-model'
 _ = require 'underscore'
 
 module.exports =
@@ -12,7 +13,7 @@ module.exports =
 #   repo: Repo
 # }
 
-class Diff extends Collection
+class Diff extends ListModel
   model: DiffChunk
 
   constructor: (args) ->

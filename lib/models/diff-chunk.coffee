@@ -1,4 +1,5 @@
 {Collection} = require 'backbone'
+ListItemModel = require './list-item-model'
 DiffLine = require './diff-line'
 _ = require 'underscore'
 
@@ -11,10 +12,23 @@ module.exports =
 #   file: File
 # }
 
-class DiffChunk extends Collection
+class DiffChunk extends ListItemModel
+  initialize: (args) ->
+    @list = new DiffLines(args, self)
+
+  lines: ->
+    @list.lines()
+
+  self_select: ->
+    console.log "WWOGER"
+    super
+
+
+class DiffLines extends Collection
   model: DiffLine
 
-  constructor: (args) ->
+  constructor: (args, chunk) ->
+    @chunk = chunk
     changes = args.diff.replace /.*?\n(\s*?\n)*/, ""
     changes = changes.replace /\s*$/, ""
     lines = changes.split /\n/g

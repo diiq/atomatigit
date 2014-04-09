@@ -1,5 +1,6 @@
 '.workspace':
   'cmd-alt-g': 'atomatigit:show'
+  'cmd-alt-w': 'atomatigit:commit_complete'
 
 '.atomatigit':
   'cmd-alt-g': 'atomatigit:close'
@@ -14,8 +15,9 @@
   's': 'atomatigit:files'
   'l': 'atomatigit:commit_log'
   ':': 'atomatigit:git_command'
-  'r': 'atomatigit:show'
+  'r': 'atomatigit:refresh'
   'shift-p': 'atomatigit:push'
+  'f': 'atomatigit:fetch'
 
 '.atomatigit .file-list-view':
   'shift-s': 'atomatigit:stage'
@@ -31,7 +33,6 @@
 '.atomatigit .branch-list-view':
   'enter': 'atomatigit:checkout_branch'
   'c': 'atomatigit:create_branch'
-  'f': 'atomatigit:fetch'
   'backspace': 'atomatigit:kill_branch'
 
 '.atomatigit .commit-list-view':

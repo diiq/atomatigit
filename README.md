@@ -3,24 +3,15 @@
 Real git integration for the Atom text editor.
 
 Atom's ability to show which files and which lines have been added, changed, and
-removed is great.
+removed is great, but I'd like to be able to see diffs, stage chunks, make
+commits, push, pull, change branches, rebase... and every other thing that git
+allows.
 
-I'd like to be able to see diffs, stage chunks, make commits, push, pull, change
-branches, rebase... and every other thing that git allows.
-
-It's hard to imagine how useful that ability is until you have it. The [magit]()
-emacs package is my inspiration. In magit, staging, committing, and pushing take
-only a few keystrokes.
+It's hard to imagine how useful that ability is until you have it. The
+[magit](http://magit.github.io/index.html) emacs package is my inspiration. In
+magit, staging, committing, and pushing take only a few keystrokes.
 
 ![screenshot](http://i.imgur.com/U5WJzE8.png)
-
-## Current status
-
-I'm still puttering around at this stage. You can view the current status of the
-repo -- which branch you're on, the last commit, and which files are staged,
-unstaged, and untracked. You can stage files and make commits, but commit
-messages are limited to one line. It's not ready for prime time, but it is
-useful enough to dogfood during its development.
 
 ## Key bindings
 
@@ -28,23 +19,44 @@ useful enough to dogfood during its development.
 - `escape` to close
 - `up` (or `i`) and `down` (or `k`) to navigate between items
 - `shift-P` to push to origin
+- `b` to view branches
+- `s` to view the staging area
+- `l` to view the commit log
+- `:` to execute a custom git command
+- `r` to refresh
+- `shift-p` to push the current branch to origin
+- `f` to fetch
 
-File Mode
+Staging View
 - `enter` to open a selected file
 - `tab` to see an unstaged diff
-- `s` to stage a file
+- `shift-s` to stage a file
 - `u` to unstage a file
 - `c` to commit
 - `escape` to abort a commit
 - `z` to stash
 - `shift-Z` to unstash
-- `backspace` to kill an unstaged diff
-- `r` to refresh the view (mostly happens automatically)
-- `b` to go to Branch Mode
+- `backspace` to kill a diff, or delete an untracked file
 
-Branch Mode
+Branch View
 - `enter` to checkout the selected branch
 - `c` to create a new branch
-- `f` to fetch (experimental)
 - `backspace` to delete a branch
-- `s` to go to File Mode
+
+Commit Log
+- `enter` to soft reset to a selected commit
+- `shift-enter` to hard reset
+
+
+## Current status
+
+Atomatigit is very close to its initial release. It's still very experimental,
+but it is stable enough that I use it *almost* exclusively.
+
+## Missing features (coming soon)
+
+While you can view the individual chunks of a file diff, you cannot currently
+stage them individually -- you can only stage the full file.
+
+You cannot merge, ammend, or rebase through the UI. Merge is coming very soon,
+ammend is close behind, but rebase is till some time in the future.

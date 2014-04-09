@@ -1,9 +1,13 @@
+
 {Collection} = require 'backbone'
 _ = require 'underscore'
 
 module.exports =
 class ListModel extends Collection
   selected: 0
+
+  constructor: (args, options) ->
+    super args, options
 
   selection: ->
     @at @selected
