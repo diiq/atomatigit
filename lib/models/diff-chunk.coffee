@@ -19,10 +19,6 @@ class DiffChunk extends ListItemModel
   lines: ->
     @list.lines()
 
-  self_select: ->
-    console.log "WWOGER"
-    super
-
 
 class DiffLines extends Collection
   model: DiffLine

@@ -8,7 +8,6 @@ class Error extends Model
       task_counter: 0
 
   set_message: (message) ->
-    console.log "SETTING MESSG"
     @set message: message
     @trigger "error"
 
@@ -22,7 +21,6 @@ class Error extends Model
     @set task_counter: 0
 
   working: ->
-    console.log "counter:", @get("task_counter")
     @get("task_counter") > 0
 
   markup: ->
