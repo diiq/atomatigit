@@ -2,6 +2,9 @@ RepoView = require './views/repo-view'
 Repo = require './models/repo'
 
 module.exports =
+  configDefaults:
+    pre_commit_hook: "",
+
   atomatigitView: null
 
   activate: (state) ->

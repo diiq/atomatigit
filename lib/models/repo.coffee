@@ -67,7 +67,7 @@ class Repo extends Model
   initiate_commit: ->
     error_model.increment_task_counter()
     @git.git "commit", @error_callback
-
+    atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
 
   complete_commit: ->
     atom.workspaceView.trigger("core:save")
