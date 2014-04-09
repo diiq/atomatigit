@@ -76,6 +76,7 @@ class Repo extends Model
           ["done"],
           stdio: 'pipe',
           env: process.env
+    error_model.decrement_task_counter()
     @refresh()
 
   initiate_create_branch: ->
