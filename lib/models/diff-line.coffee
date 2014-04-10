@@ -1,36 +1,26 @@
 {Model} = require 'backbone'
 
-module.exports =
 ##
-# DiffChunk expects to be initialized with a object containing a string
-# and a file:
-# {
-#   diff: "string",
-#   file: File
-# }
+# DiffLine represents a single line of a diff.
+# Someday we might want to be able to jump straight to
+# this line, but for now it only needs to manage whether it's
+# an addition, subtraction, or context line.
 
+module.exports =
 class DiffLine extends Model
-  initialize: (args) ->
-    string = @diff()
-    @set
-      addition: !!(string.match /^\s*\+/)
-      subtraction: !!(string.match /^\s*\-/)
-      string: string
+  line: ->
+    @get "line"
 
-  diff: ->
-    @get "diff"
-
-  addition: ->
-    @get "addition"
-
-  subtraction: ->
-    @get "subtraction"
-
-  context: ->
-    !(@addition() || @subtraction())
+  type: ->
+    if !!(@line().match /^\+/)
+      "addition"
+    else if !!(@line().match /^\-/)
+      "subtraction"
+    else
+      "context"
 
   repo: ->
     @get "repo"
 
   markup: ->
-    @get("string").replace /\ /g, "&nbsp;"
+    @line().replace /\ /g, "&nbsp;"
