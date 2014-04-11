@@ -3,11 +3,10 @@ DiffLineView = require './diff-line-view'
 
 module.exports =
 class DiffChunkView extends View
-  @content: (diff_chunk) ->
+  @content: () ->
     @div class: "diff-chunk", click: "clicked"
 
-  initialize: (diff_chunk) ->
-    @model = diff_chunk
+  initialize: (@model) ->
     @model.on "change:selected", @showSelection
 
     for line in @model.lines

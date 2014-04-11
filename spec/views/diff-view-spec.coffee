@@ -1,29 +1,21 @@
-DiffLine = require '../../lib/models/diff-line'
-DiffLineView = require '../../lib/views/diff-line-view'
+Diff = require '../../lib/models/diff'
+DiffView = require '../../lib/views/diff-view'
 
 describe "DiffView", ->
+  string = ["--- a/lib/models/diff.coffee",
+            "+++ b/lib/models/diff.coffee",
+            "@@ -1,37 +1,29 @@",
+            "-{Collection} = require 'backbone'",
+            "+List = require './list'",
+            "_ = require 'underscore'",
+            "@@ -1,54 +1,33 @@",
+            "DiffChunk = require './diff-chunk'",
+            "-ListModel = require './list-model'"].join "\n"
+  model = view = null
+  beforeEach ->
+    model = new Diff string
+    view = new DiffView model
+
   describe ".initialize", ->
-    it "adds context class if it's a context line", ->
-      model = new DiffLine line: "this is it"
-      view = new DiffLineView model
-      expect(view.hasClass("context")).toBe true
-
-    it "adds addition class if it's an addition line", ->
-      model = new DiffLine line: "+ this is it"
-      view = new DiffLineView model
-      expect(view.hasClass("addition")).toBe true
-
-    it "adds subtraction class if it's a subtraction line", ->
-      model = new DiffLine line: "- this is it"
-      view = new DiffLineView model
-      expect(view.hasClass("subtraction")).toBe true
-
-    it "always has a diff-line class", ->
-      model = new DiffLine line: "- this is it"
-      view = new DiffLineView model
-      expect(view.hasClass("diff-line")).toBe true
-
-    it "contains the line's markup string", ->
-      model = new DiffLine line: "- this is it"
-      view = new DiffLineView model
-      expect(view.html()).toEqual model.markup()
+    it "shows the list of chunks", ->
+      expect(view.children().length).toBe 2
