@@ -1,43 +1,28 @@
-{Collection} = require 'backbone'
-ListItemModel = require './list-item-model'
 DiffLine = require './diff-line'
+ListItem = require './list-item'
 _ = require 'underscore'
 
-module.exports =
 ##
-# DiffChunk expects to be initialized with a object containing a string
-# and a file:
-# {
-#   diff: "string",
-#   file: File
-# }
+# A DiffChunk represents one consecutive block of altered lines. The end-goal of
+# breaking them out separately is to be able to stage them individually.
+#
+module.exports =
+class DiffChunk extends ListItem
+  initialize: (chunk) ->
+    chunk = @deleteFirstLine chunk
+    chunk = @deleteInitialWhitespace chunk
+    chunk = @deleteTrailingWhitespace chunk
+    @lines = _.map @splitIntoLines(chunk), (line) ->
+      new DiffLine line: line
 
-class DiffChunk extends ListItemModel
-  initialize: (args) ->
-    @list = new DiffLines(args, self)
+  deleteTrailingWhitespace: (chunk) ->
+    chunk.replace /\s*$/, ""
 
-  lines: ->
-    @list.lines()
+  deleteFirstLine: (chunk) ->
+    chunk.replace /.*?\n/, ""
 
+  deleteInitialWhitespace: (chunk) ->
+    chunk.replace /^(\s*?\n)*/, ""
 
-class DiffLines extends Collection
-  model: DiffLine
-
-  constructor: (args, chunk) ->
-    @chunk = chunk
-    changes = args.diff.replace /.*?\n(\s*?\n)*/, ""
-    changes = changes.replace /\s*$/, ""
-    lines = changes.split /\n/g
-    lines = _.map lines, (string) =>
-      diff: string
-      file: args.file
-      repo: args.repo
-
-    @string = args.diff
-    @file = args.file
-    @repo = args.repo
-
-    super lines
-
-  lines: ->
-    @models
+  splitIntoLines: (chunk) ->
+    lines = chunk.split /\n/g
