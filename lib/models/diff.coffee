@@ -1,37 +1,29 @@
-{Collection} = require 'backbone'
 DiffChunk = require './diff-chunk'
-ListModel = require './list-model'
+List = require './list'
 _ = require 'underscore'
 
-module.exports =
 ##
-# Diff expects to be initialized with a object containing a string
-# and a file:
-# {
-#   diff: "string",
-#   file: File,
-#   repo: Repo
-# }
+# A diff is a whole-file diff, and is broken into a list of chunks. End-game
+# here is to be able to stage individual chunks, not just the whole diff.
+#
 
-class Diff extends ListModel
+module.exports =
+class Diff extends List
   model: DiffChunk
 
-  constructor: (args) ->
-    chunkstrings = args.diff.split /\n@@/g
-    chunkstrings = chunkstrings.slice 1, chunkstrings.length
-    chunks = _.map chunkstrings, (string) =>
-      diff: string
-      file: args.file
-      repo: args.repo
+  removeHeader: (diff) ->
+    # Remove first two lines, which name the file
+    diff.replace /^(.*?\n){2}/, ""
 
-    @string = args.diff
-    @file = args.file
-    @repo = args.repo
+  splitChunks: (diff) ->
+    # We'll treat "@@ " a the beginning of a line as characteristic of the start
+    # of a chunk.
+    diff.split /(?=^@@ )/gm
 
+  constructor: (diff) ->
+    diff = @removeHeader diff
+    chunks = @splitChunks diff
     super chunks
 
   chunks: ->
     @models
-
-  diff: ->
-    @string
