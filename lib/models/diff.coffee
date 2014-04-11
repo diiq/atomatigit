@@ -23,6 +23,7 @@ class Diff extends List
   constructor: (diff) ->
     diff = @removeHeader diff
     chunks = @splitChunks diff
+    chunks = _.map chunks, (chunk) -> chunk: chunk
     super chunks
 
   chunks: ->

@@ -2,7 +2,7 @@ DiffChunk = require '../../lib/models/diff-chunk'
 
 describe "DiffChunk", ->
   describe "string methods", ->
-    chunk = new DiffChunk ""
+    chunk = new DiffChunk chunk: ""
     describe ".deleteTrailingWhitespace", ->
       it "deletes any whitespace at the end of the chunk", ->
         string = "multiline\nstring with whitespace \n    \n  "
@@ -30,5 +30,5 @@ describe "DiffChunk", ->
                "+ListItem = require './list-item'"
                "",
                ""].join("\n")
-      chunk = new DiffChunk string
+      chunk = new DiffChunk chunk: string
       expect(chunk.lines.length).toBe 3

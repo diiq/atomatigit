@@ -8,8 +8,8 @@ _ = require 'underscore'
 #
 module.exports =
 class DiffChunk extends ListItem
-  initialize: (chunk) ->
-    chunk = @deleteFirstLine chunk
+  initialize: (options) ->
+    chunk = @deleteFirstLine options.chunk
     chunk = @deleteInitialWhitespace chunk
     chunk = @deleteTrailingWhitespace chunk
     @lines = _.map @splitIntoLines(chunk), (line) ->
@@ -25,4 +25,4 @@ class DiffChunk extends ListItem
     chunk.replace /^(\s*?\n)*/, ""
 
   splitIntoLines: (chunk) ->
-    lines = chunk.split /\n/g
+    chunk.split /\n/g

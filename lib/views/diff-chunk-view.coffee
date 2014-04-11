@@ -4,31 +4,21 @@ DiffLineView = require './diff-line-view'
 module.exports =
 class DiffChunkView extends View
   @content: (diff_chunk) ->
-    @div class: "diff-chunk", click: "clicked", =>
-      @div outlet: "list_dom"
+    @div class: "diff-chunk", click: "clicked"
 
   initialize: (diff_chunk) ->
     @model = diff_chunk
-    @model.on "refresh", @repaint
-    @model.on "change:selected", @select
-    @repaint()
+    @model.on "change:selected", @showSelection
+
+    for line in @model.lines
+      @append new DiffLineView line
 
   beforeRemove: ->
-    @model.off "refresh", @repaint
-    @model.off "change:selected", @select
-
-  empty_list: ->
-    @list_dom.empty()
+    @model.off "change:selected", @showSelection
 
   clicked: ->
-    @model.self_select()
+    @model.selfSelect()
 
-  select: =>
+  showSelection: =>
     @removeClass("selected")
-    @addClass("selected") if @model.selected()
-
-  repaint: =>
-    @empty_list()
-
-    for line in @model.lines()
-      @list_dom.append new DiffLineView line
+    @addClass("selected") if @model.selectedP()
