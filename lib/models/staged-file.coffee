@@ -28,3 +28,5 @@ class StagedFile extends File
 
   loadDiff: ->
     git.diff "--staged", @path(), @setDiff
+
+  stagedP: -> true

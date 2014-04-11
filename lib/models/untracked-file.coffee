@@ -19,3 +19,5 @@ class UntrackedFile extends File
 
   moveToTrash: =>
     shell.moveItemToTrash(@path())
+
+  untrackedP: -> true

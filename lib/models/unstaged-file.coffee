@@ -24,3 +24,5 @@ class UnstagedFile extends File
 
   loadDiff: ->
     git.diff "", @path(), @setDiff
+
+  unstagedP: -> true

@@ -5,27 +5,25 @@ module.exports =
 class FileView extends View
   @content: (file) ->
     @div class: "file", click: "clicked", =>
-      @div class: "filename", "#{file.filename()}"
-      @div class: "diff", outlet: "diff_dom"
+      @div class: "filename", "#{file.path()}"
 
   initialize: (file) ->
     @model = file
-    @model.on "change:selected", @select
+    @model.on "change:selected", @showSelection
     @model.on "change:diff", @show_diff
 
   beforeRemove: ->
-    @model.off "change:selected", @select
+    @model.off "change:selected", @showSelection
     @model.off "change:diff", @show_diff
 
   clicked: ->
-    @model.self_select()
+    @model.selfSelect()
 
-  select: =>
+  showSelection: =>
     @removeClass("selected")
-    @addClass("selected") if @model.selected()
+    @addClass("selected") if @model.selectedP()
 
-  show_diff: =>
-    if !@model.diff()
-      @diff_dom.empty()
-    else
-      @diff_dom.html new DiffView @model.diff()
+  showDiff: =>
+    @find(".diff").remove()
+    if @model.showDiffP()
+      @append new DiffView @model.diff()

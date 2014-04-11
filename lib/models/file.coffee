@@ -36,3 +36,9 @@ class File extends ListItem
   kill: -> null
 
   loadDiff: -> null
+
+  stagedP: -> false
+
+  unstagedP: -> false
+
+  untrackedP: -> false
