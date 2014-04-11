@@ -19,7 +19,7 @@ class Git extends Events
       if error
         ErrorModel.set_message "#{error}"
       else
-        callback value
+        callback value if callback
         trigger "change"
 
 git = {}
