@@ -1,109 +1,38 @@
-ListItemModel = require './list-item-model'
+ListItem = require './list-item'
 Diff = require './diff'
-error_model = require '../error-model'
+{git} = require '../git'
 
 module.exports =
-##
-# File expects to be initialized with an object:
-# {
-#   filename: "string",
-#   staged: bool,
-#   tracked: bool
-# }
-class File extends ListItemModel
+class File extends ListItem
   initialize: ->
-    @set
-      selected: false
-      diff: ""
+    @set diff: false
+    #@loadDiff()
 
-  # Accessors
+  path: ->
+    @get "path"
 
-  unstaged: ->
-    !(@get "staged") && (@get "tracked")
-
-  untracked: ->
-    !(@get "tracked")
-
-  staged: ->
-    @get "staged"
-
-  filename: ->
-    @get "filename"
-
-  diff: ->
+  showDiffP: ->
     @get "diff"
 
-  repo: ->
-    @get "repo"
-
-  # Methods
+  diff: ->
+    @sublist
 
   stage: ->
-    @repo().add @filename(), @error_callback
+    git.add @path(), => null
 
-  unstage: ->
-    @repo().git "reset HEAD #{@filename()}", @error_callback
+  setDiff: (diffs) =>
+    @sublist = new Diff diffs[0].diff
 
-  kill: ->
-    if @untracked()
-      message = "Delete untracked file \"#{@filename()}\"?"
-    else
-      message = "Discard all changes to \"#{@filename()}\"?"
-
-    atom.confirm
-      message: message
-      buttons:
-        "Discard": => @kill_on_sight()
-        "Cancel": null
-
-  kill_on_sight: ->
-    if @unstaged()
-      @repo().git "checkout #{@filename()}", @error_callback
-    else if @untracked()
-      @repo().add @filename(), =>
-        @repo().git "rm -f #{@filename()}", @error_callback
-    else if @staged()
-      @repo().git "reset HEAD #{@filename()}", =>
-        @repo().git "checkout #{@filename()}", @error_callback
-
-
-  toggle_diff: ->
-    if @diff()
-      @set diff: null
-      return
-
-    flags = ""
-    if @staged()
-      flags += "--staged "
-
-    @repo().diff flags, "", @filename(), (e, diffs) =>
-      error_model.set_message "#{e}" if e
-      if not e
-        @set diff: new Diff
-          diff: diffs[0].diff
-          file: self
-          repo: @repo()
-
+  toggleDiff: ->
+    @set diff: not @get("diff")
 
   open: ->
-    atom.workspaceView.open @filename()
+    atom.workspaceView.open @path()
 
-  set_diff: (diff) ->
-    if not diff
-      @set diff: null
-    else
-      @set diff: new Diff
-        diff: diff
-        file: self
-        repo: @repo
+  # Interface you'll have to override
 
-  # We get files in any old order, and want to sort them by staged, unstaged,
-  # untracked. This value makes that easier.
-  sort_value: ->
-    return 2 if @staged()
-    return 0 if @untracked()
-    return 1
+  unstage: -> null
 
-  error_callback: (e, f, c)=>
-    error_model.set_message "#{e}\n#{f}\n#{c}" if e
-    @trigger "repo:reload"
+  kill: -> null
+
+  loadDiff: -> null
