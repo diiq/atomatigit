@@ -21,6 +21,6 @@ class UnstagedFile extends File
     git.git "checkout #{@path()}"
 
   loadDiff: ->
-    git.diff "", @path(), @setDiff
+    git.diff @path(), @setDiff
 
   unstagedP: -> true

@@ -29,4 +29,4 @@ describe "UnstagedFile", ->
   describe ".loadDiff", ->
     it "calls git diff with its own path", ->
       file.loadDiff()
-      expect(git.diff).toHaveBeenCalledWith("", "execter/foo.bar", file.setDiff)
+      expect(git.diff).toHaveBeenCalledWith("execter/foo.bar", file.setDiff)

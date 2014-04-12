@@ -13,7 +13,7 @@ describe "DiffView", ->
             "-ListModel = require './list-model'"].join "\n"
   model = view = null
   beforeEach ->
-    model = new Diff string
+    model = new Diff diff: string
     view = new DiffView model
 
   describe ".initialize", ->

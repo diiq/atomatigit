@@ -2,7 +2,7 @@ Diff = require '../../lib/models/diff'
 
 describe "Diff", ->
   describe "string methods", ->
-    diff = new Diff "@@ "
+    diff = new Diff diff: "@@ "
     describe ".removeHeader", ->
       it "removes the first two lines of the diff", ->
         string = "multiline\nstring\n@@ with\ndouble-at\n@@ lines\n  "
@@ -30,7 +30,7 @@ describe "Diff", ->
               "-ListModel = require './list-model'"].join "\n"
     diff = null
     beforeEach ->
-      diff = new Diff string
+      diff = new Diff diff: string
 
     describe ".constructor", ->
       it "populates the collection with chunks", ->

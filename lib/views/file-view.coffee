@@ -11,6 +11,7 @@ class FileView extends View
     @model = file
     @model.on "change:selected", @showSelection
     @model.on "change:diff", @show_diff
+    @showSelection()
 
   beforeRemove: ->
     @model.off "change:selected", @showSelection

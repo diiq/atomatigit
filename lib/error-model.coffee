@@ -1,5 +1,5 @@
 Error = require './models/error'
 
-error_model = new Error
+ErrorModel = new Error
 
-module.exports = error_model
+module.exports = ErrorModel

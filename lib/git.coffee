@@ -1,13 +1,24 @@
 gift = require 'gift'
 {Events} = require 'backbone'
+_ = require 'underscore'
+
+ErrorModel = require './error-model'
 
 class Git extends Events
   constructor: (path) ->
     @gift = gift path
+    window.gift = @gift
+    console.log Events
+    _.extend(this, Events)
 
-  diff: (flags, filename, callback) ->
-    @gift.diff flags, filename, @callbackWithErrors (diffs) ->
-      callback(diffs[0].diff)
+  diff: (path, callback, options) ->
+    options ||= {}
+    flags = options.flags || ""
+    @gift.diff "", flags, path, (error, diffs) ->
+      if error
+        ErrorModel.set_message "#{error}"
+      else
+        callback diffs[0] if callback
 
   add: (filename, callback) ->
     @gift.add filename, @callbackWithErrors(callback)
@@ -16,11 +27,11 @@ class Git extends Events
     @gift.git command, @callbackWithErrors(callback)
 
   status: (callback) ->
-    @gift.status (error, filehash) =>
+    @gift.status (error, status) =>
       if error
         ErrorModel.set_message "#{error}"
       else
-        callback @_tidyStatus filehash
+        callback @_tidyStatus status.files
 
   _tidyStatus: (filehash) ->
     output =

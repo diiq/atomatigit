@@ -21,7 +21,7 @@ describe "StagedFile", ->
   describe ".loadDiff", ->
     it "calls git reset with its own path", ->
       file.loadDiff()
-      expect(git.diff).toHaveBeenCalledWith("--staged", file.path(), file.setDiff)
+      expect(git.diff).toHaveBeenCalledWith(file.path(), file.setDiff, flags: "--staged")
 
   describe "discardAllChanges", ->
     it "calls git reset with its own path", ->

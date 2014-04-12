@@ -43,6 +43,6 @@ describe "FileView", ->
                 "-ListModel = require './list-model'"].join "\n"
 
       model.set diff: true
-      model.sublist = new Diff string
+      model.sublist = new Diff diff: string
       view.showDiff()
       expect(view.find(".diff").length).toBe 1

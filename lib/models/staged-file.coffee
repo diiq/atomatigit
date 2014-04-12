@@ -27,6 +27,6 @@ class StagedFile extends File
       git.git "checkout #{@path()}"
 
   loadDiff: ->
-    git.diff "--staged", @path(), @setDiff
+    git.diff @path(), @setDiff, flags: "--staged"
 
   stagedP: -> true
