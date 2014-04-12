@@ -1,46 +1,31 @@
-ListModel = require './list-model'
-Branch = require './branch'
 _ = require 'underscore'
-error_model = require '../error-model'
+
+List = require './list'
+LocalBranch = require './local-branch'
+RemoteBranch = require './remote-branch'
+
+{git} = require '../git'
 
 module.exports =
-class BranchList extends ListModel
-  model: Branch
-
-  initialize: (list, options) ->
-    @repo = options.repo
-
+class BranchList extends List
   reload: ->
-    @repo.branches (e, locals) =>
-      error_model.set_message "#{e}, #{locals}" if e
+    git.branches @addLocals
+    git.remotes @addRemotes
 
-      @repo.remotes (e, remotes) =>
-        error_model.set_message "#{e}, #{remotes}" if e
-        @refresh locals, remotes
-
-  refresh: (locals, remotes) ->
-    @reset()
+  addLocals: (locals) =>
+    _.each @local(), (branch) => @remove branch
     _.each locals, (branch) =>
-      branch.remote = false
-      @add_branch branch
+      @add new LocalBranch branch
+    @select @selected_index
 
+  addRemotes: (remotes) =>
+    _.each @remote(), (branch) => @remove branch
     _.each remotes, (branch) =>
-      branch.remote = true
-      @add_branch branch
-
-    @trigger "refresh"
-    @select @selected
-
-  add_branch: (branch) ->
-    branch = @add branch
-    branch.on "repo:reload", => @trigger "repo:reload"
+      @add new RemoteBranch branch
+    @select @selected_index
 
   local: ->
-    @filter (branch) -> branch.local()
+    @filter (branch) -> branch.local
 
   remote: ->
-    @filter (branch) -> branch.remote()
-
-  error_callback: (e, f)=>
-    error_model.set_message "#{f}" if e
-    @trigger "repo:reload"
+    @filter (branch) -> branch.remote

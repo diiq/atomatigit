@@ -2,7 +2,7 @@ Branch = require './branch'
 {git} = require '../git'
 
 module.exports =
-class LocalBranch extends ListItem
+class LocalBranch extends Branch
   remote: false
 
   local: true

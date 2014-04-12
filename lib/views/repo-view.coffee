@@ -1,7 +1,7 @@
 {View, EditorView} = require 'atom'
 FileListView = require './file-list-view'
-# BranchBriefView = require './branch-brief-view'
-# BranchListView = require './branch-list-view'
+BranchBriefView = require './branch-brief-view'
+BranchListView = require './branch-list-view'
 # CommitListView = require './commit-list-view'
 $ = require 'jquery'
 ErrorView = require './error-view'
@@ -12,7 +12,7 @@ class RepoView extends View
   @content: (model) ->
     @div class: 'atomatigit', =>
       @div class: "resize-handle", outlet: "resize_handle"
-      #@subview "branch_brief_view", new BranchBriefView model.current_branch
+      @subview "branch_brief_view", new BranchBriefView model.current_branch
       @div class: "input", outlet: "input", =>
         @subview "input_editor", new EditorView(mini: true)
 
@@ -25,7 +25,7 @@ class RepoView extends View
       #     @div class: 'title', "Log"
 
       @subview "fileListView", new FileListView model.files
-      #@subview "branch_list_view", new BranchListView model.branch_list
+      @subview "branchListView", new BranchListView model.branch_list
       #@subview "commit_list_view", new CommitListView model.commit_list
       @subview "error", new ErrorView ErrorModel
 
@@ -67,8 +67,8 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
     atom.workspaceView.command "atomatigit:input:up", => @input_up()
     atom.workspaceView.command "atomatigit:input:down", => @input_down()
-    # atom.workspaceView.command "atomatigit:branches", => @goto_branch_view()
-    # atom.workspaceView.command "atomatigit:files", => @goto_file_view()
+    atom.workspaceView.command "atomatigit:branches", => @goto_branch_view()
+    atom.workspaceView.command "atomatigit:files", => @goto_file_view()
     # atom.workspaceView.command "atomatigit:commit_log", => @goto_commit_log()
     atom.workspaceView.command "atomatigit:commit_complete", => @commit_and_close()
     atom.workspaceView.command "atomatigit:refresh", => @refresh()

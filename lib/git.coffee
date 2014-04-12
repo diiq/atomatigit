@@ -13,10 +13,7 @@ class Git
   diff: (path, callback, options) ->
     options ||= {}
     flags = options.flags || ""
-    @gift.diff "", flags, path, (error, diffs) ->
-      if error
-        ErrorModel.set_message "#{error}"
-      else
+    @gift.diff "", flags, path, @callbackWithErrorsNoChange (diffs) =>
         callback diffs[0] if callback
 
   add: (filename, callback) ->
@@ -26,11 +23,8 @@ class Git
     @gift.git command, @callbackWithErrors(callback)
 
   status: (callback) ->
-    @gift.status (error, status) =>
-      if error
-        ErrorModel.set_message "#{error}"
-      else
-        callback @_tidyStatus status.files
+    @gift.status @callbackWithErrorsNoChange (status) =>
+      callback @_tidyStatus status.files
 
   _tidyStatus: (filehash) ->
     output =
@@ -38,11 +32,10 @@ class Git
       unstaged: []
       staged: []
 
-    console.log filehash
     _.each filehash, (status, path) =>
       file = {path: path, status: status}
 
-      if not Sstatus.tracked
+      if not status.tracked
         output.untracked.push file
       if status.staged
         output.staged.push file
@@ -53,7 +46,13 @@ class Git
     output
 
   branch: (callback) ->
-    @gift.branch @callBackWithErrors(callback)
+    @gift.branch @callbackWithErrorsNoChange(callback)
+
+  branches: (callback) ->
+    @gift.branches @callbackWithErrorsNoChange(callback)
+
+  remotes: (callback) ->
+    @gift.remotes @callbackWithErrorsNoChange(callback)
 
   remoteFetch: (callback) ->
     @gift.remote_fetch
@@ -72,6 +71,12 @@ class Git
         callback value if callback
         @trigger "change"
 
+  callbackWithErrorsNoChange: (callback) =>
+    (error, value) =>
+      if error
+        ErrorModel.set_message "#{error}"
+      else
+        callback value if callback
 
 git = {}
 if atom.project

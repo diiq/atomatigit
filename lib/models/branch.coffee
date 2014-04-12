@@ -1,8 +1,8 @@
-Branch = require './branch'
+ListItem = require './list-item'
 {git} = require '../git'
 
 module.exports =
-class RemoteBranch extends Branch
+class Branch extends ListItem
   name: ->
     @get "name"
 
@@ -10,6 +10,8 @@ class RemoteBranch extends Branch
     @name()
 
   remote_name: -> ""
+
+  unpushed: -> false
 
   short_commit_id: ->
     commit = @get("commit")

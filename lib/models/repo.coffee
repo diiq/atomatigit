@@ -2,7 +2,7 @@
 {git} = require '../git'
 FileList = require './file-list'
 BranchList = require './branch-list'
-CommitList = require './commit-list'
+# CommitList = require './commit-list'
 Branch = require './branch'
 
 ErrorModel = require '../error-model'
@@ -12,76 +12,75 @@ module.exports =
 class Repo extends Model
   initialize: (opts) ->
     @files = new FileList []
-    #@branch_list = new BranchList []
+    @branch_list = new BranchList []
+    @active_list = @branch_list
     #@commit_list = new CommitList []
 
-    #@current_branch = new Branch
-    #@branch_list.on "repo:reload", => @refresh()
+    @current_branch = new Branch
     git.on "change", => @refresh()
-    #@commit_list.on "repo:reload", => @refresh()
 
   refresh: ->
     git.status (files) =>
       @files.populate files
 
-    #@branch_list.reload()
+    @branch_list.reload()
     #@commit_list.reload(@current_branch)
 
-    #@refresh_current_branch()
+    @refreshCurrentBranch()
 
-  # refresh_current_branch: ->
-  #   git.branch (head) =>
-  #     @current_branch.set head
+  refreshCurrentBranch: ->
+    git.branch (head) =>
+      @current_branch.set head
   #
   #   git.git "log @{u}..", (output) =>
   #     @current_branch.set unpushed: (output != "")
 
   fetch: ->
-    error_model.increment_task_counter()
+    ErrorModel.increment_task_counter()
     git.remoteFetch "origin", =>
-      error_model.decrement_task_counter()
+      ErrorModel.decrement_task_counter()
 
-  # checkout_branch: ->
-  #   @branch_list.checkout_branch
+  checkoutBranch: ->
+    @branch_list.checkout_branch
 
   stash: ->
     git.git "stash"
 
-  stash_pop: ->
+  stashPop: ->
     git.git "stash pop"
 
   selection: ->
     @files.selection()
 
-  initiate_commit: ->
-    error_model.increment_task_counter()
+  initiateCommit: ->
+    ErrorModel.increment_task_counter()
     git.git "commit"
     atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
 
-  complete_commit: ->
+  completeCommit: ->
     atom.workspaceView.trigger("core:save")
     atom.workspaceView.trigger("core:close")
     spawn "/Users/diiq/utils/atom_commit_editor_complete.sh",
           ["done"],
           stdio: 'pipe',
           env: process.env
-    error_model.decrement_task_counter()
+    ErrorModel.decrement_task_counter()
     @refresh()
 
-  initiate_create_branch: ->
+  initiateCreateBranch: ->
     @trigger "need_input",
       query: "Branch name"
       callback: (name) =>
-        git.create_branch name, =>
+        git.createBranch name, =>
           git.git "checkout #{name}"
 
   push: (remote) ->
-    error_model.increment_task_counter()
+    ErrorModel.increment_task_counter()
     remote ?= "origin #{@current_branch.name()}"
     git.remote_push remote, =>
-      error_model.decrement_task_counter()
+      ErrorModel.decrement_task_counter()
 
-  initiate_git_command: ->
+  initiateGitCommand: ->
     @trigger "need_input",
       query: "Git command"
       callback: (command) =>

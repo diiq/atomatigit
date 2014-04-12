@@ -1,24 +1,24 @@
-##
-# This
-
 {View} = require 'atom'
 
 module.exports =
 class BranchBriefView extends View
   @content: ->
-    @div class: "branch-brief-view", =>
+    @div class: "branch-brief-view", click: "clicked" =>
       @div class: "name", outlet: "name"
       @div class: "commit", outlet: "commit"
 
   initialize: (branch) ->
     @model = branch
-    @repaint()
-    @model.on "change:selected", @select
+    @model.on "change:selected", @showSelection
     @model.on "change", @repaint
-    @on "click", => @model.self_select()
+    @repaint()
 
   beforeRemove: ->
+    @model.off "change:selected", @showSelection
     @model.off "change", @repaint
+
+  clicked: ->
+    @model.selfSelect()
 
   repaint: =>
     @name.html("#{@model.name()}")
@@ -28,6 +28,6 @@ class BranchBriefView extends View
     if @model.unpushed()
       @commit.addClass "unpushed"
 
-  select: =>
+  showSelection: =>
     @removeClass("selected")
-    @addClass("selected") if @model.selected()
+    @addClass("selected") if @model.selectedP()
