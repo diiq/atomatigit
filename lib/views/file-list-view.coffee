@@ -5,33 +5,39 @@ module.exports =
 class FileListView extends View
   @content: ->
     @div class: "file-list-view list-view", tabindex: -1, =>
-      @h2 "untracked:"
-      @div outlet: "untracked_dom"
-      @h2 "unstaged:"
-      @div outlet: "unstaged_dom"
-      @h2 "staged:"
-      @div outlet: "staged_dom"
+      @h2 outlet: "untrackedHeader", "untracked:"
+      @div outlet: "untracked"
+      @h2 outlet: "unstagedHeader", "unstaged:"
+      @div outlet: "unstaged"
+      @h2 outlet: "stagedHeader", "staged:"
+      @div outlet: "staged"
 
-  initialize: (file_list) ->
-    @model = file_list
-    @model.on "refresh", @repaint
+  initialize: (fileList) ->
+    @model = fileList
+    @model.on "change", @repaint
 
   beforeRemove: ->
-    @model.off "refresh", @repaint
+    @model.off "change", @repaint
 
-  empty_lists: ->
-    @untracked_dom.empty()
-    @unstaged_dom.empty()
-    @staged_dom.empty()
-
-  repaint: =>
-    @empty_lists()
+  repopulateUntracked: ->
+    @untracked.empty()
 
     for file in @model.untracked()
-      @untracked_dom.append new FileView file
+      @untracked.append new FileView file
+
+  repopulateUnstaged: ->
+    @unstaged.empty()
 
     for file in @model.unstaged()
-      @unstaged_dom.append new FileView file
+      @unstaged.append new FileView file
+
+  repopulateStaged: ->
+    @staged.empty()
 
     for file in @model.staged()
-      @staged_dom.append new FileView file
+      @staged.append new FileView file
+
+  repopulate: =>
+    @repopulateUntracked()
+    @repopulateUnstaged()
+    @repopulateStaged()
