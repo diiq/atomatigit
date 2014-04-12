@@ -38,10 +38,11 @@ class Git
       unstaged: []
       staged: []
 
+    console.log filehash
     _.each filehash, (status, path) =>
       file = {path: path, status: status}
 
-      if status.untracked
+      if not Sstatus.tracked
         output.untracked.push file
       if status.staged
         output.staged.push file

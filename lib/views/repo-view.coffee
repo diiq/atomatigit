@@ -78,7 +78,7 @@ class RepoView extends View
 
   refresh: ->
     @model.refresh()
-    error_model.clear_task_counter()
+    ErrorModel.clear_task_counter()
 
   # deactivate_tabs: ->
   #   @commits_tab.removeClass "active"
