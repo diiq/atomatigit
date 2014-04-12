@@ -20,8 +20,9 @@ class Diff extends List
     # of a chunk.
     diff.split /(?=^@@ )/gm
 
-  constructor: (diff) ->
-    diff = @removeHeader diff
+  constructor: (raw) ->
+    @raw = raw
+    diff = @removeHeader raw
     chunks = @splitChunks diff
     chunks = _.map chunks, (chunk) -> chunk: chunk
     super chunks

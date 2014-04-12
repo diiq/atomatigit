@@ -1,10 +1,10 @@
 UnstagedFile = require '../../lib/models/unstaged-file'
 {git} = require '../../lib/git'
-shell = require 'shell'
 
 describe "UnstagedFile", ->
   file = null
   beforeEach ->
+    git.diff = jasmine.createSpy("diff")
     file = new UnstagedFile
       path: "execter/foo.bar"
 
@@ -13,7 +13,7 @@ describe "UnstagedFile", ->
       expect(file.sort_value).toBe 1
 
   describe ".checkout", ->
-    it "calls shell.moveItemToTrash with its own path", ->
+    it "resets file by calling git checkout with its own path", ->
       git.git = jasmine.createSpy("git")
       file.checkout()
       expect(git.git).toHaveBeenCalledWith("checkout execter/foo.bar")
@@ -28,6 +28,5 @@ describe "UnstagedFile", ->
 
   describe ".loadDiff", ->
     it "calls git diff with its own path", ->
-      git.diff = jasmine.createSpy("diff")
       file.loadDiff()
       expect(git.diff).toHaveBeenCalledWith("", "execter/foo.bar", file.setDiff)

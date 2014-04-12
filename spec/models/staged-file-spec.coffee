@@ -4,6 +4,7 @@ StagedFile = require '../../lib/models/staged-file'
 describe "StagedFile", ->
   file = null
   beforeEach ->
+    git.diff = jasmine.createSpy("diff")
     file = new StagedFile
       path: "execter/foo.bar"
 
@@ -19,7 +20,6 @@ describe "StagedFile", ->
 
   describe ".loadDiff", ->
     it "calls git reset with its own path", ->
-      git.diff = jasmine.createSpy("diff")
       file.loadDiff()
       expect(git.diff).toHaveBeenCalledWith("--staged", file.path(), file.setDiff)
 

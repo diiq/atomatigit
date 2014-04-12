@@ -42,7 +42,7 @@ describe "File", ->
               "DiffChunk = require './diff-chunk'",
               "-ListModel = require './list-model'"].join "\n"
     it "creates a new sublist based on the diff object", ->
-      file.setDiff [diff: string]
+      file.setDiff string
       expect(file.diff().chunks().length).toBe 2
 
   describe ".toggleDiff", ->

@@ -1,43 +1,34 @@
-ListModel = require './list-model'
-File = require './file'
+List = require './list'
+UnstagedFile = require './unstaged-file'
+StagedFile = require './staged-file'
+UntrackedFile = require './untracked-file'
 _ = require 'underscore'
 
 module.exports =
-class FileList extends ListModel
-  model: File
-
-  initialize: (models, options) ->
-    @repo = options.repo
-
-  refresh: (filehash) ->
+class FileList extends List
+  populate: (filelist) ->
     @reset()
-    _.each filehash, (status, filename) =>
-      @add_from_refresh filename, status
-      if status.type && status.type.length == 2
-        status.staged = false
-        @add_from_refresh filename, status
 
-    @trigger "refresh"
+    _.each filelist.untracked, (file) =>
+      @add new UntrackedFile file
+
+    _.each filelist.unstaged, (file) =>
+      @add new UnstagedFile file
+
+    _.each filelist.staged, (file) =>
+      @add new StagedFile file
+
     @select @selected
-
-  add_from_refresh: (filename, status) ->
-    file = @add
-      filename: filename
-      type: status.type
-      tracked: status.tracked
-      staged: status.staged
-      repo: @repo
-    file.on "repo:reload", =>
-      @trigger "repo:reload"
+    @trigger "change"
 
   comparator: (file) ->
-    file.sort_value()
+    file.sort_value
 
   staged: ->
-    @filter (f) -> f.staged()
+    @filter (f) -> f.stagedP()
 
   unstaged: ->
-    @filter (f) -> f.unstaged()
+    @filter (f) -> f.unstagedP()
 
   untracked: ->
-    @filter (f) -> f.untracked()
+    @filter (f) -> f.untrackedP()

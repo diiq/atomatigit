@@ -6,7 +6,7 @@ module.exports =
 class File extends ListItem
   initialize: ->
     @set diff: false
-    #@loadDiff()
+    @loadDiff()
 
   path: ->
     @get "path"
@@ -20,8 +20,8 @@ class File extends ListItem
   stage: ->
     git.add @path(), => null
 
-  setDiff: (diffs) =>
-    @sublist = new Diff diffs[0].diff
+  setDiff: (diff) =>
+    @sublist = new Diff diff
 
   toggleDiff: ->
     @set diff: not @get("diff")

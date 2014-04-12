@@ -6,7 +6,8 @@ class Git extends Events
     @gift = gift path
 
   diff: (flags, filename, callback) ->
-    @gift.diff flags, filename, @callbackWithErrors(callback)
+    @gift.diff flags, filename, @callbackWithErrors (diffs) ->
+      callback(diffs[0].diff)
 
   add: (filename, callback) ->
     @gift.add filename, @callbackWithErrors(callback)
@@ -14,13 +15,52 @@ class Git extends Events
   git: (command, callback) ->
     @gift.git command, @callbackWithErrors(callback)
 
-  callbackWithErrors: (callback) ->
-    (error, value) ->
+  status: (callback) ->
+    @gift.status (error, filehash) =>
+      if error
+        ErrorModel.set_message "#{error}"
+      else
+        callback @_tidyStatus filehash
+
+  _tidyStatus: (filehash) ->
+    output =
+      untracked: []
+      unstaged: []
+      staged: []
+
+    _.each filehash, (status, path) =>
+      file = {path: path, status: status}
+
+      if status.untracked
+        output.untracked.push file
+      if status.staged
+        output.staged.push file
+      if (status.tracked and not status.staged) or
+         (status.type && status.type.length == 2)
+        output.unstaged.push file
+
+    output
+
+  branch: (callback) ->
+    @gift.branch @callBackWithErrors(callback)
+
+  remoteFetch: (callback) ->
+    @gift.remote_fetch
+
+  createBranch: (name, callback) ->
+    @gift.create_branch name, @callbackWithErrors(callback)
+
+  remotePush: (remote_branch, callback) ->
+    @gift.remote_push remote_branch, @callbackWithErrors(callback)
+
+  callbackWithErrors: (callback) =>
+    (error, value) =>
       if error
         ErrorModel.set_message "#{error}"
       else
         callback value if callback
-        trigger "change"
+        @trigger "change"
+
 
 git = {}
 if atom.project

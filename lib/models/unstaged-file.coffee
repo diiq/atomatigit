@@ -1,5 +1,3 @@
-shell = require 'shell'
-
 File= require './file'
 {git} = require '../git'
 
