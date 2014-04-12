@@ -4,11 +4,10 @@ _ = require 'underscore'
 
 ErrorModel = require './error-model'
 
-class Git extends Events
+class Git
   constructor: (path) ->
     @gift = gift path
     window.gift = @gift
-    console.log Events
     _.extend(this, Events)
 
   diff: (path, callback, options) ->

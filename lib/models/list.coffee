@@ -9,6 +9,7 @@
 module.exports =
 class List extends Collection
   selected_index: 0
+  is_sublist: false
 
   selection: ->
     @at @selected_index
@@ -18,6 +19,10 @@ class List extends Collection
     if @selection()
       @selection().deselect()
 
+    if @is_sublist and i < 0
+      @selected_index = -1
+      return false
+
     @selected_index = Math.max(Math.min(i, @length - 1), 0)
 
     if @selection()
@@ -26,7 +31,9 @@ class List extends Collection
     old_selection != @selected_index
 
   next: ->
-    @selection().allowNext() && @select(@selected_index + 1)
+    return false if @selection() and not @selection().allowNext()
+    @select (@selected_index + 1)
 
   previous: ->
-    @selection().allowPrevious() && @select(@selected_index - 1)
+    return false if @selection() and not @selection().allowPrevious()
+    @select(@selected_index - 1)

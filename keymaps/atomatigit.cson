@@ -25,10 +25,10 @@
   'shift-z': 'atomatigit:stash_pop'
   'u': 'atomatigit:unstage'
   'enter': 'atomatigit:open'
-  'tab': 'atomatigit:toggle_file_diff'
+  'tab': 'atomatigit:toggle-diff'
   'cmd-shift-z': 'atomatigit:show'
   'c': 'atomatigit:commit'
-  'backspace': 'atomatigit:kill_file'
+  'backspace': 'atomatigit:kill'
 
 '.atomatigit .branch-list-view':
   'enter': 'atomatigit:checkout_branch'

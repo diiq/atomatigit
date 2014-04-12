@@ -26,13 +26,15 @@ class ListItem extends Model
     @get "selected"
 
   allowPrevious: ->
-    if @sublist
+    if @useSublist()
       not @sublist.previous()
     else
       true
 
   allowNext: ->
-    if @sublist
+    if @useSublist()
       not @sublist.next()
     else
       true
+
+  useSublist: -> false

@@ -14,10 +14,10 @@ class FileListView extends View
 
   initialize: (fileList) ->
     @model = fileList
-    @model.on "change", @repopulate
+    @model.on "repopulate", @repopulate
 
   beforeRemove: ->
-    @model.off "change", @repopulate
+    @model.off "repopulate", @repopulate
 
   repopulateUntracked: ->
     @untracked.empty()

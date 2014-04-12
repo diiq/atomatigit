@@ -10,6 +10,8 @@ _ = require 'underscore'
 module.exports =
 class Diff extends List
   model: DiffChunk
+  is_sublist: true
+  selected_index: -1
 
   removeHeader: (diff) ->
     # Remove first two lines, which name the file
@@ -27,6 +29,8 @@ class Diff extends List
     chunks = @splitChunks diff
     chunks = _.map chunks, (chunk) -> chunk: chunk
     super chunks
+
+    @select -1
 
   chunks: ->
     @models

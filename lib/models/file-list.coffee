@@ -18,8 +18,8 @@ class FileList extends List
     _.each filelist.staged, (file) =>
       @add new StagedFile file
 
-    @select @selected
-    @trigger "change"
+    @select @selected_index
+    @trigger "repopulate"
 
   comparator: (file) ->
     file.sort_value

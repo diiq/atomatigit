@@ -42,7 +42,7 @@ describe "FileView", ->
                 "DiffChunk = require './diff-chunk'",
                 "-ListModel = require './list-model'"].join "\n"
 
+      model.setDiff diff: string
       model.set diff: true
-      model.sublist = new Diff diff: string
       view.showDiff()
-      expect(view.find(".diff").length).toBe 1
+      expect(view.find(".diff").children().length).toBe 2

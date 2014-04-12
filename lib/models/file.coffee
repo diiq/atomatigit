@@ -24,7 +24,10 @@ class File extends ListItem
     @sublist = new Diff diff
 
   toggleDiff: ->
-    @set diff: not @get("diff")
+    @set diff: not @get "diff"
+
+  useSublist: ->
+    @showDiffP()
 
   open: ->
     atom.workspaceView.open @path()

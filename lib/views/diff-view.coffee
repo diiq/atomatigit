@@ -8,6 +8,5 @@ class DiffView extends View
 
   initialize: (diff) ->
     @model = diff
-
     for chunk in @model.chunks()
       @append new DiffChunkView chunk

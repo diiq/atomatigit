@@ -52,33 +52,38 @@ describe "ListItem", ->
       expect(item.selectedP()).toBe true
 
   describe ".allowPrevious", ->
-    it "returns true if the item has no sublist", ->
+    it "returns true if the item useSublist returns false", ->
       expect(item.allowPrevious()).toBe true
 
     it "returns false if sublist.previous returns true", ->
       item.sublist = new SubList
+      spyOn(item, "useSublist").andReturn(true)
       spyOn(item.sublist, "previous").andReturn(true)
       expect(item.allowPrevious()).toBe false
       expect(item.sublist.previous).toHaveBeenCalled
 
     it "returns true if sublist.previous returns false", ->
       item.sublist = new SubList
+      spyOn(item, "useSublist").andReturn(true)
       spyOn(item.sublist, "previous").andReturn(false)
       expect(item.allowPrevious()).toBe true
       expect(item.sublist.previous).toHaveBeenCalled
 
   describe ".allowNext", ->
-    it "returns true if the item has no sublist", ->
+    it "returns true if the item.useSublist returns false
+", ->
       expect(item.allowNext()).toBe true
 
     it "returns false if sublist.next returns true", ->
       item.sublist = new SubList
+      spyOn(item, "useSublist").andReturn(true)
       spyOn(item.sublist, "next").andReturn(true)
       expect(item.allowNext()).toBe false
       expect(item.sublist.next).toHaveBeenCalled
 
     it "returns true if sublist.next returns false", ->
       item.sublist = new SubList
+      spyOn(item, "useSublist").andReturn(true)
       spyOn(item.sublist, "next").andReturn(false)
       expect(item.allowNext()).toBe true
       expect(item.sublist.next).toHaveBeenCalled
