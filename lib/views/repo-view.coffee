@@ -3,10 +3,9 @@ $ = require 'jquery'
 {View, EditorView} = require 'atom'
 {FileListView} = require './files'
 {BranchBriefView, BranchListView}  = require './branches'
-
 # CommitListView = require './commit-list-view'
 ErrorView = require './error-view'
-ErrorModel = require '../error-model'
+{git} = require '../git'
 
 module.exports =
 class RepoView extends View
@@ -28,7 +27,7 @@ class RepoView extends View
       @subview "fileListView", new FileListView model.files
       @subview "branchListView", new BranchListView model.branch_list
       #@subview "commit_list_view", new CommitListView model.commit_list
-      @subview "error", new ErrorView ErrorModel
+      @subview "error", new ErrorView git
 
   initialize: (repo) ->
     @model = repo

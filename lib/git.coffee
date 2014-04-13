@@ -1,14 +1,12 @@
 gift = require 'gift'
-{Events} = require 'backbone'
+{Model} = require 'backbone'
 _ = require 'underscore'
 
-ErrorModel = require './error-model'
 
-class Git
-  constructor: (path) ->
-    @gift = gift path
-    window.gift = @gift
-    _.extend(this, Events)
+class Git extends Model
+  initialize: (options) ->
+    @gift = gift options.path
+    @clearMessage()
 
   diff: (path, callback, options) ->
     options ||= {}
@@ -47,7 +45,7 @@ class Git
   callbackWithErrors: (callback) =>
     (error, value) =>
       if error
-        ErrorModel.set_message "#{error}"
+        @setMessage "#{error}"
       else
         callback value if callback
         @trigger "change"
@@ -55,7 +53,7 @@ class Git
   callbackWithErrorsNoChange: (callback) =>
     (error, value) =>
       if error
-        ErrorModel.set_message "#{error}"
+        @setMessage "#{error}"
       else
         callback value if callback
 
@@ -74,6 +72,19 @@ class Git
 
   workingP: ->
     @task_counter == 0
+
+
+  setMessage: (message) ->
+    @set message: message
+    @trigger "error"
+
+  messageMarkup: ->
+    message = @get "message"
+    message.replace /\n/g, "<br />"
+
+  clearMessage: () ->
+    @set message: ""
+
 
   _tidyStatus: (filehash) ->
     output =
@@ -96,7 +107,7 @@ class Git
 
 git = {}
 if atom.project
-  git = new Git atom.project.getRepo().getWorkingDirectory()
+  git = new Git path: atom.project.getRepo().getWorkingDirectory()
 
 module.exports =
   Git: Git
