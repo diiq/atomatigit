@@ -3,7 +3,7 @@
 module.exports =
 class BranchBriefView extends View
   @content: ->
-    @div class: "branch-brief-view", click: "clicked" =>
+    @div class: "branch-brief-view", click: "clicked", =>
       @div class: "name", outlet: "name"
       @div class: "commit", outlet: "commit"
 
@@ -22,7 +22,7 @@ class BranchBriefView extends View
 
   repaint: =>
     @name.html("#{@model.name()}")
-    @commit.html("(#{@model.short_commit_id()}: #{@model.short_commit_message()})")
+    @commit.html("(#{@model.shortCommitID()}: #{@model.shortCommitMessage()})")
 
     @commit.removeClass "unpushed"
     if @model.unpushed()

@@ -1,47 +1,39 @@
-ListItemModel = require './list-item-model'
-error_model = require '../error-model'
+ListItem = require './list-item'
+{git} = require '../git'
 
 module.exports =
-class Commit extends ListItemModel
-  repo: ->
-    @get "repo"
-
-  commit_id: ->
+class Commit extends ListItem
+  commitID: ->
     @get "id"
 
-  short_id: ->
-    @commit_id().substr(0, 6)
+  shortID: ->
+    @commitID().substr(0, 6)
 
-  author_name: ->
+  authorName: ->
     @get("author").name
 
-  short_commit_message: ->
+  shortCommitMessage: ->
     message = @get "message"
-    message = message.split("\n")[0]
-    if message.length > 80
-      message = message.substr(0, 80) + "..."
-    message
+    message.split("\n")[0]
 
-  reset_to: ->
+  open: ->
     atom.confirm
       message: "Soft-reset head to #{@short_id()}?"
       detailedMessage: @get("message")
       buttons:
-        "Reset": =>
-          @repo().git "reset #{@commit_id()}", @error_callback
-          @trigger "repo:reload"
+        "Reset": @reset
         "Cancel": null
 
-  hard_reset_to: ->
+  reset: =>
+    git.git "reset #{@commitID()}"
+
+  confirmHardReset: ->
     atom.confirm
       message: "Do you REALLY want to HARD-reset head to #{@short_id()}?"
       detailedMessage: "Commit message: \"#{@get("message")}\""
       buttons:
         "Cancel": null
-        "Reset": =>
-          @repo().git "reset --hard #{@commit_id()}", @error_callback
-          @trigger "repo:reload"
+        "Reset": @hardReset
 
-  error_callback: (e)=>
-    error_model.set_message "#{e}" if e
-    @trigger "repo:reload"
+  hardReset: =>
+    git.git "reset --hard #{@commitID()}"

@@ -31,14 +31,14 @@ class Repo extends Model
   refreshCurrentBranch: ->
     git.branch (head) =>
       @current_branch.set head
-  #
-  #   git.git "log @{u}..", (output) =>
-  #     @current_branch.set unpushed: (output != "")
+
+    git.git "log @{u}..", (output) =>
+      @current_branch.set unpushed: (output != "")
 
   fetch: ->
-    ErrorModel.increment_task_counter()
+    git.incrementTaskCounter()
     git.remoteFetch "origin", =>
-      ErrorModel.decrement_task_counter()
+      git.decrementTaskCounter()
 
   checkoutBranch: ->
     @branch_list.checkout_branch
@@ -53,7 +53,7 @@ class Repo extends Model
     @files.selection()
 
   initiateCommit: ->
-    ErrorModel.increment_task_counter()
+    git.incrementTaskCounter()
     git.git "commit"
     atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
 
@@ -64,7 +64,7 @@ class Repo extends Model
           ["done"],
           stdio: 'pipe',
           env: process.env
-    ErrorModel.decrement_task_counter()
+    git.decrementTaskCounter()
     @refresh()
 
   initiateCreateBranch: ->
@@ -74,15 +74,7 @@ class Repo extends Model
         git.createBranch name, =>
           git.git "checkout #{name}"
 
-  push: (remote) ->
-    ErrorModel.increment_task_counter()
-    remote ?= "origin #{@current_branch.name()}"
-    git.remote_push remote, =>
-      ErrorModel.decrement_task_counter()
-
   initiateGitCommand: ->
     @trigger "need_input",
       query: "Git command"
-      callback: (command) =>
-        @git.git command, (result) =>
-          ErrorModel.setMessage result
+      callback: (command) => git.git command

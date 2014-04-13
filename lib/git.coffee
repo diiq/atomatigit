@@ -26,25 +26,6 @@ class Git
     @gift.status @callbackWithErrorsNoChange (status) =>
       callback @_tidyStatus status.files
 
-  _tidyStatus: (filehash) ->
-    output =
-      untracked: []
-      unstaged: []
-      staged: []
-
-    _.each filehash, (status, path) =>
-      file = {path: path, status: status}
-
-      if not status.tracked
-        output.untracked.push file
-      if status.staged
-        output.staged.push file
-      if (status.tracked and not status.staged) or
-         (status.type && status.type.length == 2)
-        output.unstaged.push file
-
-    output
-
   branch: (callback) ->
     @gift.branch @callbackWithErrorsNoChange(callback)
 
@@ -77,6 +58,39 @@ class Git
         ErrorModel.set_message "#{error}"
       else
         callback value if callback
+
+
+  incrementTaskCounter: ->
+    @task_counter += 1
+    @trigger("change:task_counter")
+
+  decrementTaskCounter: ->
+    @task_counter -= 1
+    @trigger("change:task_counter")
+
+  clearTaskCounter: ->
+    @task_counter = 0
+    @trigger("change:task_counter")
+
+
+  _tidyStatus: (filehash) ->
+    output =
+      untracked: []
+      unstaged: []
+      staged: []
+
+    _.each filehash, (status, path) =>
+      file = {path: path, status: status}
+
+      if not status.tracked
+        output.untracked.push file
+      if status.staged
+        output.staged.push file
+      if (status.tracked and not status.staged) or
+         (status.type && status.type.length == 2)
+        output.unstaged.push file
+
+    output
 
 git = {}
 if atom.project

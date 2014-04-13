@@ -1,4 +1,5 @@
 Branch = require './branch'
+
 {git} = require '../git'
 
 module.exports =
@@ -11,10 +12,15 @@ class LocalBranch extends Branch
     @get "unpushed"
 
   delete: ->
-    git.git "branch -D #{@name()}", @error_callback
+    git.git "branch -D #{@name()}"
 
   # TODO tracking branch or something?
-  remote_name: -> ""
+  remoteName: -> ""
 
   checkout: (callback)->
-    git.git "checkout #{@local_name()}"
+    git.git "checkout #{@localName()}"
+
+  push: (remote) ->
+    git.incrementTaskCounter()
+    remote ||= "origin #{@name()}"
+    git.remotePush remote, git.decrementTaskCounter

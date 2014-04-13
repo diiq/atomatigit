@@ -1,4 +1,5 @@
 ListItem = require './list-item'
+Commit = require './commit'
 {git} = require '../git'
 
 module.exports =
@@ -6,28 +7,26 @@ class Branch extends ListItem
   name: ->
     @get "name"
 
-  local_name: ->
+  localName: ->
     @name()
 
-  remote_name: -> ""
+  commit: ->
+    @commit_model ||= new Commit @get "commit"
+
+  remoteName: -> ""
 
   unpushed: -> false
-
-  short_commit_id: ->
-    commit = @get("commit")
-    commit.id.substr(0, 6) if commit
-
-  short_commit_message: ->
-    commit = @get("commit")
-    return "" if not commit
-    message = commit.message.split("\n")[0]
 
   kill: ->
     atom.confirm
       message: "Delete branch #{@name()}?"
       buttons:
-        "Delete": => @delete()
+        "Delete": @delete
         "Cancel": null
 
   checkout: (callback)->
-    git.git "checkout #{@local_name()}"
+    git.git "checkout #{@localName()}"
+
+  push: -> null
+
+  delete: => null

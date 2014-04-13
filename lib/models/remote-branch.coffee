@@ -12,8 +12,8 @@ class RemoteBranch extends Branch
   delete: ->
     git.git "push -f #{@remote_name()} :#{@local_name()}", @error_callback
 
-  local_name: ->
+  localName: ->
     @name().replace /.*?\//, ""
 
-  remote_name: ->
+  remoteName: ->
     @name().replace /\/.*/, ""
