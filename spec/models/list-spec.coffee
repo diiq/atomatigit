@@ -1,5 +1,6 @@
-List = require '../../lib/models/list'
-ListItem = require '../../lib/models/list-item'
+require '../spec_helper'
+ListItem = require __base + 'models/list-item'
+List = require __base + 'models/list'
 
 class AModel extends ListItem
 

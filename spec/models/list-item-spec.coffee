@@ -1,4 +1,5 @@
-ListItem = require '../../lib/models/list-item'
+require '../spec_helper'
+ListItem = require __base + 'models/list-item'
 
 class AListItem extends ListItem
   sublist: null

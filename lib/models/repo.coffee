@@ -1,11 +1,10 @@
 {Model} = require 'backbone'
 {git} = require '../git'
-FileList = require './file-list'
-BranchList = require './branch-list'
+FileList = require './files/file-list'
+BranchList = require './branches/branch-list'
 # CommitList = require './commit-list'
-Branch = require './branch'
+Branch = require './branches/branch'
 
-ErrorModel = require '../error-model'
 {spawn} = require 'child_process'
 
 module.exports =

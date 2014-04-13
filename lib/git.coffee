@@ -72,6 +72,8 @@ class Git
     @task_counter = 0
     @trigger("change:task_counter")
 
+  workingP: ->
+    @task_counter == 0
 
   _tidyStatus: (filehash) ->
     output =
