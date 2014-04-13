@@ -10,6 +10,9 @@ class Branch extends ListItem
   localName: ->
     @name()
 
+  head: ->
+    @get("commit").id
+
   commit: ->
     new Commit @get "commit"
 

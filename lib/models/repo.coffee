@@ -3,7 +3,7 @@
 
 {git} = require '../git'
 {FileList} = require './files'
-{LocalBranch, BranchList} = require './branches'
+{CurrentBranch, BranchList} = require './branches'
 {CommitList} = require './commits'
 
 
@@ -15,24 +15,17 @@ class Repo extends Model
     @active_list = @branch_list
     @commit_list = new CommitList []
 
-    @current_branch = new LocalBranch
+    @current_branch = new CurrentBranch
     git.on "change", => @refresh()
 
   refresh: ->
     git.status (files) =>
       @files.populate files
 
+    @current_branch.reload()
     @branch_list.reload()
     @commit_list.reload(@current_branch)
 
-    @refreshCurrentBranch()
-
-  refreshCurrentBranch: ->
-    git.branch (head) =>
-      @current_branch.set head
-
-    git.gitNoChange "log @{u}..", (output) =>
-      @current_branch.set unpushed: (output != "")
 
   fetch: ->
     git.incrementTaskCounter()

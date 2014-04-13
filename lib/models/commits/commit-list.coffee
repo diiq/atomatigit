@@ -8,7 +8,7 @@ class CommitList extends List
 
   reload: (branch) ->
     @branch = branch
-    git.commits @branch.name(), @repopulate
+    git.commits @branch.head(), @repopulate
 
   repopulate: (commit_hashes) =>
     @reset(commit_hashes)
