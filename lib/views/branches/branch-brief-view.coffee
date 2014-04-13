@@ -22,7 +22,7 @@ class BranchBriefView extends View
 
   repaint: =>
     @name.html("#{@model.name()}")
-    @commit.html("(#{@model.shortCommitID()}: #{@model.shortCommitMessage()})")
+    @commit.html("(#{@model.commit().shortID()}: #{@model.commit().shortMessage()})")
 
     @commit.removeClass "unpushed"
     if @model.unpushed()

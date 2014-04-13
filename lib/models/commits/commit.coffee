@@ -7,18 +7,18 @@ class Commit extends ListItem
     @get "id"
 
   shortID: ->
-    @commitID().substr(0, 6)
+    @commitID()?.substr(0, 6)
 
   authorName: ->
     @get("author").name
 
-  shortCommitMessage: ->
+  shortMessage: ->
     message = @get "message"
-    message.split("\n")[0]
+    message?.split("\n")[0]
 
   open: ->
     atom.confirm
-      message: "Soft-reset head to #{@short_id()}?"
+      message: "Soft-reset head to #{@shortID()}?"
       detailedMessage: @get("message")
       buttons:
         "Reset": @reset
@@ -29,7 +29,7 @@ class Commit extends ListItem
 
   confirmHardReset: ->
     atom.confirm
-      message: "Do you REALLY want to HARD-reset head to #{@short_id()}?"
+      message: "Do you REALLY want to HARD-reset head to #{@shortID()}?"
       detailedMessage: "Commit message: \"#{@get("message")}\""
       buttons:
         "Cancel": null

@@ -1,11 +1,11 @@
 {Model} = require 'backbone'
-{git} = require '../git'
-FileList = require './files/file-list'
-BranchList = require './branches/branch-list'
-# CommitList = require './commit-list'
-Branch = require './branches/branch'
-
 {spawn} = require 'child_process'
+
+{git} = require '../git'
+{FileList} = require './files'
+{Branch, BranchList} = require './branches'
+# CommitList = require './commit-list'
+
 
 module.exports =
 class Repo extends Model

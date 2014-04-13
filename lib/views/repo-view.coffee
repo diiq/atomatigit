@@ -1,9 +1,10 @@
-{View, EditorView} = require 'atom'
-FileListView = require './files/file-list-view'
-BranchBriefView = require './branches/branch-brief-view'
-BranchListView = require './branches/branch-list-view'
-# CommitListView = require './commit-list-view'
 $ = require 'jquery'
+
+{View, EditorView} = require 'atom'
+{FileListView} = require './files'
+{BranchBriefView, BranchListView}  = require './branches'
+
+# CommitListView = require './commit-list-view'
 ErrorView = require './error-view'
 ErrorModel = require '../error-model'
 
