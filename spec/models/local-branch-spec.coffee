@@ -1,7 +1,7 @@
 LocalBranch = require '../../lib/models/local-branch'
 {git} = require '../../lib/git'
 
-describe "Branch", ->
+describe "LocalBranch", ->
   branch = ""
   beforeEach ->
     branch = new LocalBranch
