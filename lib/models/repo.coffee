@@ -4,7 +4,7 @@
 {git} = require '../git'
 {FileList} = require './files'
 {Branch, BranchList} = require './branches'
-# CommitList = require './commit-list'
+{CommitList} = require './commits'
 
 
 module.exports =
@@ -13,7 +13,7 @@ class Repo extends Model
     @files = new FileList []
     @branch_list = new BranchList []
     @active_list = @branch_list
-    #@commit_list = new CommitList []
+    @commit_list = new CommitList []
 
     @current_branch = new Branch
     git.on "change", => @refresh()
@@ -23,7 +23,7 @@ class Repo extends Model
       @files.populate files
 
     @branch_list.reload()
-    #@commit_list.reload(@current_branch)
+    @commit_list.reload(@current_branch)
 
     @refreshCurrentBranch()
 
@@ -31,7 +31,7 @@ class Repo extends Model
     git.branch (head) =>
       @current_branch.set head
 
-    git.git "log @{u}..", (output) =>
+    git.gitNoChange "log @{u}..", (output) =>
       @current_branch.set unpushed: (output != "")
 
   fetch: ->

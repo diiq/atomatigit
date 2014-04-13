@@ -11,7 +11,7 @@ class Branch extends ListItem
     @name()
 
   commit: ->
-    @commit_model ||= new Commit @get "commit"
+    new Commit @get "commit"
 
   remoteName: -> ""
 

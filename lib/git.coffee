@@ -6,6 +6,7 @@ _ = require 'underscore'
 class Git extends Model
   initialize: (options) ->
     @gift = gift options.path
+    window.gift = @gift
     @clearMessage()
 
   diff: (path, callback, options) ->
@@ -20,6 +21,9 @@ class Git extends Model
   git: (command, callback) ->
     @gift.git command, @callbackWithErrors(callback)
 
+  gitNoChange: (command, callback) ->
+    @gift.git command, @callbackWithErrorsNoChange(callback)
+
   status: (callback) ->
     @gift.status @callbackWithErrorsNoChange (status) =>
       callback @_tidyStatus status.files
@@ -32,6 +36,9 @@ class Git extends Model
 
   remotes: (callback) ->
     @gift.remotes @callbackWithErrorsNoChange(callback)
+
+  commits: (branch_name, callback) ->
+    @gift.commits branch_name, @callbackWithErrorsNoChange(callback)
 
   remoteFetch: (callback) ->
     @gift.remote_fetch
@@ -71,7 +78,7 @@ class Git extends Model
     @trigger("change:task_counter")
 
   workingP: ->
-    @task_counter == 0
+    @task_counter > 0
 
 
   setMessage: (message) ->

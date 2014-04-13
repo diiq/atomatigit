@@ -3,7 +3,7 @@ $ = require 'jquery'
 {View, EditorView} = require 'atom'
 {FileListView} = require './files'
 {BranchBriefView, BranchListView}  = require './branches'
-# CommitListView = require './commit-list-view'
+{CommitListView} = require './commits'
 ErrorView = require './error-view'
 {git} = require '../git'
 
@@ -16,17 +16,17 @@ class RepoView extends View
       @div class: "input", outlet: "input", =>
         @subview "input_editor", new EditorView(mini: true)
 
-      # @ul class: "list-inline tab-bar inset-panel", =>
-      #   @li outlet: "files_tab", class: "tab active", click: "goto_file_view", =>
-      #     @div class: 'title', "Staging"
-      #   @li outlet: "branches_tab", class: "tab", click: "goto_branch_view", =>
-      #     @div class: 'title', "Branches"
-      #   @li outlet: "commits_tab", class: "tab", click: "goto_commit_log", =>
-      #     @div class: 'title', "Log"
+      @ul class: "list-inline tab-bar inset-panel", =>
+        @li outlet: "files_tab", class: "tab active", click: "goto_file_view", =>
+          @div class: 'title', "Staging"
+        @li outlet: "branches_tab", class: "tab", click: "goto_branch_view", =>
+          @div class: 'title', "Branches"
+        @li outlet: "commits_tab", class: "tab", click: "goto_commit_log", =>
+          @div class: 'title', "Log"
 
       @subview "fileListView", new FileListView model.files
       @subview "branchListView", new BranchListView model.branch_list
-      #@subview "commit_list_view", new CommitListView model.commit_list
+      @subview "commit_list_view", new CommitListView model.commit_list
       @subview "error", new ErrorView git
 
   initialize: (repo) ->
@@ -43,8 +43,8 @@ class RepoView extends View
     @input_editor.on "click", -> false
     @resize_handle.on "mousedown", @resize_started
 
-    #atom_git = atom.project.getRepo()
-    #@subscribe atom_git, 'status-changed', => @model.refresh()
+    atom_git = atom.project.getRepo()
+    @subscribe atom_git, 'status-changed', => @model.refresh()
 
   insert_commands: ->
     atom.workspaceView.command "atomatigit:next", => @model.files.next()
@@ -78,7 +78,7 @@ class RepoView extends View
 
   refresh: ->
     @model.refresh()
-    ErrorModel.clear_task_counter()
+    git.clearTaskCounter()
 
   # deactivate_tabs: ->
   #   @commits_tab.removeClass "active"
