@@ -17,6 +17,9 @@ class Commit extends ListItem
     message?.split("\n")[0]
 
   open: ->
+    @confirmReset()
+
+  confirmReset: ->
     atom.confirm
       message: "Soft-reset head to #{@shortID()}?"
       detailedMessage: @get("message")
@@ -30,7 +33,7 @@ class Commit extends ListItem
   confirmHardReset: ->
     atom.confirm
       message: "Do you REALLY want to HARD-reset head to #{@shortID()}?"
-      detailedMessage: "Commit message: \"#{@get("message")}\""
+      detailedMessage: @get("message")
       buttons:
         "Cancel": null
         "Reset": @hardReset
