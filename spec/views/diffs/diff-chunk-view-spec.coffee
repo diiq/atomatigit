@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{DiffChunk} = require __base + 'models/diffs'
-{DiffChunkView} = require __base + 'views/diffs'
+base_require = require '../../spec_helper'
+{DiffChunk} = base_require 'models/diffs'
+{DiffChunkView} = base_require 'views/diffs'
 
 describe "DiffChunkView", ->
   string = ["@@ -1,43 +1,28 @@",

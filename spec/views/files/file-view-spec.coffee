@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{File} = require __base + 'models/files'
-{FileView} = require __base + 'views/files'
+base_require = require '../../spec_helper'
+{File} = base_require 'models/files'
+{FileView} = base_require 'views/files'
 
 describe "FileView", ->
   view = model = null

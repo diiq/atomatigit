@@ -1,1 +1,2 @@
-global.__base = __dirname + '/../lib/'
+module.exports = (path) ->
+  require __dirname + '/../lib/' + path

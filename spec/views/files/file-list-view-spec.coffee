@@ -1,7 +1,7 @@
-require '../../spec_helper'
-{FileList} = require __base + 'models/files'
-{FileListView} = require __base + 'views/files'
-{git} = require __base + 'git'
+base_require = require '../../spec_helper'
+{FileList} = base_require 'models/files'
+{FileListView} = base_require 'views/files'
+{git} = base_require 'git'
 
 describe "FileListView", ->
   statusList =

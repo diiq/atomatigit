@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{UntrackedFile} = require __base + 'models/files'
-{git} = require __base + 'git'
+base_require = require '../../spec_helper'
+{UntrackedFile} = base_require 'models/files'
+{git} = base_require 'git'
 
 shell = require 'shell'
 

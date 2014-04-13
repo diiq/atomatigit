@@ -1,5 +1,5 @@
-require '../../spec_helper'
-{DiffLine} = require __base + 'models/diffs'
+base_require = require '../../spec_helper'
+{DiffLine} = base_require 'models/diffs'
 
 
 describe "DiffLine", ->

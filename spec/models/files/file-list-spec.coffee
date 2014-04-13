@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{FileList} = require __base + 'models/files'
-{git} = require __base + 'git'
+base_require = require '../../spec_helper'
+{FileList} = base_require 'models/files'
+{git} = base_require 'git'
 
 
 describe "FileList", ->

@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{DiffLine} = require __base + 'models/diffs'
-{DiffLineView} = require __base + 'views/diffs'
+base_require = require '../../spec_helper'
+{DiffLine} = base_require 'models/diffs'
+{DiffLineView} = base_require 'views/diffs'
 
 describe "DiffLineView", ->
   describe ".initialize", ->

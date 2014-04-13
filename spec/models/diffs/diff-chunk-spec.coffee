@@ -1,5 +1,5 @@
-require '../../spec_helper'
-{DiffChunk} = require __base + 'models/diffs'
+base_require = require '../../spec_helper'
+{DiffChunk} = base_require 'models/diffs'
 
 describe "DiffChunk", ->
   describe "string methods", ->

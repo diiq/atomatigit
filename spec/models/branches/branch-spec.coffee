@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{Branch} = require __base + 'models/branches'
-{git} = require __base + 'git'
+base_require = require '../../spec_helper'
+{Branch} = base_require 'models/branches'
+{git} = base_require 'git'
 
 describe "Branch", ->
   branch = ""

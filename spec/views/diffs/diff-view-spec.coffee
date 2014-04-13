@@ -1,6 +1,6 @@
-require '../../spec_helper'
-{Diff} = require __base + 'models/diffs'
-{DiffView} = require __base + 'views/diffs'
+base_require = require '../../spec_helper'
+{Diff} = base_require 'models/diffs'
+{DiffView} = base_require 'views/diffs'
 
 describe "DiffView", ->
   string = ["--- a/lib/models/diff.coffee",
