@@ -1,6 +1,6 @@
 '.workspace':
   'cmd-alt-g': 'atomatigit:show'
-  'cmd-alt-c': 'atomatigit:commit_complete'
+  'cmd-alt-c': 'atomatigit:complete-commit'
 
 '.atomatigit':
   'cmd-alt-g': 'atomatigit:close'

@@ -54,14 +54,13 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:kill", => @model.selection().kill()
     atom.workspaceView.command "atomatigit:open", => @model.selection().open()
     atom.workspaceView.command "atomatigit:toggle-diff", => @model.selection().toggleDiff()
-    atom.workspaceView.command "atomatigit:commit", => @model.initiate_commit()
+    atom.workspaceView.command "atomatigit:commit", => @model.initiateCommit()
+    atom.workspaceView.command "atomatigit:complete-commit", => @commitAndClose()
     atom.workspaceView.command "atomatigit:push", => @model.push()
     atom.workspaceView.command "atomatigit:fetch", => @model.fetch()
     atom.workspaceView.command "atomatigit:stash", => @model.stash()
     atom.workspaceView.command "atomatigit:stash_pop", => @model.stash_pop()
-    atom.workspaceView.command "atomatigit:checkout_branch", => @model.selected_branch().checkout()
-    atom.workspaceView.command "atomatigit:reset_to_commit", => @model.selected_commit().reset_to()
-    atom.workspaceView.command "atomatigit:hard_reset_to_commit", => @model.selected_commit().hard_reset_to()
+    atom.workspaceView.command "atomatigit:hard_reset_to_commit", => @model.selectedCommit().confirmHardReset()
     atom.workspaceView.command "atomatigit:create_branch", => @model.initiate_create_branch()
     atom.workspaceView.command "atomatigit:git_command", => @model.initiate_git_command()
     atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
@@ -70,11 +69,10 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:branches", => @goto_branch_view()
     atom.workspaceView.command "atomatigit:files", => @goto_file_view()
     atom.workspaceView.command "atomatigit:commit_log", => @goto_commit_log()
-    atom.workspaceView.command "atomatigit:commit_complete", => @commit_and_close()
     atom.workspaceView.command "atomatigit:refresh", => @refresh()
 
-  commit_and_close: ->
-    @model.complete_commit()
+  commitAndClose: ->
+    @model.completeCommit()
 
   refresh: ->
     @model.refresh()

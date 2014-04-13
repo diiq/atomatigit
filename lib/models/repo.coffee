@@ -26,6 +26,8 @@ class Repo extends Model
     @branch_list.reload()
     @commit_list.reload(@current_branch)
 
+  commitMessagePath: ->
+    atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG.atom"
 
   fetch: ->
     git.incrementTaskCounter()
@@ -46,16 +48,14 @@ class Repo extends Model
 
   initiateCommit: ->
     git.incrementTaskCounter()
-    git.git "commit"
-    atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
+    if atom.config.get("atomatigit.pre_commit_hook") != ""
+      atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
+    atom.workspaceView.open @commitMessagePath()
 
   completeCommit: ->
     atom.workspaceView.trigger("core:save")
     atom.workspaceView.trigger("core:close")
-    spawn "/Users/diiq/utils/atom_commit_editor_complete.sh",
-          ["done"],
-          stdio: 'pipe',
-          env: process.env
+    git.git "commit --file=#{@commitMessagePath()}"
     git.decrementTaskCounter()
     @refresh()
 
