@@ -3,7 +3,7 @@
 
 {git} = require '../git'
 {FileList} = require './files'
-{Branch, BranchList} = require './branches'
+{LocalBranch, BranchList} = require './branches'
 {CommitList} = require './commits'
 
 
@@ -15,7 +15,7 @@ class Repo extends Model
     @active_list = @branch_list
     @commit_list = new CommitList []
 
-    @current_branch = new Branch
+    @current_branch = new LocalBranch
     git.on "change", => @refresh()
 
   refresh: ->
@@ -77,3 +77,6 @@ class Repo extends Model
     @trigger "need_input",
       query: "Git command"
       callback: (command) => git.git command
+
+  push: ->
+    @current_branch.push()

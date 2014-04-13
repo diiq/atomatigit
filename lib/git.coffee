@@ -69,11 +69,11 @@ class Git extends Model
     @task_counter += 1
     @trigger("change:task_counter")
 
-  decrementTaskCounter: ->
+  decrementTaskCounter: =>
     @task_counter -= 1
     @trigger("change:task_counter")
 
-  clearTaskCounter: ->
+  clearTaskCounter: =>
     @task_counter = 0
     @trigger("change:task_counter")
 
