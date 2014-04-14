@@ -17,7 +17,7 @@ class BranchBriefView extends View
     @model.off "change:selected", @showSelection
     @model.off "change", @repaint
 
-  clicked: ->
+  clicked: =>
     @model.selfSelect()
 
   repaint: =>
@@ -27,6 +27,8 @@ class BranchBriefView extends View
     @commit.removeClass "unpushed"
     if @model.unpushed()
       @commit.addClass "unpushed"
+
+    @showSelection()
 
   showSelection: =>
     @removeClass("selected")

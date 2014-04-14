@@ -7,6 +7,7 @@ class File extends ListItem
   initialize: ->
     @set diff: false
     @loadDiff()
+    @deselect()
 
   path: ->
     @get "path"

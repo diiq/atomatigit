@@ -15,9 +15,9 @@ class CommitView extends View
   beforeRemove: ->
     @model.off "change:selected", @showSelection
 
-  clicked: ->
+  clicked: =>
     @model.selfSelect()
 
-  select: =>
+  showSelection: =>
     @removeClass("selected")
-    @addClass("selected") if @model.selected()
+    @addClass("selected") if @model.selectedP()

@@ -8,10 +8,10 @@ class CommitListView extends View
 
   initialize: (commit_list) ->
     @model = commit_list
-    @model.on "change", @repaint
+    @model.on "repopulate", @repaint
 
   beforeRemove: ->
-    @model.off "change", @repaint
+    @model.off "repopulate", @repaint
 
   repaint: =>
     @empty()

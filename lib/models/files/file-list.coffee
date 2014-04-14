@@ -1,12 +1,17 @@
+_ = require 'underscore'
+
 List = require '../list'
 UnstagedFile = require './unstaged-file'
 StagedFile = require './staged-file'
 UntrackedFile = require './untracked-file'
-_ = require 'underscore'
+{git} = require '../../git'
 
 module.exports =
 class FileList extends List
-  populate: (filelist) ->
+  reload: () ->
+    git.status @populate
+
+  populate: (filelist) =>
     @reset()
 
     _.each filelist.untracked, (file) =>

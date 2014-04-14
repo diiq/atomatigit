@@ -17,21 +17,21 @@ class RepoView extends View
         @subview "input_editor", new EditorView(mini: true)
 
       @ul class: "list-inline tab-bar inset-panel", =>
-        @li outlet: "files_tab", class: "tab active", click: "goto_file_view", =>
+        @li outlet: "file_tab", class: "tab active", click: "showFiles", =>
           @div class: 'title', "Staging"
-        @li outlet: "branches_tab", class: "tab", click: "goto_branch_view", =>
+        @li outlet: "branch_tab", class: "tab", click: "showBranches", =>
           @div class: 'title', "Branches"
-        @li outlet: "commits_tab", class: "tab", click: "goto_commit_log", =>
+        @li outlet: "commit_tab", class: "tab", click: "showCommits", =>
           @div class: 'title', "Log"
 
-      @subview "file_list_view", new FileListView model.files
+      @subview "file_list_view", new FileListView model.file_list
       @subview "branch_list_view", new BranchListView model.branch_list
       @subview "commit_list_view", new CommitListView model.commit_list
       @subview "error", new ErrorView git
 
   initialize: (repo) ->
     @model = repo
-    @set_active_view @file_list_view
+
     @insert_commands()
 
     @model.on "need_input", @get_input
@@ -44,11 +44,13 @@ class RepoView extends View
     @resize_handle.on "mousedown", @resize_started
 
     atom_git = atom.project.getRepo()
-    @subscribe atom_git, 'status-changed', => @model.refresh()
+    @subscribe atom_git, 'status-changed', @model.reload
+
+    @showFiles()
 
   insert_commands: ->
-    atom.workspaceView.command "atomatigit:next", => @model.files.next()
-    atom.workspaceView.command "atomatigit:previous", => @model.files.previous()
+    atom.workspaceView.command "atomatigit:next", => @model.active_list.next()
+    atom.workspaceView.command "atomatigit:previous", => @model.active_list.previous()
     atom.workspaceView.command "atomatigit:stage", => @model.selection().stage()
     atom.workspaceView.command "atomatigit:unstage", => @model.selection().unstage()
     atom.workspaceView.command "atomatigit:kill", => @model.selection().kill()
@@ -66,46 +68,43 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
     atom.workspaceView.command "atomatigit:input:up", => @input_up()
     atom.workspaceView.command "atomatigit:input:down", => @input_down()
-    atom.workspaceView.command "atomatigit:branches", => @goto_branch_view()
-    atom.workspaceView.command "atomatigit:files", => @goto_file_view()
-    atom.workspaceView.command "atomatigit:commit_log", => @goto_commit_log()
+    atom.workspaceView.command "atomatigit:branches", => @showBranches()
+    atom.workspaceView.command "atomatigit:files", => @showFiles()
+    atom.workspaceView.command "atomatigit:commit_log", => @showCommits()
     atom.workspaceView.command "atomatigit:refresh", => @refresh()
 
   commitAndClose: ->
     @model.completeCommit()
 
   refresh: ->
-    @model.refresh()
+    @model.reload()
     git.clearTaskCounter()
 
-  deactivate_tabs: ->
-    @commits_tab.removeClass "active"
-    @files_tab.removeClass "active"
-    @branches_tab.removeClass "active"
+  showBranches: ->
+    @model.active_list = @model.branch_list
+    @active_view = @branch_list_view
+    @showViews()
 
-  goto_branch_view: ->
-    @deactivate_tabs()
-    @branches_tab.addClass "active"
-    @set_active_view @branch_list_view
+  showFiles: ->
+    @model.active_list = @model.file_list
+    @active_view = @file_list_view
+    @showViews()
 
-  goto_file_view: ->
-    @deactivate_tabs()
-    @files_tab.addClass "active"
-    @set_active_view @file_list_view
+  showCommits: ->
+    @model.active_list = @model.commit_list
+    @active_view = @commit_list_view
+    @showViews()
 
-  goto_commit_log: ->
-    @deactivate_tabs()
-    @commits_tab.addClass "active"
-    @set_active_view @commit_list_view
-
-  set_active_view: (view) ->
+  showViews: ->
     @mode_switch_flag = true
-    @file_list_view.addClass "hidden"
-    @branch_list_view.addClass "hidden"
-    @commit_list_view.addClass "hidden"
-    view.removeClass "hidden"
-    view.focus()
-    @active_view = view
+    @file_list_view.toggleClass "hidden", @active_view != @file_list_view
+    @file_tab.toggleClass "active", @active_view == @file_list_view
+
+    @branch_list_view.toggleClass "hidden", @active_view != @branch_list_view
+    @branch_tab.toggleClass "active", @active_view == @branch_list_view
+
+    @commit_list_view.toggleClass "hidden", @active_view != @commit_list_view
+    @commit_tab.toggleClass "active", @active_view == @commit_list_view
 
   resize_started: =>
     $(document.body).on 'mousemove', @resize

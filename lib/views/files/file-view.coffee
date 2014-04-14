@@ -21,8 +21,7 @@ class FileView extends View
     @model.selfSelect()
 
   showSelection: =>
-    @removeClass("selected")
-    @addClass("selected") if @model.selectedP()
+    @toggleClass "selected", @model.selectedP()
 
   showDiff: =>
     @find(".diff").remove()

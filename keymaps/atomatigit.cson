@@ -10,6 +10,7 @@
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
+  'enter': 'atomatigit:open'
   'escape': 'atomatigit:close'
   'b': 'atomatigit:branches'
   's': 'atomatigit:files'
@@ -24,19 +25,16 @@
   'z': 'atomatigit:stash'
   'shift-z': 'atomatigit:stash_pop'
   'u': 'atomatigit:unstage'
-  'enter': 'atomatigit:open'
   'tab': 'atomatigit:toggle-diff'
   'cmd-shift-z': 'atomatigit:show'
   'c': 'atomatigit:commit'
   'backspace': 'atomatigit:kill'
 
 '.atomatigit .branch-list-view':
-  'enter': 'atomatigit:checkout_branch'
   'c': 'atomatigit:create_branch'
   'backspace': 'atomatigit:kill_branch'
 
 '.atomatigit .commit-list-view':
-  'enter': 'atomatigit:reset_to_commit'
   'shift-enter': 'atomatigit:hard_reset_to_commit'
 
 '.atomatigit .input.block .editor':

@@ -47,7 +47,7 @@ class Git extends Model
     @gift.create_branch name, @callbackWithErrors(callback)
 
   remotePush: (remote_branch, callback) ->
-    @gift.remote_push remote_branch, @callbackWithErrors(callback)
+    @gift.remote_push remote_branch + " -u", @callbackWithErrors(callback)
 
   callbackWithErrors: (callback) =>
     (error, value) =>
@@ -55,7 +55,7 @@ class Git extends Model
         @setMessage "#{error}"
       else
         callback value if callback
-        @trigger "change"
+        @trigger "reload"
 
   callbackWithErrorsNoChange: (callback) =>
     (error, value) =>

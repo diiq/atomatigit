@@ -26,7 +26,7 @@ module.exports =
   focus: ->
     if !@repo_view.hasParent()
       atom.workspaceView.appendToRight(@repo_view)
-    @repo.refresh()
+    @repo.reload()
     @repo_view.focus()
 
   deactivate: ->

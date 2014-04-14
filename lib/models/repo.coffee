@@ -10,21 +10,20 @@
 module.exports =
 class Repo extends Model
   initialize: (opts) ->
-    @files = new FileList []
+    @file_list = new FileList []
     @branch_list = new BranchList []
-    @active_list = @branch_list
     @commit_list = new CommitList []
-
     @current_branch = new CurrentBranch
-    git.on "change", => @refresh()
+    git.on "reload", @reload
 
-  refresh: ->
-    git.status (files) =>
-      @files.populate files
-
+  reload: =>
+    @file_list.reload()
     @current_branch.reload()
     @branch_list.reload()
     @commit_list.reload(@current_branch)
+
+  selection: ->
+    @active_list.selection()
 
   commitMessagePath: ->
     atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG.atom"
@@ -43,9 +42,6 @@ class Repo extends Model
   stashPop: ->
     git.git "stash pop"
 
-  selection: ->
-    @files.selection()
-
   initiateCommit: ->
     git.incrementTaskCounter()
     if atom.config.get("atomatigit.pre_commit_hook") != ""
@@ -55,9 +51,7 @@ class Repo extends Model
   completeCommit: ->
     atom.workspaceView.trigger("core:save")
     atom.workspaceView.trigger("core:close")
-    git.git "commit --file=#{@commitMessagePath()}"
-    git.decrementTaskCounter()
-    @refresh()
+    git.git "commit --file=#{@commitMessagePath()}", git.decrementTaskCounter
 
   initiateCreateBranch: ->
     @trigger "need_input",

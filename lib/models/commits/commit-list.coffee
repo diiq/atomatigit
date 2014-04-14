@@ -12,4 +12,5 @@ class CommitList extends List
 
   repopulate: (commit_hashes) =>
     @reset(commit_hashes)
+    @trigger "repopulate"
     @select @selected_index
