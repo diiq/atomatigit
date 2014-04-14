@@ -12,6 +12,7 @@
   'i': 'atomatigit:previous'
   'enter': 'atomatigit:open'
   'escape': 'atomatigit:close'
+  'backspace': 'atomatigit:kill'
   'b': 'atomatigit:branches'
   's': 'atomatigit:files'
   'l': 'atomatigit:commit_log'
@@ -28,11 +29,9 @@
   'tab': 'atomatigit:toggle-diff'
   'cmd-shift-z': 'atomatigit:show'
   'c': 'atomatigit:commit'
-  'backspace': 'atomatigit:kill'
 
 '.atomatigit .branch-list-view':
   'c': 'atomatigit:create_branch'
-  'backspace': 'atomatigit:kill_branch'
 
 '.atomatigit .commit-list-view':
   'shift-enter': 'atomatigit:hard_reset_to_commit'

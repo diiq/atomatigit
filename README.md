@@ -33,7 +33,6 @@ Staging View
 - `shift-s` to stage a file
 - `u` to unstage a file
 - `c` to commit
-- `escape` to abort a commit
 - `z` to stash
 - `shift-Z` to unstash
 - `backspace` to kill a diff, or delete an untracked file

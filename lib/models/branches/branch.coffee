@@ -4,10 +4,6 @@ Commit = require '../commits/commit'
 
 module.exports =
 class Branch extends ListItem
-  selfSelect: ->
-    console.log "here", this
-    super
-
   name: ->
     @get "name"
 

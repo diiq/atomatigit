@@ -40,8 +40,8 @@ class Git extends Model
   commits: (branch_name, callback) ->
     @gift.commits branch_name, @callbackWithErrorsNoChange(callback)
 
-  remoteFetch: (callback) ->
-    @gift.remote_fetch
+  remoteFetch: (remote, callback) ->
+    @gift.remote_fetch remote, @callbackWithErrors(callback)
 
   createBranch: (name, callback) ->
     @gift.create_branch name, @callbackWithErrors(callback)
