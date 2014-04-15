@@ -17,6 +17,7 @@ class Repo extends Model
     git.on "reload", @reload
 
   reload: =>
+    git.setPath()
     @file_list.reload()
     @current_branch.reload()
     @branch_list.reload()
@@ -51,7 +52,8 @@ class Repo extends Model
   completeCommit: ->
     atom.workspaceView.trigger("core:save")
     atom.workspaceView.trigger("core:close")
-    git.git "commit --file=#{@commitMessagePath()}", git.decrementTaskCounter
+    git.git "commit --file=#{@commitMessagePath()}"
+    git.decrementTaskCounter()
 
   initiateCreateBranch: ->
     @trigger "need_input",

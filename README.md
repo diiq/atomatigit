@@ -57,5 +57,4 @@ but it is stable enough that I use it *almost* exclusively.
 While you can view the individual chunks of a file diff, you cannot currently
 stage them individually -- you can only stage the full file.
 
-You cannot merge, ammend, or rebase through the UI. Merge is coming very soon,
-ammend is close behind, but rebase is till some time in the future.
+You cannot merge, ammend, or rebase through the UI.

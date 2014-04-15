@@ -4,10 +4,13 @@ _ = require 'underscore'
 
 
 class Git extends Model
+  task_counter: 0
   initialize: (options) ->
-    @gift = gift options.path
-    window.gift = @gift
+    @setPath(options?.path)
     @clearMessage()
+
+  setPath: (path) ->
+    @gift = gift (path || atom.project.getRepo().getWorkingDirectory())
 
   diff: (path, callback, options) ->
     options ||= {}
@@ -50,7 +53,9 @@ class Git extends Model
     @gift.remote_push remote_branch + " -u", @callbackWithErrors(callback)
 
   callbackWithErrors: (callback) =>
+    @incrementTaskCounter()
     (error, value) =>
+      @decrementTaskCounter()
       if error
         @setMessage "#{error}"
       else
@@ -58,7 +63,9 @@ class Git extends Model
         @trigger "reload"
 
   callbackWithErrorsNoChange: (callback) =>
+    @incrementTaskCounter()
     (error, value) =>
+      @decrementTaskCounter()
       if error
         @setMessage "#{error}"
       else
@@ -67,11 +74,11 @@ class Git extends Model
 
   incrementTaskCounter: ->
     @task_counter += 1
-    @trigger("change:task_counter")
+    @trigger("change:task_counter") if @task_counter == 1
 
   decrementTaskCounter: =>
     @task_counter -= 1
-    @trigger("change:task_counter")
+    @trigger("change:task_counter") if @task_counter == 0
 
   clearTaskCounter: =>
     @task_counter = 0
@@ -114,7 +121,7 @@ class Git extends Model
 
 git = {}
 if atom.project
-  git = new Git path: atom.project.getRepo().getWorkingDirectory()
+  git = new Git
 
 module.exports =
   Git: Git

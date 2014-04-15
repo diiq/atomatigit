@@ -21,6 +21,5 @@ class LocalBranch extends Branch
     git.git "checkout #{@localName()}"
 
   push: (remote) ->
-    git.incrementTaskCounter()
     remote ||= "origin #{@name()}"
-    git.remotePush remote, git.decrementTaskCounter
+    git.remotePush remote
