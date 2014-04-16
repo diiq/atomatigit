@@ -75,7 +75,10 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:refresh", => @refresh()
 
   commitAndClose: ->
+    atom.workspaceView.trigger("core:save")
+    atom.workspaceView.trigger("core:close")
     @model.completeCommit()
+    @focus()
 
   refresh: ->
     @model.reload()

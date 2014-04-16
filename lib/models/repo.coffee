@@ -50,8 +50,6 @@ class Repo extends Model
     atom.workspaceView.open @commitMessagePath()
 
   completeCommit: ->
-    atom.workspaceView.trigger("core:save")
-    atom.workspaceView.trigger("core:close")
     git.git "commit --file=#{@commitMessagePath()}"
     git.decrementTaskCounter()
 
