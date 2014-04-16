@@ -15,8 +15,8 @@
   'backspace': 'atomatigit:kill'
   'b': 'atomatigit:branches'
   's': 'atomatigit:files'
-  'l': 'atomatigit:commit_log'
-  ':': 'atomatigit:git_command'
+  'l': 'atomatigit:commit-log'
+  ':': 'atomatigit:git-command'
   'r': 'atomatigit:refresh'
   'shift-p': 'atomatigit:push'
   'f': 'atomatigit:fetch'
@@ -24,17 +24,17 @@
 '.atomatigit .file-list-view':
   'shift-s': 'atomatigit:stage'
   'z': 'atomatigit:stash'
-  'shift-z': 'atomatigit:stash_pop'
+  'shift-z': 'atomatigit:stash-pop'
   'u': 'atomatigit:unstage'
   'tab': 'atomatigit:toggle-diff'
   'cmd-shift-z': 'atomatigit:show'
   'c': 'atomatigit:commit'
 
 '.atomatigit .branch-list-view':
-  'c': 'atomatigit:create_branch'
+  'c': 'atomatigit:create-branch'
 
 '.atomatigit .commit-list-view':
-  'shift-enter': 'atomatigit:hard_reset_to_commit'
+  'shift-enter': 'atomatigit:hard-reset-to-commit'
 
 '.atomatigit .input.block .editor':
   'enter': 'atomatigit:input:newline'

@@ -6,11 +6,11 @@ class FileListView extends View
   @content: ->
     @div class: "file-list-view list-view", tabindex: -1, =>
       @h2 outlet: "untrackedHeader", "untracked:"
-      @div outlet: "untracked"
+      @div class: "untracked", outlet: "untracked"
       @h2 outlet: "unstagedHeader", "unstaged:"
-      @div outlet: "unstaged"
+      @div class: "unstaged", outlet: "unstaged"
       @h2 outlet: "stagedHeader", "staged:"
-      @div outlet: "staged"
+      @div class: "staged", outlet: "staged"
 
   initialize: (fileList) ->
     @model = fileList

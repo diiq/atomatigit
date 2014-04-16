@@ -3,7 +3,7 @@
 module.exports =
 class BranchBriefView extends View
   @content: ->
-    @div class: "branch-brief-view", click: "clicked", =>
+    @div class: "branch-brief-view", mousedown: "clicked", =>
       @div class: "name", outlet: "name"
       @div class: "commit", outlet: "commit"
 

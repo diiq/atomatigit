@@ -1,7 +1,43 @@
 # See https://atom.io/docs/latest/creating-a-package#menus for more details
 'context-menu':
-  '.overlayer':
-      'Enable atomatigit': 'atomatigit:show'
+  '.atomatigit .staged .file':
+    'Unstage (U)': 'atomatigit:unstage'
+    'Discard changes (⌫)': 'atomatigit:kill'
+    'Toggle diff (⇥)': 'atomatigit:toggle-diff'
+
+  '.atomatigit .unstaged .file':
+    'Stage (⇧S)': 'atomatigit:stage'
+    'Discard changes (⌫)': 'atomatigit:kill'
+
+  '.atomatigit .untracked .file':
+    'Stage (⇧S)': 'atomatigit:stage'
+    'Delete file (⌫)': 'atomatigit:kill'
+
+  '.atomatigit .file-list-view':
+    'Fetch (f)': 'atomatigit:fetch'
+    'Push (⇧P)': 'atomatigit:push'
+    'Stash (z)': 'atomatigit:push'
+    'Stash pop (⇧Z)': 'atomatigit:push'
+
+  '.atomatigit .file':
+    'Open File (↩)': 'atomatigit:open'
+
+  '.atomatigit':
+    'Commit (c)': 'atomatigit:commit'
+    'Close (⎋)': 'atomatigit:close'
+    'Refresh (r)': 'atomatigit:refresh'
+    'Git command (:)': 'atomatigit:git-command'
+
+  '.atomatigit .branch-list-view .branch-brief-view':
+    'Checkout (↩)': 'atomatigit:open'
+    'Delete branch (⌫)': 'atomatigit:kill'
+
+  '.atomatigit .branch-list-view':
+    'Create Branch (b)': 'atomatigit:create-branch'
+
+  '.atomatigit .commit-list-view .commit':
+    'Soft reset (↩)': 'atomatigit:open'
+    'Hard reset (⇧↩)': 'atomatigit:hard-reset-to-commit'
 
 'menu': [
   {

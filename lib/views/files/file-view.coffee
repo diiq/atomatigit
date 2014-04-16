@@ -4,7 +4,7 @@ DiffView = require '../diffs/diff-view'
 module.exports =
 class FileView extends View
   @content: (file) ->
-    @div class: "file", click: "clicked", =>
+    @div class: "file", mousedown: "clicked", =>
       @div class: "filename", "#{file.path()}"
 
   initialize: (file) ->
