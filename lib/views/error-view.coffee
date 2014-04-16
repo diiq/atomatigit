@@ -23,7 +23,6 @@ class ErrorView extends View
     @message.html @model.messageMarkup()
 
   toggle_spinner: ->
-    console.log @model.task_counter
     if @model.workingP()
       @spinner.show()
     else

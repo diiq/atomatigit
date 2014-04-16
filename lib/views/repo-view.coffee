@@ -13,6 +13,7 @@ class RepoView extends View
     @div class: 'atomatigit', =>
       @div class: "resize-handle", outlet: "resize_handle"
       @subview "branch_brief_view", new BranchBriefView model.current_branch
+      @subview "error", new ErrorView git
       @div class: "input", outlet: "input", =>
         @subview "input_editor", new EditorView(mini: true)
 
@@ -24,10 +25,10 @@ class RepoView extends View
         @li outlet: "commit_tab", class: "tab", click: "showCommits", =>
           @div class: 'title', "Log"
 
-      @subview "file_list_view", new FileListView model.file_list
-      @subview "branch_list_view", new BranchListView model.branch_list
-      @subview "commit_list_view", new CommitListView model.commit_list
-      @subview "error", new ErrorView git
+      @div class: "lists", =>
+        @subview "file_list_view", new FileListView model.file_list
+        @subview "branch_list_view", new BranchListView model.branch_list
+        @subview "commit_list_view", new CommitListView model.commit_list
 
   initialize: (repo) ->
     @model = repo
@@ -154,6 +155,7 @@ class RepoView extends View
     if !@mode_switch_flag
       @removeClass "focused"
     else
+      @focus()
       @mode_switch_flag = false
 
   serialize: ->
