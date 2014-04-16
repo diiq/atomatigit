@@ -148,11 +148,14 @@
     }
   }
 
-  >.branch-brief-view {
+  .current-branch-view {
     text-align: right;
     padding: 20 * @units;
     padding-bottom: 10 * @units;
     background-color: @dark-background;
+    &.selected {
+      background-color: @dark-background;
+    }
     &.unpushed {
       color: @text-color-warning;
     }

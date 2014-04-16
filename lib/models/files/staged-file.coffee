@@ -22,7 +22,7 @@ class StagedFile extends File
         "Discard": @discardAllChanges
         "Cancel": => null
 
-  discardAllChanges: ->
+  discardAllChanges: =>
     git.git "reset HEAD #{@path()}", =>
       git.git "checkout #{@path()}"
 
