@@ -2,7 +2,7 @@ shell = require 'shell'
 
 File = require './file'
 
-git = require '../../git'
+{git} = require '../../git'
 
 module.exports =
 class UntrackedFile extends File
@@ -10,7 +10,7 @@ class UntrackedFile extends File
   # Untracked files appear first in the list
   sort_value: 0
 
-  kill: ->
+  kill: =>
     atom.confirm
       message: "Move \"#{@path()}\" to trash?"
       buttons:
@@ -18,6 +18,9 @@ class UntrackedFile extends File
         "Cancel": null
 
   moveToTrash: =>
-    shell.moveItemToTrash(@path())
+    shell.moveItemToTrash(git.path + "/" + @path())
+    git.trigger "reload"
 
   untrackedP: -> true
+
+  toggleDiff: -> null

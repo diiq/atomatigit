@@ -10,7 +10,8 @@ class Git extends Model
     @clearMessage()
 
   setPath: (path) ->
-    @gift = gift (path || atom.project.getRepo().getWorkingDirectory())
+    @path = path || atom.project.getRepo().getWorkingDirectory()
+    @gift = gift @path
 
   diff: (path, callback, options) ->
     options ||= {}
