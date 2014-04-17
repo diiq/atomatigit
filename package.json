@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "Full git interaction, a la magit",
   "activationEvents": ["atomatigit:show"],
-  "repository": "https://github.com/atom/atomatigit",
+  "repository": "https://github.com/diiq/atomatigit",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
