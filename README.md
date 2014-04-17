@@ -16,7 +16,7 @@ Atomatigit is inspired by the
 [magit](http://magit.github.io/index.html) emacs package.
 
 ![screenshot: file list](http://i.imgur.com/rRk5sSy.png)
-![screenshot: dark theme; branch list; context menu](http://imgur.com/axszNyW)
+![screenshot: dark theme; branch list; context menu](http://i.imgur.com/axszNyW.png)
 
 ## Making changes and stagin files
 
