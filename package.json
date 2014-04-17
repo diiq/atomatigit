@@ -2,7 +2,7 @@
   "name": "atomatigit",
   "main": "./lib/atomatigit",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "Full git interaction, a la magit",
   "activationEvents": ["atomatigit:show"],
   "repository": "https://github.com/atom/atomatigit",
   "license": "MIT",
