@@ -18,9 +18,11 @@ magit, staging, committing, and pushing take only a few keystrokes.
 If you forget any of these, there are also context-sensitive right-click menus
 to act as friendly reminders.
 
-- `alt-shift-g` to open/focus/close atomatigit
+- `cmd-alt-g` to open/focus/close atomatigit
 - `escape` to close
 - `up` (or `i`) and `down` (or `k`) to navigate between items
+- `c` to commit
+- `cmd-alt-c` from a commit buffer to complete a commit
 - `shift-P` to push to origin
 - `b` to view branches
 - `s` to view the staging area
@@ -35,7 +37,6 @@ Staging View
 - `tab` to see an unstaged diff
 - `shift-s` to stage a file
 - `u` to unstage a file
-- `c` to commit
 - `z` to stash
 - `shift-Z` to unstash
 - `backspace` to kill a diff, or delete an untracked file
