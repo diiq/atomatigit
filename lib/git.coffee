@@ -20,7 +20,7 @@ class Git extends Model
         callback diffs[0] if callback
 
   add: (filename, callback) ->
-    @gift.add filename, @callbackWithErrors(callback)
+    @gift.add filename + " --no-ignore-removal", @callbackWithErrors(callback)
 
   git: (command, callback) ->
     @gift.git command, @callbackWithErrors(callback)
