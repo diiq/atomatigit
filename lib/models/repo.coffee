@@ -27,7 +27,7 @@ class Repo extends Model
     @active_list.selection()
 
   commitMessagePath: ->
-    atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG.atom"
+    atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG_#{@current_branch.commit().commitID()}"
 
   fetch: ->
     git.incrementTaskCounter()
@@ -48,6 +48,8 @@ class Repo extends Model
     if atom.config.get("atomatigit.pre_commit_hook") != ""
       atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
     atom.workspaceView.open @commitMessagePath()
+    atom.workspaceView.trigger "core:select-all"
+    atom.workspaceView.trigger "core:delete"
 
   completeCommit: ->
     git.git "commit --file=#{@commitMessagePath()}"

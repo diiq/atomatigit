@@ -17,8 +17,10 @@ describe "UntrackedFile", ->
   describe ".moveToTrash", ->
     it "calls shell.moveItemToTrash with its own path", ->
       spyOn shell, "moveItemToTrash"
+      git.trigger = jasmine.createSpy("trigger")
+      git.path = "foo"
       file.moveToTrash()
-      expect(shell.moveItemToTrash).toHaveBeenCalledWith(file.path())
+      expect(shell.moveItemToTrash).toHaveBeenCalledWith("foo/" + file.path())
 
   describe ".kill", ->
     it "calls atom.confirm", ->

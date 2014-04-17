@@ -33,10 +33,7 @@ describe "LocalBranch", ->
       expect(git.git).toHaveBeenCalledWith "checkout name"
 
   describe ".push", ->
-    it "increments the task counter, and calls git push", ->
-      git.incrementTaskCounter = jasmine.createSpy "incrementTaskCounter"
-      git.decrementTaskCounter = jasmine.createSpy "dencrementTaskCounter"
+    it "calls git push", ->
       git.remotePush = jasmine.createSpy("remotePush")
       branch.push()
-      expect(git.incrementTaskCounter).toHaveBeenCalled()
-      expect(git.remotePush).toHaveBeenCalledWith "origin name", git.decrementTaskCounter
+      expect(git.remotePush).toHaveBeenCalledWith "origin name"
