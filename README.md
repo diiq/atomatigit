@@ -2,21 +2,40 @@
 
 Real git integration for the Atom text editor.
 
-Atom's ability to show which files and which lines have been added, changed, and
-removed is great, but I'd like to be able to see diffs, stage chunks, make
-commits, push, pull, change branches, rebase... and every other thing that git
-allows.
+Atomatigit allows you to see diffs, stage chunks, make commits, push, fetch,
+change branches, delete branches, discard changes... and if there's any function
+you're missing, you can also execute raw git commands.
 
-It's hard to imagine how useful that ability is until you have it. The
-[magit](http://magit.github.io/index.html) emacs package is my inspiration. In
-magit, staging, committing, and pushing take only a few keystrokes.
+Atomatigit is designed to be used using ultra-fast keyboard shortcuts. Press
+`cmd-alt-g` to show the atomatigit pane on the right. From there, you can
+right-click on a file, branch, or commit to see your options, and to get a
+friendly reminder of the keyboard shortcuts. Once you know the shortcuts, you
+can navigate through 100% of atomatigit's functions without a mouse.
 
-![screenshot](http://i.imgur.com/rRk5sSy.png)
+Atomatigit is inspired by the
+[magit](http://magit.github.io/index.html) emacs package.
 
-## Key bindings
+![screenshot: file list](http://i.imgur.com/rRk5sSy.png)
+![screenshot: dark theme; branch list; context menu](http://imgur.com/axszNyW)
 
-If you forget any of these, there are also context-sensitive right-click menus
-to act as friendly reminders.
+## Making changes and stagin files
+
+Press `cmd-alt-g` to show the atomatigit pane on the right.
+
+As soon as you save a file, it will show up in the list of unstaged changes.
+Navigate to it using arrow keys, i/k, or by clicking on it. Hit tab to see the
+diff, and use `shift-s` to stage it.
+
+## Committing
+
+Once you've staged some files, initiate a commit by hitting `c`. A new buffer
+will open for you to enter a commit message. When you're done describing your
+changes, `cmd-alt-c` will complete the commit.
+
+## Other Key bindings
+
+There are many, but don't worry: if you ever forget these, Atomatigit has
+right-click menus to help remind you. Here's the complete list:
 
 - `cmd-alt-g` to open/focus/close atomatigit
 - `escape` to close
