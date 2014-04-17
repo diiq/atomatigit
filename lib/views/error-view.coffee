@@ -20,10 +20,10 @@ class ErrorView extends View
 
   repaint: ->
     @message_panel.show()
-    @message.html @model.markup()
+    @message.html @model.messageMarkup()
 
   toggle_spinner: ->
-    if @model.working()
+    if @model.workingP()
       @spinner.show()
     else
       @spinner.hide()

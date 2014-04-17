@@ -1,108 +1,71 @@
 {Model} = require 'backbone'
-FileList = require './file-list'
-BranchList = require './branch-list'
-CommitList = require './commit-list'
-Branch = require './branch'
-gift = require 'gift'
-error_model = require '../error-model'
 {spawn} = require 'child_process'
+
+{git} = require '../git'
+{FileList} = require './files'
+{CurrentBranch, BranchList} = require './branches'
+{CommitList} = require './commits'
+
 
 module.exports =
 class Repo extends Model
   initialize: (opts) ->
-    @git = gift(@get "path")
-    @file_list = new FileList [], repo: @git
-    @branch_list = new BranchList [], repo: @git
-    @commit_list = new CommitList [], repo: @git
+    @file_list = new FileList []
+    @branch_list = new BranchList []
+    @commit_list = new CommitList []
+    @current_branch = new CurrentBranch
+    git.on "reload", @reload
 
-    @current_branch = new Branch {repo: @git}
-
-    @branch_list.on "repo:reload", => @refresh()
-    @file_list.on "repo:reload", => @refresh()
-    @commit_list.on "repo:reload", => @refresh()
-
-  refresh: ->
-    @git.status (e, repo_status) =>
-      error_model.set_message "#{e}" if e
-      @file_list.refresh repo_status.files
-
+  reload: =>
+    git.setPath()
+    @file_list.reload()
+    @current_branch.reload()
     @branch_list.reload()
     @commit_list.reload(@current_branch)
 
-    @refresh_current_branch()
+  selection: ->
+    @active_list.selection()
 
-  refresh_current_branch: ->
-    @git.branch (e, head) =>
-      error_model.set_message "#{e}" if e
-      @current_branch.set head
-
-    @git.git "log @{u}..", "", "", (e, output) =>
-      #error_model.set_message "#{e}" if e
-      @current_branch.set unpushed: (output != "")
+  commitMessagePath: ->
+    atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG_#{@current_branch.commit().commitID()}"
 
   fetch: ->
-    error_model.increment_task_counter()
-    @git.remote_fetch "origin", =>
-      error_model.decrement_task_counter()
-      @refresh()
+    git.incrementTaskCounter()
+    git.remoteFetch "origin", =>
+      git.decrementTaskCounter()
 
-  checkout_branch: ->
-    @branch_list.checkout_branch => @refresh()
+  checkoutBranch: ->
+    @branch_list.checkout_branch
 
   stash: ->
-    @git.git "stash", @error_callback
+    git.git "stash"
 
-  stash_pop: ->
-    @git.git "stash pop", @error_callback
+  stashPop: ->
+    git.git "stash pop"
 
-  selected_file: ->
-    @file_list.selection()
+  initiateCommit: ->
+    git.incrementTaskCounter()
+    if atom.config.get("atomatigit.pre_commit_hook") != ""
+      atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
+    atom.workspaceView.open @commitMessagePath()
+    atom.workspaceView.trigger "core:select-all"
+    atom.workspaceView.trigger "core:delete"
 
-  selected_branch: ->
-    @branch_list.selection()
+  completeCommit: ->
+    git.git "commit --file=#{@commitMessagePath()}"
+    git.decrementTaskCounter()
 
-  selected_commit: ->
-    @commit_list.selection()
-
-  initiate_commit: ->
-    error_model.increment_task_counter()
-    @git.git "commit", @error_callback
-    atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
-
-  complete_commit: ->
-    atom.workspaceView.trigger("core:save")
-    atom.workspaceView.trigger("core:close")
-    spawn "/Users/diiq/utils/atom_commit_editor_complete.sh",
-          ["done"],
-          stdio: 'pipe',
-          env: process.env
-    error_model.decrement_task_counter()
-    @refresh()
-
-  initiate_create_branch: ->
+  initiateCreateBranch: ->
     @trigger "need_input",
       query: "Branch name"
       callback: (name) =>
-        @git.create_branch name, =>
-          @git.git "checkout #{name}", @error_callback
+        git.createBranch name, =>
+          git.git "checkout #{name}"
 
-  push: (remote) ->
-    error_model.increment_task_counter()
-    remote ?= "origin #{@current_branch.name()}"
-    @git.remote_push remote, (e, f) =>
-      error_model.decrement_task_counter()
-      @error_callback e, f
-
-  initiate_git_command: ->
+  initiateGitCommand: ->
     @trigger "need_input",
       query: "Git command"
-      callback: (command) =>
-        @git.git command, "", @output_callback
+      callback: (command) => git.git command
 
-  output_callback: (e, f) =>
-    error_model.set_message "#{f}"
-    @refresh()
-
-  error_callback: (e, f) =>
-    error_model.set_message "#{f}" if e
-    @refresh()
+  push: ->
+    @current_branch.push()

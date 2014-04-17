@@ -1,6 +1,6 @@
 '.workspace':
   'cmd-alt-g': 'atomatigit:show'
-  'cmd-alt-c': 'atomatigit:commit_complete'
+  'cmd-alt-c': 'atomatigit:complete-commit'
 
 '.atomatigit':
   'cmd-alt-g': 'atomatigit:close'
@@ -10,11 +10,13 @@
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
+  'enter': 'atomatigit:open'
   'escape': 'atomatigit:close'
+  'backspace': 'atomatigit:kill'
   'b': 'atomatigit:branches'
   's': 'atomatigit:files'
-  'l': 'atomatigit:commit_log'
-  ':': 'atomatigit:git_command'
+  'l': 'atomatigit:commit-log'
+  ':': 'atomatigit:git-command'
   'r': 'atomatigit:refresh'
   'shift-p': 'atomatigit:push'
   'f': 'atomatigit:fetch'
@@ -22,22 +24,17 @@
 '.atomatigit .file-list-view':
   'shift-s': 'atomatigit:stage'
   'z': 'atomatigit:stash'
-  'shift-z': 'atomatigit:stash_pop'
+  'shift-z': 'atomatigit:stash-pop'
   'u': 'atomatigit:unstage'
-  'enter': 'atomatigit:open'
-  'tab': 'atomatigit:toggle_file_diff'
+  'tab': 'atomatigit:toggle-diff'
   'cmd-shift-z': 'atomatigit:show'
   'c': 'atomatigit:commit'
-  'backspace': 'atomatigit:kill_file'
 
 '.atomatigit .branch-list-view':
-  'enter': 'atomatigit:checkout_branch'
-  'c': 'atomatigit:create_branch'
-  'backspace': 'atomatigit:kill_branch'
+  'c': 'atomatigit:create-branch'
 
 '.atomatigit .commit-list-view':
-  'enter': 'atomatigit:reset_to_commit'
-  'shift-enter': 'atomatigit:hard_reset_to_commit'
+  'shift-enter': 'atomatigit:hard-reset-to-commit'
 
 '.atomatigit .input.block .editor':
   'enter': 'atomatigit:input:newline'

@@ -11,9 +11,12 @@ It's hard to imagine how useful that ability is until you have it. The
 [magit](http://magit.github.io/index.html) emacs package is my inspiration. In
 magit, staging, committing, and pushing take only a few keystrokes.
 
-![screenshot](http://i.imgur.com/U5WJzE8.png)
+![screenshot](http://i.imgur.com/rRk5sSy.png)
 
 ## Key bindings
+
+If you forget any of these, there are also context-sensitive right-click menus
+to act as friendly reminders.
 
 - `alt-shift-g` to open/focus/close atomatigit
 - `escape` to close
@@ -33,7 +36,6 @@ Staging View
 - `shift-s` to stage a file
 - `u` to unstage a file
 - `c` to commit
-- `escape` to abort a commit
 - `z` to stash
 - `shift-Z` to unstash
 - `backspace` to kill a diff, or delete an untracked file
@@ -58,5 +60,6 @@ but it is stable enough that I use it *almost* exclusively.
 While you can view the individual chunks of a file diff, you cannot currently
 stage them individually -- you can only stage the full file.
 
-You cannot merge, ammend, or rebase through the UI. Merge is coming very soon,
-ammend is close behind, but rebase is till some time in the future.
+You cannot merge, ammend, or rebase through the UI.
+
+Moved and deleted files have bad interactions (in terms of toggle-diff, etc).
