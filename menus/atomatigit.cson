@@ -23,7 +23,6 @@
     'Open File (↩)': 'atomatigit:open'
 
   '.atomatigit':
-    'Commit (c)': 'atomatigit:commit'
     'Close (⎋)': 'atomatigit:close'
     'Refresh (r)': 'atomatigit:refresh'
     'Git command (:)': 'atomatigit:git-command'
@@ -33,7 +32,7 @@
     'Delete branch (⌫)': 'atomatigit:kill'
 
   '.atomatigit .branch-list-view':
-    'Create Branch (b)': 'atomatigit:create-branch'
+    'Create Branch (c)': 'atomatigit:create-branch'
 
   '.atomatigit .commit-list-view .commit':
     'Soft reset (↩)': 'atomatigit:open'

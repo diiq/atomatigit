@@ -1,5 +1,6 @@
 {Model} = require 'backbone'
 {spawn} = require 'child_process'
+{File} = require 'pathwatcher'
 
 {git} = require '../git'
 {FileList} = require './files'
@@ -47,9 +48,8 @@ class Repo extends Model
     git.incrementTaskCounter()
     if atom.config.get("atomatigit.pre_commit_hook") != ""
       atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
+    (new File @commitMessagePath()).write(@commit_message)
     atom.workspaceView.open @commitMessagePath()
-    atom.workspaceView.trigger "core:select-all"
-    atom.workspaceView.trigger "core:delete"
 
   completeCommit: ->
     git.git "commit --file=#{@commitMessagePath()}"
@@ -69,3 +69,6 @@ class Repo extends Model
 
   push: ->
     @current_branch.push()
+
+  commit_message:
+    "\n\n# Compose your commit message. Press `cmd-alt-c` to commit. Close to cancel."
