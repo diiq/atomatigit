@@ -52,7 +52,7 @@ class Repo extends Model
     atom.workspaceView.open @commitMessagePath()
 
   completeCommit: ->
-    git.git "commit --file=#{@commitMessagePath()}"
+    git.git "commit --file=\"#{@commitMessagePath()}\""
     git.decrementTaskCounter()
 
   initiateCreateBranch: ->
