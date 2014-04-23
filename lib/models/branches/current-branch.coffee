@@ -11,8 +11,8 @@ class CurrentBranch extends LocalBranch
     git.branch (head) =>
       @set head
 
-    git.gitNoChange "log @{u}..", (output) =>
-      @set unpushed: (output != "")
+    # git.gitNoChange "log @{u}..", (output) =>
+    #   @set unpushed: (output != "")
 
   head: ->
     "HEAD"
