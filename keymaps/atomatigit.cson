@@ -10,6 +10,7 @@
   'k': 'atomatigit:next'
   'up': 'atomatigit:previous'
   'i': 'atomatigit:previous'
+  'j': 'atomatigit:previous'
   'enter': 'atomatigit:open'
   'escape': 'atomatigit:close'
   'backspace': 'atomatigit:kill'
