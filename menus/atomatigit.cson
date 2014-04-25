@@ -8,6 +8,7 @@
   '.atomatigit .unstaged .file':
     'Stage (⇧S)': 'atomatigit:stage'
     'Discard changes (⌫)': 'atomatigit:kill'
+    'Toggle diff (⇥)': 'atomatigit:toggle-diff'
 
   '.atomatigit .untracked .file':
     'Stage (⇧S)': 'atomatigit:stage'
