@@ -80,6 +80,27 @@ but it is stable enough that I use it *almost* exclusively.
 While you can view the individual chunks of a file diff, you cannot currently
 stage them individually -- you can only stage the full file.
 
-You cannot merge, ammend, or rebase through the UI.
+You cannot merge, ammend, or rebase through the UI (though you can perform the commands using `atomatigit:git-command`).
 
 Moved and deleted files have bad interactions (in terms of toggle-diff, etc).
+
+## Contributing
+
+Contributions are welcome!
+
+`apm develop atomatigit`
+
+Will clone the repo for you.
+
+The code should be quite clear. If you add new files, don't forget to add them
+to the correct `index.coffee` so they can be required from other directories.
+
+Pull requests that break specs won't be merged, so be sur eto run `apm test`
+before you PR.  
+
+Pull requests that spec all their new public methods will get more attention
+than those that don't :)
+
+## Contributors
+
+- [jonathanwiesel](https://github.com/jonathanwiesel)
