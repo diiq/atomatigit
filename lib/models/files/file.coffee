@@ -23,6 +23,7 @@ class File extends ListItem
 
   setDiff: (diff) =>
     @sublist = new Diff diff
+    @trigger "change:diff"
 
   toggleDiff: ->
     @set diff: not @get "diff"

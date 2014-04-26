@@ -4,7 +4,7 @@ base_require = require '../../spec_helper'
 
 describe "Diff", ->
   describe "string methods", ->
-    diff = new Diff diff: "@@ "
+    diff = new Diff diff: "@@ multiline\nstring\n@@ with\ndouble-at\n@@ lines\n  "
     describe ".removeHeader", ->
       it "removes the first two lines of the diff", ->
         string = "multiline\nstring\n@@ with\ndouble-at\n@@ lines\n  "

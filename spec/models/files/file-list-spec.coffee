@@ -5,7 +5,7 @@ base_require = require '../../spec_helper'
 
 describe "FileList", ->
   statusList =
-    untracked: [{path: "a.bar", status: {}}]
+    untracked: [{path: "a.bar", status: {}}, {path: "b.bar", status: {}}]
     unstaged: [{path: "b.bar", status: {tracked: true}}]
     staged: [{path: "c.bar", status: {tracked: true, staged: true}}]
 
@@ -17,7 +17,7 @@ describe "FileList", ->
 
   describe ".populate", ->
     it "populates with tracked, untracked, and staged files", ->
-      expect(list.models.length).toBe 3
+      expect(list.models.length).toBe 4
 
   describe ".comparator", ->
     it "takes a file and returns the file's sort value", ->
@@ -36,5 +36,26 @@ describe "FileList", ->
 
   describe ".untracked", ->
     it "returns only untracked files", ->
-      expect(list.untracked().length).toBe 1
+      expect(list.untracked().length).toBe 2
       expect(list.untracked()[0].path()).toEqual "a.bar"
+
+  describe ".newPaths", ->
+    it "returns the subset of paths that don't have associated files", ->
+      paths = [{path: "b.bar"}, {path: "c.bar"}]
+      new_paths = list.newPaths(paths, list.untracked())
+      expect(new_paths.length).toEqual 1
+      expect(new_paths[0].path).toEqual "c.bar"
+
+  describe ".missingFiles", ->
+    it "returns the subset of files that don't appear in paths", ->
+      paths = [{path: "b.bar"}, {path: "c.bar"}]
+      missing_files = list.missingFiles(paths, list.untracked())
+      expect(missing_files.length).toEqual 1
+      expect(missing_files[0].path()).toEqual "a.bar"
+
+  describe ".stillThereFiles", ->
+    it "returns the subset of files that appear in paths", ->
+      paths = [{path: "b.bar"}, {path: "c.bar"}]
+      stillThereFiles = list.stillThereFiles(paths, list.untracked())
+      expect(stillThereFiles.length).toEqual 1
+      expect(stillThereFiles[0].path()).toEqual "b.bar"
