@@ -69,20 +69,17 @@ Commit Log
 - `enter` to soft reset to a selected commit
 - `shift-enter` to hard reset
 
-
 ## Current status
 
-Atomatigit is very close to its initial release. It's still very experimental,
-but it is stable enough that I use it *almost* exclusively.
+Atomatigit is usable, but still in active development. Feel free to make feature requests.
 
 ## Missing features (coming soon)
-
-While you can view the individual chunks of a file diff, you cannot currently
-stage them individually -- you can only stage the full file.
 
 You cannot merge, ammend, or rebase through the UI (though you can perform the commands using `atomatigit:git-command`).
 
 Moved and deleted files have bad interactions (in terms of toggle-diff, etc).
+
+The method for staging individual patches isn't the best interface.
 
 ## Contributing
 
