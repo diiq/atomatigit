@@ -27,6 +27,9 @@ class Repo extends Model
   selection: ->
     @active_list.selection()
 
+  leaf: ->
+    @active_list.leaf()
+
   commitMessagePath: ->
     atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG_#{@current_branch.commit().commitID()}"
 

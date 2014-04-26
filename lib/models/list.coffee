@@ -11,6 +11,10 @@ class List extends Collection
   selected_index: 0
   is_sublist: false
 
+  leaf: ->
+    if @selection()
+      @selection().leaf()
+
   selection: ->
     @at @selected_index
 

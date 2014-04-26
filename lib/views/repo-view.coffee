@@ -52,9 +52,9 @@ class RepoView extends View
   insert_commands: ->
     atom.workspaceView.command "atomatigit:next", => @model.active_list.next()
     atom.workspaceView.command "atomatigit:previous", => @model.active_list.previous()
-    atom.workspaceView.command "atomatigit:stage", => @model.selection().stage()
-    atom.workspaceView.command "atomatigit:unstage", => @model.selection().unstage()
-    atom.workspaceView.command "atomatigit:kill", => @model.selection().kill()
+    atom.workspaceView.command "atomatigit:stage", => @model.leaf().stage()
+    atom.workspaceView.command "atomatigit:unstage", => @model.leaf().unstage()
+    atom.workspaceView.command "atomatigit:kill", => @model.leaf().kill()
     atom.workspaceView.command "atomatigit:open", => @model.selection().open()
     atom.workspaceView.command "atomatigit:toggle-diff", => @model.selection().toggleDiff()
     atom.workspaceView.command "atomatigit:commit", => @model.initiateCommit()

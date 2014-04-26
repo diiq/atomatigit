@@ -15,6 +15,7 @@ class Diff extends List
 
   removeHeader: (diff) ->
     # Remove first two lines, which name the file
+    @header = diff.match(/^(.*?\n){2}/)[0]
     diff.replace /^(.*?\n){2}/, ""
 
   splitChunks: (diff) ->
@@ -27,7 +28,7 @@ class Diff extends List
     @raw = diff.diff
     diff = @removeHeader @raw
     chunks = @splitChunks diff
-    chunks = _.map chunks, (chunk) -> chunk: chunk
+    chunks = _.map chunks, (chunk) => chunk: chunk, header: @header
     super chunks
 
     @select -1

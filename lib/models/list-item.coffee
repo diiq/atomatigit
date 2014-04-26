@@ -37,4 +37,10 @@ class ListItem extends Model
     else
       true
 
+  leaf: ->
+    if @useSublist()
+      @sublist.leaf() || this
+    else
+      this
+
   useSublist: -> false
