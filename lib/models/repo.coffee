@@ -74,4 +74,4 @@ class Repo extends Model
     @current_branch.push()
 
   commit_message:
-    "\n\n# Compose your commit message. Press `cmd-alt-c` to commit. Close to cancel."
+    ""
