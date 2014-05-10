@@ -12,9 +12,13 @@ class Commit extends ListItem
   authorName: ->
     @get("author").name
 
+  message: ->
+    # The message string should be unicode-encoded. decode/escape repairs the
+    # encoding.
+    decodeURIComponent escape (@get("message") || "")
+
   shortMessage: ->
-    message = @get "message"
-    message?.split("\n")[0]
+    @message().split("\n")[0]
 
   open: ->
     @confirmReset()

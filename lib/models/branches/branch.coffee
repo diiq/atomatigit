@@ -5,7 +5,9 @@ Commit = require '../commits/commit'
 module.exports =
 class Branch extends ListItem
   name: ->
-    @get "name"
+    # The name should be unicode-encoded. decode/escape repairs the
+    # encoding.
+    decodeURIComponent escape @get "name"
 
   localName: ->
     @name()
