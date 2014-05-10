@@ -31,7 +31,7 @@ class Repo extends Model
     @active_list.leaf()
 
   commitMessagePath: ->
-    atom.project.getRepo().getWorkingDirectory() + ".git/COMMIT_EDITMSG_#{@current_branch.commit().commitID()}"
+    atom.project.getRepo().getWorkingDirectory() + "/.git/COMMIT_EDITMSG_#{@current_branch.commit().commitID()}"
 
   fetch: ->
     git.incrementTaskCounter()
