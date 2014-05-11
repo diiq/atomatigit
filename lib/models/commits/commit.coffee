@@ -3,6 +3,9 @@ ListItem = require '../list-item'
 
 module.exports =
 class Commit extends ListItem
+  unicodify: (s) ->
+    decodeURIComponent escape s
+
   commitID: ->
     @get "id"
 
@@ -10,12 +13,10 @@ class Commit extends ListItem
     @commitID()?.substr(0, 6)
 
   authorName: ->
-    @get("author").name
+    @unicodify @get("author").name
 
   message: ->
-    # The message string should be unicode-encoded. decode/escape repairs the
-    # encoding.
-    decodeURIComponent escape (@get("message") || "")
+    @unicodify (@get("message") || "")
 
   shortMessage: ->
     @message().split("\n")[0]
