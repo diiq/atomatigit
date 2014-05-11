@@ -39,7 +39,7 @@
 '.platform-darwin .atomatigit .file-list-view':
   'cmd-shift-z': 'atomatigit:show'
 
-'.platform-win32 .atomatigit .file-list-view, platform-linux .atomatigit .file-list-view':
+'.platform-win32 .atomatigit .file-list-view, .platform-linux .atomatigit .file-list-view':
   'ctrl-shift-z': 'atomatigit:show'
 
 '.atomatigit .branch-list-view':
