@@ -1,9 +1,16 @@
-'.workspace':
+'.platform-darwin .workspace':
   'cmd-alt-g': 'atomatigit:show'
   'cmd-alt-c': 'atomatigit:complete-commit'
 
-'.atomatigit':
+'.platform-win32 .workspace, .platform-linux .workspace':
+  'ctrl-alt-g': 'atomatigit:show'
+  'ctrl-alt-c': 'atomatigit:complete-commit'
+
+'.platform-darwin .atomatigit':
   'cmd-alt-g': 'atomatigit:close'
+
+'.platform-win32 .atomatigit, .platform-linux .atomatigit':
+  'ctrl-alt-g': 'atomatigit:close'
 
 '.atomatigit .file-list-view, .atomatigit .branch-list-view, .atomatigit .commit-list-view':
   'down': 'atomatigit:next'
@@ -27,8 +34,13 @@
   'shift-z': 'atomatigit:stash-pop'
   'u': 'atomatigit:unstage'
   'tab': 'atomatigit:toggle-diff'
-  'cmd-shift-z': 'atomatigit:show'
   'c': 'atomatigit:commit'
+
+'.platform-darwin .atomatigit .file-list-view':
+  'cmd-shift-z': 'atomatigit:show'
+
+'.platform-win32 .atomatigit .file-list-view, platform-linux .atomatigit .file-list-view':
+  'ctrl-shift-z': 'atomatigit:show'
 
 '.atomatigit .branch-list-view':
   'c': 'atomatigit:create-branch'
