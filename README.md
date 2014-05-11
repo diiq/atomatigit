@@ -101,3 +101,4 @@ than those that don't :)
 ## Contributors
 
 - [jonathanwiesel](https://github.com/jonathanwiesel)
+- [frk1705](https://github.com/frk1705)
