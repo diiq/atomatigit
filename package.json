@@ -1,7 +1,7 @@
 {
   "name": "atomatigit",
   "main": "./lib/atomatigit",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Full git interaction, a la magit",
   "activationEvents": [
     "atomatigit:show"
