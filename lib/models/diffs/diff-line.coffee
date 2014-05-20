@@ -23,4 +23,16 @@ class DiffLine extends Model
     @get "repo"
 
   markup: ->
-    @line().replace /\ /g, "&nbsp;"
+    @escapeHTML @line()
+
+  entityMap:
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;',
+    " ": '&nbsp;'
+
+  escapeHTML: (string) ->
+    String(string).replace /[&<>"'\/ ]/g, (s) => @entityMap[s]
