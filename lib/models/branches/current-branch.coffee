@@ -4,8 +4,8 @@ LocalBranch = require './local-branch'
 
 module.exports =
 class CurrentBranch extends LocalBranch
-  initialize: ->
-    @reload()
+  initialize: (branchExisting) ->
+    if branchExisting then @reload()
 
   reload: ->
     git.branch (head) =>
