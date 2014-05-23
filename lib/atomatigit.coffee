@@ -8,9 +8,7 @@ module.exports =
   atomatigitView: null
 
   activate: (state) ->
-    atom_git = atom.project.getRepo()
-    path = atom_git.getWorkingDirectory()
-    @repo = new Repo({path: path})
+    @repo = new Repo
     @repo_view = new RepoView(@repo)
 
     @insert_commands()
