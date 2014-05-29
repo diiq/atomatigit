@@ -17,7 +17,7 @@ class Git extends Model
     options ||= {}
     flags = options.flags || ""
     @gift.diff "", flags, [path], @callbackWithErrorsNoChange (diffs) =>
-        callback diffs[0] if callback
+      callback diffs[0] if callback
 
   add: (filename, callback) ->
     @gift.add filename + " --no-ignore-removal", @callbackWithErrors(callback)
