@@ -51,7 +51,10 @@ class Repo extends Model
     git.incrementTaskCounter()
     if atom.config.get("atomatigit.pre_commit_hook") != ""
       atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
-    new File @commitMessagePath()
+
+    file = new File @commitMessagePath()
+    file.write('')
+
     editor = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
     git.statusFull @writeCommitMessage
 
