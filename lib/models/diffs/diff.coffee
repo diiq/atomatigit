@@ -25,7 +25,7 @@ class Diff extends List
 
   constructor: (diff) ->
     @giftDiff = diff
-    @raw = diff.diff
+    @raw = diff?.diff
     diff = @removeHeader @raw
     chunks = @splitChunks diff
     chunks = _.map chunks, (chunk) => chunk: chunk, header: @header
