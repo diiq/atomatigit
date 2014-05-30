@@ -1,4 +1,4 @@
-_ = require 'underscore-plus'
+_ = require 'underscore'
 {Model} = require 'backbone'
 {spawn} = require 'child_process'
 {File} = require 'pathwatcher'
