@@ -137,9 +137,5 @@ class Repo extends Model
       query: "Git command"
       callback: (command) => git.git command
 
-
   push: ->
     @current_branch.push()
-
-  commit_message:
-    ""
