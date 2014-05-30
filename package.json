@@ -16,6 +16,7 @@
     "backbone": "1.x",
     "underscore": "1.x",
     "jquery": "1.x",
-    "pathwatcher": "1.x"
+    "pathwatcher": "1.x",
+    "underscore-plus": "1.x"
   }
 }

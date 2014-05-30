@@ -32,6 +32,10 @@ class Git extends Model
     @gift.status @callbackWithErrorsNoChange (status) =>
       callback @_tidyStatus status.files
 
+  statusFull: (callback) ->
+    @gift.status @callbackWithErrorsNoChange (status) ->
+      callback status?.files
+
   branch: (callback) ->
     @gift.branch @callbackWithErrorsNoChange(callback)
 
