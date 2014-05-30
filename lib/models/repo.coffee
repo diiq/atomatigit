@@ -55,18 +55,18 @@ class Repo extends Model
     editor = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
     git.statusFull @writeCommitMessage
 
-  writeCommitMessage: (files) ->
+  writeCommitMessage: (files) =>
     editor = atom.workspace.getActiveEditor()
     editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
+
     snippet = """$0
       # Please enter the commit message for your changes. Lines starting
       # with '#' will be ignored, and an empty message aborts the commit.
-      # On branch master
+      # On branch #{@current_branch.localName()}
     """
 
     # Little helper
     switch_state = (type) ->
-      console.log type
       switch type
         when "M" then "modified:   "
         when "R" then "renamed:    "
@@ -87,13 +87,17 @@ class Repo extends Model
       filesNotStaged[file] = fileData if not fileData.staged and fileData.tracked
       filesNotTracked[file] = fileData if not fileData.tracked
 
-
     for own file, fileData of filesStaged
-      if fileData.type?.length > 1
+      gitStatusType = fileData.type
+      if gitStatusType?.length > 1
         stateNotStaged = true
+
         fileObjClone = _.clone(fileData)
-        fileObjClone['type'] = fileData.type?.charAt(1)
-        filesStaged[file].type = fileData.type?.charAt(0)
+        fileObjClone['type'] = gitStatusType.charAt(1)
+        fileData.type = fileData.type?.charAt(0)
+
+        # Rare case type 'RM', file has been renamed and modified
+        file = file.match(/(.*) -> (.*)/)?[2] if gitStatusType is 'RM'
         filesNotStaged[file] = fileObjClone
 
     if stateStaged
