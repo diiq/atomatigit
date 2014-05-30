@@ -121,9 +121,8 @@ class Repo extends Model
     Snippets = atom.packages.activePackages.snippets?.mainModule
     Snippets?.insert(snippet, editor)
 
-
   completeCommit: ->
-    git.git "commit --file=\"#{@commitMessagePath()}\""
+    git.git "commit --cleanup=strip --file=\"#{@commitMessagePath()}\""
     git.decrementTaskCounter()
 
   initiateCreateBranch: ->
