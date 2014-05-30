@@ -16,7 +16,7 @@ class Git extends Model
   diff: (path, callback, options) ->
     options ||= {}
     flags = options.flags || ""
-    @gift.diff "", flags, [path], @callbackWithErrorsNoChange (diffs) =>
+    @gift.diff "", flags, [path], @callbackWithErrorsNoChange (diffs) ->
       callback diffs[0] if callback
 
   add: (filename, callback) ->
@@ -111,7 +111,7 @@ class Git extends Model
       unstaged: []
       staged: []
 
-    _.each filehash, (status, path) =>
+    _.each filehash, (status, path) ->
       file = {path: path, status: status}
 
       if not status.tracked

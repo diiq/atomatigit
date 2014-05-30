@@ -17,7 +17,7 @@ class LocalBranch extends Branch
   # TODO tracking branch or something?
   remoteName: -> ""
 
-  checkout: (callback)->
+  checkout: (callback) ->
     git.git "checkout #{@localName()}"
 
   push: (remote) ->

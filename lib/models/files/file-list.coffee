@@ -32,22 +32,22 @@ class FileList extends List
     @filter (f) -> f.untrackedP()
 
   newPaths: (paths, files) ->
-    _.filter paths, (path) =>
+    _.filter paths, (path) ->
       not _.any files, (file) ->
         file.path() == path.path
 
   missingFiles: (paths, files) ->
-    _.filter files, (file) =>
+    _.filter files, (file) ->
       not _.any paths, (path) ->
         file.path() == path.path
 
   stillThereFiles: (paths, files) ->
-    _.filter files, (file) =>
+    _.filter files, (file) ->
       _.any paths, (path) ->
         file.path() == path.path
 
   populateList: (paths, files, Klass) ->
-    _.each @stillThereFiles(paths, files), (file) =>
+    _.each @stillThereFiles(paths, files), (file) ->
       file.loadDiff()
 
     _.each @newPaths(paths, files), (path) =>

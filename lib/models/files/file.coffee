@@ -19,7 +19,7 @@ class File extends ListItem
     @sublist
 
   stage: ->
-    git.add @path(), => null
+    git.add @path(), -> null
 
   setDiff: (diff) =>
     @sublist = new Diff diff

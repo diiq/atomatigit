@@ -1,6 +1,5 @@
 _ = require 'underscore'
 {Model} = require 'backbone'
-{spawn} = require 'child_process'
 {File} = require 'pathwatcher'
 
 {git} = require '../git'
@@ -35,7 +34,7 @@ class Repo extends Model
 
   fetch: ->
     git.incrementTaskCounter()
-    git.remoteFetch "origin", =>
+    git.remoteFetch "origin", ->
       git.decrementTaskCounter()
 
   checkoutBranch: ->
@@ -128,14 +127,14 @@ class Repo extends Model
   initiateCreateBranch: ->
     @trigger "need_input",
       query: "Branch name"
-      callback: (name) =>
-        git.createBranch name, =>
+      callback: (name) ->
+        git.createBranch name, ->
           git.git "checkout #{name}"
 
   initiateGitCommand: ->
     @trigger "need_input",
       query: "Git command"
-      callback: (command) => git.git command
+      callback: (command) -> git.git command
 
   push: ->
     @current_branch.push()
