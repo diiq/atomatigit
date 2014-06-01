@@ -55,19 +55,16 @@ class Repo extends Model
     file.write('')
 
     editor = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
-    git.statusFull @writeCommitMessage
+    editor.then (result) =>
+      @writeCommitMessage(result)
 
-  writeCommitMessage: (files) =>
-    editor = atom.workspace.getActiveEditor()
-    editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
-
+  writeCommitMessage: (editor) =>
     snippet = """$0
       # Please enter the commit message for your changes. Lines starting
       # with '#' will be ignored, and an empty message aborts the commit.
-      # On branch #{@current_branch.localName()}
+      # On branch #{@current_branch.localName()}\n
     """
 
-    # Little helper
     switch_state = (type) ->
       switch type
         when "M" then "modified:   "
@@ -76,47 +73,20 @@ class Repo extends Model
         when "A" then "new file:   "
         else ""
 
-    filesStaged = {}
-    filesNotStaged = {}
-    filesNotTracked = {}
-    stateStaged = stateNotStaged = stateUntracked = false
-    for own file, fileData of files
-      stateStaged = true if fileData.staged
-      stateNotStaged = true if not fileData.staged and fileData.tracked
-      stateUntracked = true if not fileData.tracked
+    filesStaged = @file_list.staged()
+    snippet += "#\n# Changes to be committed:\n" if filesStaged.length >= 1
+    snippet += "#\t #{switch_state(file.diffType())} #{file.path()}\n" for file in filesStaged
 
-      filesStaged[file] = fileData if fileData.staged
-      filesNotStaged[file] = fileData if not fileData.staged and fileData.tracked
-      filesNotTracked[file] = fileData if not fileData.tracked
+    filesUnstaged = @file_list.unstaged()
+    snippet += "#\n# Changes not staged for commit:\n" if filesUnstaged.length >= 1
+    snippet += "#\t #{switch_state(file.diffType())} #{file.path()}\n" for file in filesUnstaged
 
-    for own file, fileData of filesStaged
-      gitStatusType = fileData.type
-      if gitStatusType?.length > 1
-        stateNotStaged = true
+    filesUntracked = @file_list.untracked()
+    snippet += "#\n# Untracked files:\n" if filesUntracked.length >= 1
+    snippet += "#\t #{file.path()}\n" for file in filesUntracked
 
-        fileObjClone = _.clone(fileData)
-        fileObjClone['type'] = gitStatusType.charAt(1)
-        fileData.type = fileData.type?.charAt(0)
-
-        # Rare case type 'RM', file has been renamed and modified
-        file = file.match(/(.*) -> (.*)/)?[2] if gitStatusType is 'RM'
-        filesNotStaged[file] = fileObjClone
-
-    if stateStaged
-      snippet += "\n# Changes to be committed:\n"
-      for own file, fileData of filesStaged
-        snippet += "#\t #{switch_state(fileData.type)} #{file}\n"
-
-    if stateNotStaged
-      snippet += "#\n# Changes not staged for commit:\n"
-      for own file, fileData of filesNotStaged
-        snippet += "#\t #{switch_state(fileData.type)} #{file}\n"
-
-    if stateUntracked
-      snippet += "#\n# Untracked files:\n"
-      for own file, fileData of filesNotTracked
-        snippet += "#\t #{file}\n" unless fileData.tracked
-
+    editor.setText('')
+    editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
     Snippets = atom.packages.activePackages.snippets?.mainModule
     Snippets?.insert(snippet, editor)
 

@@ -29,10 +29,6 @@ class Git extends Model
     @gift.git command, @callbackWithErrorsNoChange(callback)
 
   status: (callback) ->
-    @gift.status @callbackWithErrorsNoChange (status) =>
-      callback @_tidyStatus status.files
-
-  statusFull: (callback) ->
     @gift.status @callbackWithErrorsNoChange (status) ->
       callback status?.files
 
@@ -103,25 +99,6 @@ class Git extends Model
 
   clearMessage: ->
     @set message: ""
-
-  _tidyStatus: (filehash) ->
-    output =
-      untracked: []
-      unstaged: []
-      staged: []
-
-    _.each filehash, (status, path) ->
-      file = {path: path, status: status}
-
-      if not status.tracked
-        output.untracked.push file
-      if status.staged
-        output.staged.push file
-      if (status.tracked and not status.staged) or
-         (status.type && status.type.length == 2)
-        output.unstaged.push file
-
-    output
 
 git = {}
 if atom.project

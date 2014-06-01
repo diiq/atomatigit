@@ -1,10 +1,14 @@
+_ = require 'underscore'
+
 ListItem = require '../list-item'
 Diff = require '../diffs/diff'
 {git} = require '../../git'
 
 module.exports =
 class File extends ListItem
-  initialize: ->
+  initialize: (path) ->
+    @set 'path': path.path
+    @set 'diffType': path.type
     @set diff: false
     @loadDiff()
     @deselect()
@@ -17,6 +21,9 @@ class File extends ListItem
 
   diff: ->
     @sublist
+
+  diffType: ->
+    @get "diffType"
 
   stage: ->
     git.add @path(), -> null
