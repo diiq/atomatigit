@@ -65,25 +65,18 @@ class Repo extends Model
       # On branch #{@current_branch.localName()}\n
     """
 
-    switch_state = (type) ->
-      switch type
-        when "M" then "modified:   "
-        when "R" then "renamed:    "
-        when "D" then "deleted:    "
-        when "A" then "new file:   "
-        else ""
-
     filesStaged = @file_list.staged()
-    snippet += "#\n# Changes to be committed:\n" if filesStaged.length >= 1
-    snippet += "#\t #{switch_state(file.diffType())} #{file.path()}\n" for file in filesStaged
-
     filesUnstaged = @file_list.unstaged()
-    snippet += "#\n# Changes not staged for commit:\n" if filesUnstaged.length >= 1
-    snippet += "#\t #{switch_state(file.diffType())} #{file.path()}\n" for file in filesUnstaged
-
     filesUntracked = @file_list.untracked()
+
+    snippet += "#\n# Changes to be committed:\n" if filesStaged.length >= 1
+    snippet += file.commitMessage() for file in filesStaged
+
+    snippet += "#\n# Changes not staged for commit:\n" if filesUnstaged.length >= 1
+    snippet += file.commitMessage() for file in filesUnstaged
+
     snippet += "#\n# Untracked files:\n" if filesUntracked.length >= 1
-    snippet += "#\t #{file.path()}\n" for file in filesUntracked
+    snippet += file.commitMessage() for file in filesUntracked
 
     editor.setText('')
     editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
