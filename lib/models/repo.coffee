@@ -13,7 +13,7 @@ class Repo extends Model
     @file_list = new FileList []
     @branch_list = new BranchList []
     @commit_list = new CommitList []
-    @current_branch = new CurrentBranch
+    @current_branch = new CurrentBranch()
     git.on "reload", @reload
 
   reload: =>

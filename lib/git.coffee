@@ -101,9 +101,8 @@ class Git extends Model
     message = @get "message"
     message.replace /\n/g, "<br />"
 
-  clearMessage: () ->
+  clearMessage: ->
     @set message: ""
-
 
   _tidyStatus: (filehash) ->
     output =
@@ -126,7 +125,7 @@ class Git extends Model
 
 git = {}
 if atom.project
-  git = new Git
+  git = new Git()
 
 module.exports =
   Git: Git
