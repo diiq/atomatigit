@@ -59,7 +59,7 @@ class Repo extends Model
       @writeCommitMessage(result)
 
   writeCommitMessage: (editor) =>
-    snippet = """$0
+    commitMessage = '\n' + """
       # Please enter the commit message for your changes. Lines starting
       # with '#' will be ignored, and an empty message aborts the commit.
       # On branch #{@current_branch.localName()}\n
@@ -69,19 +69,18 @@ class Repo extends Model
     filesUnstaged = @file_list.unstaged()
     filesUntracked = @file_list.untracked()
 
-    snippet += "#\n# Changes to be committed:\n" if filesStaged.length >= 1
-    snippet += file.commitMessage() for file in filesStaged
+    commitMessage += "#\n# Changes to be committed:\n" if filesStaged.length >= 1
+    commitMessage += file.commitMessage() for file in filesStaged
 
-    snippet += "#\n# Changes not staged for commit:\n" if filesUnstaged.length >= 1
-    snippet += file.commitMessage() for file in filesUnstaged
+    commitMessage += "#\n# Changes not staged for commit:\n" if filesUnstaged.length >= 1
+    commitMessage += file.commitMessage() for file in filesUnstaged
 
-    snippet += "#\n# Untracked files:\n" if filesUntracked.length >= 1
-    snippet += file.commitMessage() for file in filesUntracked
+    commitMessage += "#\n# Untracked files:\n" if filesUntracked.length >= 1
+    commitMessage += file.commitMessage() for file in filesUntracked
 
-    editor.setText('')
     editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
-    Snippets = atom.packages.activePackages.snippets?.mainModule
-    Snippets?.insert(snippet, editor)
+    editor.setText(commitMessage)
+    editor.setCursorBufferPosition [0, 0]
 
   completeCommit: ->
     git.git "commit --cleanup=strip --file=\"#{@commitMessagePath()}\""
