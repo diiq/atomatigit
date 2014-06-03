@@ -14,15 +14,16 @@ class Repo extends Model
     @file_list = new FileList []
     @branch_list = new BranchList []
     @commit_list = new CommitList []
-    @current_branch = new CurrentBranch
+    @current_branch = new CurrentBranch @headRefsCount()>0
     git.on "reload", @reload
 
   reload: =>
     git.setPath()
     @file_list.reload()
-    @current_branch.reload()
-    @branch_list.reload()
-    @commit_list.reload(@current_branch)
+    if @headRefsCount() > 0
+      @current_branch.reload()
+      @branch_list.reload()
+      @commit_list.reload(@current_branch)
 
   selection: ->
     @active_list.selection()
@@ -32,6 +33,9 @@ class Repo extends Model
 
   commitMessagePath: ->
     atom.project.getRepo().getWorkingDirectory() + "/.git/COMMIT_EDITMSG_ATOMATIGIT"
+
+  headRefsCount: ->
+    atom.project.getRepo().getReferences().heads.length
 
   fetch: ->
     git.incrementTaskCounter()
