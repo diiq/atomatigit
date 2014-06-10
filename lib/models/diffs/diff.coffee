@@ -15,17 +15,17 @@ class Diff extends List
 
   removeHeader: (diff) ->
     # Remove first two lines, which name the file
-    @header = diff.match(/^(.*?\n){2}/)?[0]
-    diff.replace /^(.*?\n){2}/, ""
+    @header = diff?.match(/^(.*?\n){2}/)?[0]
+    diff?.replace /^(.*?\n){2}/, ""
 
   splitChunks: (diff) ->
     # We'll treat "@@ " a the beginning of a line as characteristic of the start
     # of a chunk.
-    diff.split /(?=^@@ )/gm
+    diff?.split /(?=^@@ )/gm
 
   constructor: (diff) ->
     @giftDiff = diff
-    @raw = diff.diff
+    @raw = diff?.diff
     diff = @removeHeader @raw
     chunks = @splitChunks diff
     chunks = _.map chunks, (chunk) => chunk: chunk, header: @header

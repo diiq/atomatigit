@@ -37,4 +37,4 @@ class Branch extends ListItem
 
   push: -> null
 
-  delete: => null
+  delete: -> null

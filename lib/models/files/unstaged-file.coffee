@@ -15,7 +15,7 @@ class UnstagedFile extends File
       message: "Discard unstaged changes to \"#{@path()}\"?"
       buttons:
         "Discard": @checkout
-        "Cancel": => null
+        "Cancel": -> null
 
   checkout: =>
     git.git "checkout #{@path()}"

@@ -4,10 +4,13 @@ base_require = require '../../spec_helper'
 {git} = base_require 'git'
 
 describe "FileListView", ->
-  statusList =
-    untracked: [{path: "a.bar", status: {}}]
-    unstaged: [{path: "b.bar", status: {tracked: true}}]
-    staged: [{path: "c.bar", status: {tracked: true, staged: true}}]
+
+  statusList = {
+    'a.bar': {staged: false, tracked: false, type: ''}
+    'b.bar': {staged: false, tracked: false, type: ''}
+    'c.bar': {staged: false, tracked: true, type: ''}
+    'd.bar': {staged: true, tracked: true, type: ''}
+  }
 
   model = view = null
   beforeEach ->
@@ -20,7 +23,7 @@ describe "FileListView", ->
     it "fills in the untracked dom element", ->
       view.untracked.empty()
       view.repopulateUntracked()
-      expect(view.untracked.children().length).toBe 1
+      expect(view.untracked.children().length).toBe 2
 
   describe ".repopulateUnstaged", ->
     it "fills in the unstaged dom element", ->

@@ -16,8 +16,8 @@ class Git extends Model
   diff: (path, callback, options) ->
     options ||= {}
     flags = options.flags || ""
-    @gift.diff "", flags, [path], @callbackWithErrorsNoChange (diffs) =>
-        callback diffs[0] if callback
+    @gift.diff "", flags, [path], @callbackWithErrorsNoChange (diffs) ->
+      callback diffs[0] if callback
 
   add: (filename, callback) ->
     @gift.add filename + " --no-ignore-removal", @callbackWithErrors(callback)
@@ -29,8 +29,8 @@ class Git extends Model
     @gift.git command, @callbackWithErrorsNoChange(callback)
 
   status: (callback) ->
-    @gift.status @callbackWithErrorsNoChange (status) =>
-      callback @_tidyStatus status.files
+    @gift.status @callbackWithErrorsNoChange (status) ->
+      callback status?.files
 
   branch: (callback) ->
     @gift.branch @callbackWithErrorsNoChange(callback)
@@ -97,32 +97,12 @@ class Git extends Model
     message = @get "message"
     message.replace /\n/g, "<br />"
 
-  clearMessage: () ->
+  clearMessage: ->
     @set message: ""
-
-
-  _tidyStatus: (filehash) ->
-    output =
-      untracked: []
-      unstaged: []
-      staged: []
-
-    _.each filehash, (status, path) =>
-      file = {path: path, status: status}
-
-      if not status.tracked
-        output.untracked.push file
-      if status.staged
-        output.staged.push file
-      if (status.tracked and not status.staged) or
-         (status.type && status.type.length == 2)
-        output.unstaged.push file
-
-    output
 
 git = {}
 if atom.project
-  git = new Git
+  git = new Git()
 
 module.exports =
   Git: Git

@@ -4,10 +4,16 @@ base_require = require '../../spec_helper'
 
 
 describe "FileList", ->
-  statusList =
-    untracked: [{path: "a.bar", status: {}}, {path: "b.bar", status: {}}]
-    unstaged: [{path: "b.bar", status: {tracked: true}}]
-    staged: [{path: "c.bar", status: {tracked: true, staged: true}}]
+  statusList = {
+    'a.bar': {staged: false, tracked: false, type: ''}
+    'b.bar': {staged: false, tracked: false, type: ''}
+    'c.bar': {staged: false, tracked: true, type: ''}
+    'd.bar': {staged: true, tracked: true, type: ''}
+  }
+    # untracked
+    # untracked: [{path: "a.bar", status: {}}, {path: "b.bar", status: {}}]
+    # unstaged: [{path: "b.bar", status: {tracked: true}}]
+    # staged: [{path: "c.bar", status: {tracked: true, staged: true}}]
 
   list = null
   beforeEach ->
@@ -27,12 +33,12 @@ describe "FileList", ->
   describe ".staged", ->
     it "returns only staged files", ->
       expect(list.staged().length).toBe 1
-      expect(list.staged()[0].path()).toEqual "c.bar"
+      expect(list.staged()[0].path()).toEqual "d.bar"
 
   describe ".unstaged", ->
     it "returns only unstaged files", ->
       expect(list.unstaged().length).toBe 1
-      expect(list.unstaged()[0].path()).toEqual "b.bar"
+      expect(list.unstaged()[0].path()).toEqual "c.bar"
 
   describe ".untracked", ->
     it "returns only untracked files", ->
@@ -40,14 +46,14 @@ describe "FileList", ->
       expect(list.untracked()[0].path()).toEqual "a.bar"
 
   describe ".newPaths", ->
-    it "returns the subset of paths that don't have associated files", ->
-      paths = [{path: "b.bar"}, {path: "c.bar"}]
+    it "returns the subset of paths that is not yet saved under untracked", ->
+      paths = [{path: "b.bar"}, {path: "x.bar"}, {path: "a.bar"}]
       new_paths = list.newPaths(paths, list.untracked())
       expect(new_paths.length).toEqual 1
-      expect(new_paths[0].path).toEqual "c.bar"
+      expect(new_paths[0].path).toEqual "x.bar"
 
   describe ".missingFiles", ->
-    it "returns the subset of files that don't appear in paths", ->
+    it "returns the subset of files that don't appear in paths and have been deleted", ->
       paths = [{path: "b.bar"}, {path: "c.bar"}]
       missing_files = list.missingFiles(paths, list.untracked())
       expect(missing_files.length).toEqual 1
