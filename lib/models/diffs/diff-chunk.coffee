@@ -1,3 +1,5 @@
+path = require 'path'
+
 DiffLine = require './diff-line'
 ListItem = require '../list-item'
 {git} = require '../../git'
@@ -46,4 +48,4 @@ class DiffChunk extends ListItem
     git.git "apply --cached --reverse #{@patchPath()}"
 
   patchPath: ->
-    atom.project.getRepo().getWorkingDirectory() + ".git/atomatigit_diff_patch"
+    path.join git.getPath(), ".git/atomatigit_diff_patch"
