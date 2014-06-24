@@ -13,6 +13,9 @@ class Git extends Model
     @path = path || atom.project.getRepo().getWorkingDirectory()
     @gift = gift @path
 
+  getPath: ->
+    @path
+
   diff: (path, callback, options) ->
     options ||= {}
     flags = options.flags || ""

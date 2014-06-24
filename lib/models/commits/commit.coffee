@@ -1,4 +1,5 @@
 fs = require 'fs-plus'
+path = require 'path'
 
 ListItem = require '../list-item'
 {git} = require '../../git'
@@ -48,10 +49,10 @@ class Commit extends ListItem
   showCommit: =>
     if not @gitShowMessage?
       git.showObject @commitID(), (data) =>
-        @gitShowMessage = data
+        @gitShowMessage = decodeURIComponent(escape(data))
         @showCommit()
     else
-      fs.writeFileSync ".git/#{@commitID()}", @gitShowMessage
+      fs.writeFileSync path.join(git.getPath(), ".git/#{@commitID()}"), @gitShowMessage
       editor = atom.workspace.open(".git/#{@commitID()}")
       editor.then (e) =>
         @editor = e
@@ -59,7 +60,7 @@ class Commit extends ListItem
         @editor.buffer.once 'changed', =>
           @showCommitWrite()
         @editor.buffer.once 'destroyed', =>
-          fs.removeSync ".git/#{@commitID()}"
+          fs.removeSync path.join(git.getPath(), ".git/#{@commitID()}")
 
   showCommitWrite: =>
     return unless @editor? and @gitShowMessage?
