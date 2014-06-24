@@ -53,6 +53,9 @@ class Git extends Model
   remotePush: (remote_branch, callback) ->
     @gift.remote_push remote_branch + " -u", @callbackWithErrors(callback)
 
+  showObject: (obj, callback) ->
+    @gift.git 'show', [], [obj], @callbackWithErrorsNoChange(callback)
+
   callbackWithErrors: (callback) =>
     @incrementTaskCounter()
     (error, value) =>
@@ -72,7 +75,6 @@ class Git extends Model
       else
         callback value if callback
 
-
   incrementTaskCounter: ->
     @task_counter += 1
     @trigger("change:task_counter") if @task_counter == 1
@@ -87,7 +89,6 @@ class Git extends Model
 
   workingP: ->
     @task_counter > 0
-
 
   setMessage: (message) ->
     @set message: message

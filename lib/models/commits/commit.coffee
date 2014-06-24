@@ -1,3 +1,5 @@
+fs = require 'fs-plus'
+
 ListItem = require '../list-item'
 {git} = require '../../git'
 
@@ -42,6 +44,28 @@ class Commit extends ListItem
       buttons:
         "Cancel": null
         "Reset": @hardReset
+
+  showCommit: =>
+    if not @gitShowMessage?
+      git.showObject @commitID(), (data) =>
+        @gitShowMessage = data
+        @showCommit()
+    else
+      fs.writeFileSync ".git/#{@commitID()}", @gitShowMessage
+      editor = atom.workspace.open(".git/#{@commitID()}")
+      editor.then (e) =>
+        @editor = e
+        @editor.setGrammar atom.syntax.grammarForScopeName('diff.diff')
+        @editor.buffer.once 'changed', =>
+          @showCommitWrite()
+        @editor.buffer.once 'destroyed', =>
+          fs.removeSync ".git/#{@commitID()}"
+
+  showCommitWrite: =>
+    return unless @editor? and @gitShowMessage?
+    @editor.setText(@gitShowMessage)
+    @editor.buffer.once 'changed', =>
+      @showCommitWrite()
 
   hardReset: =>
     git.git "reset --hard #{@commitID()}"

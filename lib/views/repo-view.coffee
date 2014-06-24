@@ -64,6 +64,7 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:stash", => @model.stash()
     atom.workspaceView.command "atomatigit:stash-pop", => @model.stashPop()
     atom.workspaceView.command "atomatigit:hard-reset-to-commit", => @model.selection().confirmHardReset()
+    atom.workspaceView.command "atomatigit:showCommit", => @model.selection().showCommit()
     atom.workspaceView.command "atomatigit:create-branch", => @model.initiateCreateBranch()
     atom.workspaceView.command "atomatigit:git-command", => @model.initiateGitCommand()
     atom.workspaceView.command "atomatigit:input:newline", => @input_newline()

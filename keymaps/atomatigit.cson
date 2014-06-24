@@ -41,6 +41,7 @@
 
 '.atomatigit .commit-list-view':
   'shift-enter': 'atomatigit:hard-reset-to-commit'
+  'o': 'atomatigit:showCommit'
 
 '.atomatigit .input.block .editor':
   'enter': 'atomatigit:input:newline'
