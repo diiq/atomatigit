@@ -105,7 +105,7 @@ class Git extends Model
     @set message: ''
 
 git = {}
-if atom.project.getRepo()?
+if atom.project?.getRepo()?
   git = new Git()
 
 module.exports =
