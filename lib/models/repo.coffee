@@ -15,7 +15,7 @@ class Repo extends Model
     @branch_list = new BranchList []
     @commit_list = new CommitList []
     @current_branch = new CurrentBranch(@headRefsCount() > 0)
-    git.on "reload", @reload
+    git.on 'reload', @reload
 
   reload: =>
     git.setPath()
@@ -42,22 +42,22 @@ class Repo extends Model
 
   fetch: ->
     git.incrementTaskCounter()
-    git.remoteFetch "origin", ->
+    git.remoteFetch 'origin', ->
       git.decrementTaskCounter()
 
   checkoutBranch: ->
     @branch_list.checkout_branch
 
   stash: ->
-    git.git "stash"
+    git.git 'stash'
 
   stashPop: ->
-    git.git "stash pop"
+    git.git 'stash pop'
 
   initiateCommit: ->
     git.incrementTaskCounter()
-    if atom.config.get("atomatigit.pre_commit_hook") != ""
-      atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
+    if atom.config.get('atomatigit.pre_commit_hook') != ''
+      atom.workspaceView.trigger(atom.config.get('atomatigit.pre_commit_hook'))
 
     fs.writeFileSync(@commitMessagePath(), '')
 
@@ -76,13 +76,13 @@ class Repo extends Model
     filesUnstaged = @file_list.unstaged()
     filesUntracked = @file_list.untracked()
 
-    commitMessage += "#\n# Changes to be committed:\n" if filesStaged.length >= 1
+    commitMessage += '#\n# Changes to be committed:\n' if filesStaged.length >= 1
     commitMessage += file.commitMessage() for file in filesStaged
 
-    commitMessage += "#\n# Changes not staged for commit:\n" if filesUnstaged.length >= 1
+    commitMessage += '#\n# Changes not staged for commit:\n' if filesUnstaged.length >= 1
     commitMessage += file.commitMessage() for file in filesUnstaged
 
-    commitMessage += "#\n# Untracked files:\n" if filesUntracked.length >= 1
+    commitMessage += '#\n# Untracked files:\n' if filesUntracked.length >= 1
     commitMessage += file.commitMessage() for file in filesUntracked
 
     editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
@@ -94,15 +94,15 @@ class Repo extends Model
     git.decrementTaskCounter()
 
   initiateCreateBranch: ->
-    @trigger "need_input",
-      query: "Branch name"
+    @trigger 'need_input',
+      query: 'Branch name'
       callback: (name) ->
         git.createBranch name, ->
           git.git "checkout #{name}"
 
   initiateGitCommand: ->
-    @trigger "need_input",
-      query: "Git command"
+    @trigger 'need_input',
+      query: 'Git command'
       callback: (command) -> git.git command
 
   push: ->

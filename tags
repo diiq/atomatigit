@@ -1,0 +1,24 @@
+!_TAG_FILE_FORMAT	2	/extended format/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Łukasz Korecki /lukasz@coffeesounds.com/
+!_TAG_PROGRAM_NAME	CoffeeTags	//
+!_TAG_PROGRAM_URL	https://github.com/lukaszkorecki/CoffeeTags	/GitHub repository/
+!_TAG_PROGRAM_VERSION	0.2.1	//
+callback	lib/models/repo.coffee	/^      callback: (command) -> git.git command$/;"	f	lineno:106	object:Repo.initiateGitCommand	type:function
+callback	lib/models/repo.coffee	/^      callback: (name) ->$/;"	f	lineno:99	object:Repo.initiateCreateBranch	type:function
+checkoutBranch	lib/models/repo.coffee	/^  checkoutBranch: ->$/;"	f	lineno:48	object:Repo	type:function
+commitMessagePath	lib/models/repo.coffee	/^  commitMessagePath: ->$/;"	f	lineno:34	object:Repo	type:function
+completeCommit	lib/models/repo.coffee	/^  completeCommit: ->$/;"	f	lineno:92	object:Repo	type:function
+fetch	lib/models/repo.coffee	/^  fetch: ->$/;"	f	lineno:43	object:Repo	type:function
+headRefsCount	lib/models/repo.coffee	/^  headRefsCount: ->$/;"	f	lineno:40	object:Repo	type:function
+initialize	lib/models/repo.coffee	/^  initialize: (opts) ->$/;"	f	lineno:13	object:Repo	type:function
+initiateCommit	lib/models/repo.coffee	/^  initiateCommit: ->$/;"	f	lineno:57	object:Repo	type:function
+initiateCreateBranch	lib/models/repo.coffee	/^  initiateCreateBranch: ->$/;"	f	lineno:96	object:Repo	type:function
+initiateGitCommand	lib/models/repo.coffee	/^  initiateGitCommand: ->$/;"	f	lineno:103	object:Repo	type:function
+leaf	lib/models/repo.coffee	/^  leaf: ->$/;"	f	lineno:31	object:Repo	type:function
+push	lib/models/repo.coffee	/^  push: ->$/;"	f	lineno:108	object:Repo	type:function
+reload	lib/models/repo.coffee	/^  reload: =>$/;"	f	lineno:20	object:Repo	type:function
+selection	lib/models/repo.coffee	/^  selection: ->$/;"	f	lineno:28	object:Repo	type:function
+stash	lib/models/repo.coffee	/^  stash: ->$/;"	f	lineno:51	object:Repo	type:function
+stashPop	lib/models/repo.coffee	/^  stashPop: ->$/;"	f	lineno:54	object:Repo	type:function
+writeCommitMessage	lib/models/repo.coffee	/^  writeCommitMessage: (editor) =>$/;"	f	lineno:68	object:Repo	type:function
