@@ -10,7 +10,7 @@ Atomatigit is designed to be used using ultra-fast keyboard shortcuts. Press
 `cmd-alt-g` to show the atomatigit pane on the right. From there, you can
 right-click on a file, branch, or commit to see your options, and to get a
 friendly reminder of the keyboard shortcuts. Once you know the shortcuts, you
-can navigate through 100% of atomatigit is functions without a mouse.
+can navigate through 100% of atomatigit's functions without a mouse.
 
 Atomatigit is inspired by the
 [magit](http://magit.github.io/index.html) emacs package.
@@ -34,7 +34,7 @@ changes, `cmd-alt-c` will complete the commit.
 
 ## Other Key bindings
 
-There are many, but do not worry: if you ever forget these, Atomatigit has
+There are many, but don't worry: if you ever forget these, Atomatigit has
 right-click menus to help remind you. Here's the complete list:
 
 - `cmd-alt-g` to open/focus/close atomatigit
@@ -89,14 +89,14 @@ Contributions are welcome!
 
 Will clone the repo for you.
 
-The code should be quite clear. If you add new files, do not forget to add them
+The code should be quite clear. If you add new files, don't forget to add them
 to the correct `index.coffee` so they can be required from other directories.
 
 Pull requests that break specs won't be merged, so be sure to run `apm test`
 before you PR.
 
 Pull requests that spec all their new public methods will get more attention
-than those that do not :)
+than those that don't :)
 
 ## Contributors
 
