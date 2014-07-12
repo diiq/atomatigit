@@ -38,6 +38,7 @@
   '.atomatigit .commit-list-view .commit':
     'Soft reset (↩)': 'atomatigit:open'
     'Hard reset (⇧↩)': 'atomatigit:hard-reset-to-commit'
+    'Show Commit (o)': 'atomatigit:showCommit'
 
 'menu': [
   {

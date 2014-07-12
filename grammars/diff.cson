@@ -1,0 +1,88 @@
+# Copyright (c) 2014 Akonwi Ngoh
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'fileTypes': [
+  'diff'
+]
+'name': 'Diff'
+'patterns': [
+  {
+    'captures':
+      '4':
+        'name': 'punctuation.definition.from-file.diff'
+      '6':
+        'name': 'punctuation.definition.from-file.diff'
+      '7':
+        'name': 'punctuation.definition.from-file.diff'
+    'match': '(^(((-{3}) .+)|((\\*{3}) .+))$\\n?|^(={4}) .+(?= - ))'
+    'name': 'meta.diff.header.from-file'
+  }
+  {
+    'captures':
+      '2':
+        'name': 'punctuation.definition.to-file.diff'
+      '3':
+        'name': 'punctuation.definition.to-file.diff'
+      '4':
+        'name': 'punctuation.definition.to-file.diff'
+    'match': '(^(\\+{3}) .+$\\n?| (-) .* (={4})$\\n?)'
+    'name': 'meta.diff.header.to-file'
+  }
+  {
+    'captures':
+      '1':
+        'name': 'punctuation.definition.range.diff'
+      '2':
+        'name': 'meta.toc-list.line-number.diff'
+      '3':
+        'name': 'punctuation.definition.range.diff'
+    'match': '^(@@)\\s*(.+?)\\s*(@@)($\\n?)?'
+    'name': 'meta.diff.range.unified'
+  }
+  {
+    'captures':
+      '3':
+        'name': 'punctuation.definition.inserted.diff'
+      '6':
+        'name': 'punctuation.definition.inserted.diff'
+    'match': '^(((>)( .*)?)|((\\+).*))$\\n?'
+    'name': 'markup.inserted.diff'
+  }
+  {
+    'captures':
+      '3':
+        'name': 'punctuation.definition.inserted.diff'
+      '6':
+        'name': 'punctuation.definition.inserted.diff'
+    'match': '^(((<)( .*)?)|((-).*))$\\n?'
+    'name': 'markup.deleted.diff'
+  }
+  {
+    'match': '\\[\\-(.*)?\\-\\]'
+    'name': 'markup.deleted.diff'
+  }
+  {
+    'match': '\\{\\+(.*)?\\+\\}'
+    'name': 'markup.inserted.diff'
+  }
+
+]
+'scopeName': 'diff.diff'
