@@ -10,7 +10,7 @@ class Git extends Model
     @clearMessage()
 
   setPath: (path) ->
-    @path = path || atom.project.getRepo().getWorkingDirectory()
+    @path = path || atom.project.getRepo()?.getWorkingDirectory?()
     @gift = gift @path
 
   getPath: ->
@@ -18,12 +18,12 @@ class Git extends Model
 
   diff: (path, callback, options) ->
     options ||= {}
-    flags = options.flags || ""
-    @gift.diff "", flags, [path], @callbackWithErrorsNoChange (diffs) ->
+    flags = options.flags || ''
+    @gift.diff '', flags, [path], @callbackWithErrorsNoChange (diffs) ->
       callback diffs[0] if callback
 
   add: (filename, callback) ->
-    @gift.add filename + " --no-ignore-removal", @callbackWithErrors(callback)
+    @gift.add filename + ' --no-ignore-removal', @callbackWithErrors(callback)
 
   git: (command, callback) ->
     @gift.git command, @callbackWithErrors(callback)
@@ -54,7 +54,7 @@ class Git extends Model
     @gift.create_branch name, @callbackWithErrors(callback)
 
   remotePush: (remote_branch, callback) ->
-    @gift.remote_push remote_branch + " -u", @callbackWithErrors(callback)
+    @gift.remote_push remote_branch + ' -u', @callbackWithErrors(callback)
 
   showObject: (obj, callback) ->
     @gift.git 'show', [], [obj], @callbackWithErrorsNoChange(callback)
@@ -67,7 +67,7 @@ class Git extends Model
         @setMessage "#{error}"
       else
         callback value if callback
-        @trigger "reload"
+        @trigger 'reload'
 
   callbackWithErrorsNoChange: (callback) =>
     @incrementTaskCounter()
@@ -80,32 +80,32 @@ class Git extends Model
 
   incrementTaskCounter: ->
     @task_counter += 1
-    @trigger("change:task_counter") if @task_counter == 1
+    @trigger('change:task_counter') if @task_counter == 1
 
   decrementTaskCounter: =>
     @task_counter -= 1
-    @trigger("change:task_counter") if @task_counter == 0
+    @trigger('change:task_counter') if @task_counter == 0
 
   clearTaskCounter: =>
     @task_counter = 0
-    @trigger("change:task_counter")
+    @trigger('change:task_counter')
 
   workingP: ->
     @task_counter > 0
 
   setMessage: (message) ->
     @set message: message
-    @trigger "error"
+    @trigger 'error'
 
   messageMarkup: ->
-    message = @get "message"
-    message.replace /\n/g, "<br />"
+    message = @get 'message'
+    message.replace /\n/g, '<br />'
 
   clearMessage: ->
-    @set message: ""
+    @set message: ''
 
 git = {}
-if atom.project
+if atom.project?.getRepo()?
   git = new Git()
 
 module.exports =

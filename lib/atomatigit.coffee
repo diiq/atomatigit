@@ -3,7 +3,7 @@ Repo = require './models/repo'
 
 module.exports =
   configDefaults:
-    pre_commit_hook: "",
+    pre_commit_hook: '',
 
   atomatigitView: null
 
@@ -14,8 +14,8 @@ module.exports =
     @insert_commands()
 
   insert_commands: ->
-    atom.workspaceView.command "atomatigit:show", => @focus()
-    atom.workspaceView.command "atomatigit:close", => @close()
+    atom.workspaceView.command 'atomatigit:show', => @focus()
+    atom.workspaceView.command 'atomatigit:close', => @close()
 
   close: ->
     if @repo_view.hasParent()
@@ -30,5 +30,3 @@ module.exports =
   deactivate: ->
     @repo_view.destroy()
     @repo.destroy()
-
-  serialize: ->

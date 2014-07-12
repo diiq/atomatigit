@@ -14,12 +14,12 @@ class UntrackedFile extends File
     atom.confirm
       message: "Move \"#{@path()}\" to trash?"
       buttons:
-        "Trash": @moveToTrash
-        "Cancel": null
+        'Trash': @moveToTrash
+        'Cancel': null
 
   moveToTrash: =>
-    shell.moveItemToTrash(git.path + "/" + @path())
-    git.trigger "reload"
+    shell.moveItemToTrash(git.path + '/' + @path())
+    git.trigger 'reload'
 
   untrackedP: -> true
 

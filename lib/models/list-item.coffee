@@ -23,7 +23,7 @@ class ListItem extends Model
     @set selected: false
 
   selectedP: ->
-    @get "selected"
+    @get 'selected'
 
   allowPrevious: ->
     if @useSublist()

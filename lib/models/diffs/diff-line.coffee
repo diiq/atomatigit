@@ -3,36 +3,36 @@
 ##
 # DiffLine represents a single line of a diff.
 # Someday we might want to be able to jump straight to
-# this line, but for now it only needs to manage whether it's
+# this line, but for now it only needs to manage whether it is
 # an addition, subtraction, or context line.
 
 module.exports =
 class DiffLine extends Model
   line: ->
-    @get "line"
+    @get 'line'
 
   type: ->
     if !!(@line().match /^\+/)
-      "addition"
+      'addition'
     else if !!(@line().match /^\-/)
-      "subtraction"
+      'subtraction'
     else
-      "context"
+      'context'
 
   repo: ->
-    @get "repo"
+    @get 'repo'
 
   markup: ->
     @escapeHTML @line()
 
   entityMap:
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
     '"': '&quot;',
     "'": '&#39;',
-    "/": '&#x2F;',
-    " ": '&nbsp;'
+    '/': '&#x2F;',
+    ' ': '&nbsp;'
 
   escapeHTML: (string) ->
     String(string).replace /[&<>"'\/ ]/g, (s) => @entityMap[s]

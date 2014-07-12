@@ -14,8 +14,8 @@ class UnstagedFile extends File
     atom.confirm
       message: "Discard unstaged changes to \"#{@path()}\"?"
       buttons:
-        "Discard": @checkout
-        "Cancel": -> null
+        'Discard': @checkout
+        'Cancel': -> null
 
   checkout: =>
     git.git "checkout #{@path()}"

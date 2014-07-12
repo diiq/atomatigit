@@ -7,18 +7,18 @@ class Branch extends ListItem
   name: ->
     # The name should be unicode-encoded. decode/escape repairs the
     # encoding.
-    decodeURIComponent escape @get "name"
+    decodeURIComponent escape @get 'name'
 
   localName: ->
     @name()
 
   head: ->
-    @get("commit").id
+    @get('commit').id
 
   commit: ->
-    new Commit @get "commit"
+    new Commit @get 'commit'
 
-  remoteName: -> ""
+  remoteName: -> ''
 
   unpushed: -> false
 
@@ -26,13 +26,13 @@ class Branch extends ListItem
     atom.confirm
       message: "Delete branch #{@name()}?"
       buttons:
-        "Delete": @delete
-        "Cancel": null
+        'Delete': @delete
+        'Cancel': null
 
   open: ->
     @checkout()
 
-  checkout: (callback)->
+  checkout: (callback) ->
     git.git "checkout #{@localName()}"
 
   push: -> null

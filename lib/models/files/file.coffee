@@ -14,26 +14,26 @@ class File extends ListItem
     @deselect()
 
   path: ->
-    @get "path"
+    @get 'path'
 
   showDiffP: ->
-    @get "diff"
+    @get 'diff'
 
   diff: ->
     @sublist
 
   diffType: ->
-    @get "diffType"
+    @get 'diffType'
 
   stage: ->
     git.add @path(), -> null
 
   setDiff: (diff) =>
     @sublist = new Diff diff
-    @trigger "change:diff"
+    @trigger 'change:diff'
 
   toggleDiff: ->
-    @set diff: not @get "diff"
+    @set diff: not @get 'diff'
 
   useSublist: ->
     @showDiffP()
@@ -44,11 +44,11 @@ class File extends ListItem
   commitMessage: =>
     switch_state = (type) ->
       switch type
-        when "M" then "modified:   "
-        when "R" then "renamed:    "
-        when "D" then "deleted:    "
-        when "A" then "new file:   "
-        else ""
+        when 'M' then 'modified:   '
+        when 'R' then 'renamed:    '
+        when 'D' then 'deleted:    '
+        when 'A' then 'new file:   '
+        else ''
     "#\t\t#{switch_state(@diffType())}#{@path()}\n"
 
   # Interface you'll have to override
