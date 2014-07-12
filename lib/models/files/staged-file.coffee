@@ -19,14 +19,14 @@ class StagedFile extends File
     atom.confirm
       message: "Discard all changes to \"#{@path()}\"?"
       buttons:
-        "Discard": @discardAllChanges
-        "Cancel": -> null
+        'Discard': @discardAllChanges
+        'Cancel': -> null
 
   discardAllChanges: =>
     git.git "reset HEAD #{@path()}", =>
       git.git "checkout #{@path()}"
 
   loadDiff: ->
-    git.diff @path(), @setDiff, flags: "--staged"
+    git.diff @path(), @setDiff, flags: '--staged'
 
   stagedP: -> true

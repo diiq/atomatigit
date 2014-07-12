@@ -10,19 +10,19 @@ class Commit extends ListItem
     decodeURIComponent escape s
 
   commitID: ->
-    @get "id"
+    @get 'id'
 
   shortID: ->
     @commitID()?.substr(0, 6)
 
   authorName: ->
-    @unicodify @get("author").name
+    @unicodify @get('author').name
 
   message: ->
-    @unicodify (@get("message") || "")
+    @unicodify (@get('message') || '')
 
   shortMessage: ->
-    @message().split("\n")[0]
+    @message().split('\n')[0]
 
   open: ->
     @confirmReset()
@@ -32,8 +32,8 @@ class Commit extends ListItem
       message: "Soft-reset head to #{@shortID()}?"
       detailedMessage: @message()
       buttons:
-        "Reset": @reset
-        "Cancel": null
+        'Reset': @reset
+        'Cancel': null
 
   reset: =>
     git.git "reset #{@commitID()}"
@@ -43,8 +43,8 @@ class Commit extends ListItem
       message: "Do you REALLY want to HARD-reset head to #{@shortID()}?"
       detailedMessage: @message()
       buttons:
-        "Cancel": null
-        "Reset": @hardReset
+        'Cancel': null
+        'Reset': @hardReset
 
   showCommit: =>
     if not @gitShowMessage?

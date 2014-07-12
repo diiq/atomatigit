@@ -3,7 +3,7 @@
 ##
 # There are multiple places that atomatigit requires lists of items, navigable
 # by command/keybinding or by click. Some list items even have nested lists
-# inside them. It's navigation hell! Still, we can abstract out some of that
+# inside them. it is navigation hell! Still, we can abstract out some of that
 # into List and ListItem. Victory, bitter but wingèd.
 
 module.exports =
@@ -23,7 +23,7 @@ class ListItem extends Model
     @set selected: false
 
   selectedP: ->
-    @get "selected"
+    @get 'selected'
 
   allowPrevious: ->
     if @useSublist()

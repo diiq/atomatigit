@@ -16,7 +16,7 @@ class Diff extends List
   removeHeader: (diff) ->
     # Remove first two lines, which name the file
     @header = diff?.match(/^(.*?\n){2}/)?[0]
-    diff?.replace /^(.*?\n){2}/, ""
+    diff?.replace /^(.*?\n){2}/, ''
 
   splitChunks: (diff) ->
     # We'll treat "@@ " a the beginning of a line as characteristic of the start

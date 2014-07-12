@@ -9,13 +9,13 @@ class LocalBranch extends Branch
   local: true
 
   unpushed: ->
-    @get "unpushed"
+    @get 'unpushed'
 
   delete: ->
     git.git "branch -D #{@name()}"
 
   # TODO tracking branch or something?
-  remoteName: -> ""
+  remoteName: -> ''
 
   checkout: (callback) ->
     git.git "checkout #{@localName()}"
