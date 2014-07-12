@@ -5,17 +5,17 @@ LocalBranch = require './local-branch'
 module.exports =
 class CurrentBranch extends LocalBranch
   initialize: (branchExisting) ->
-    if branchExisting then @reload()
+    @reload() if branchExisting
 
   reload: ->
     git.branch (head) =>
       @set head
 
     # git.gitNoChange "log @{u}..", (output) =>
-    #   @set unpushed: (output != "")
+    #   @set unpushed: (output != '')
 
   head: ->
-    "HEAD"
+    'HEAD'
 
   delete: -> null
 

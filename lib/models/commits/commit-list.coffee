@@ -10,7 +10,7 @@ class CommitList extends List
     @branch = branch
     git.commits @branch.head(), @repopulate
 
-  repopulate: (commit_hashes) =>
+  repopulate: (commit_hashes) ->
     @reset(commit_hashes)
-    @trigger "repopulate"
+    @trigger 'repopulate'
     @select @selected_index

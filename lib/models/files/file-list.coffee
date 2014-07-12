@@ -18,7 +18,7 @@ class FileList extends List
     @populateList(filelist.staged, @staged(), StagedFile)
 
     @select @selected_index
-    @trigger "repopulate"
+    @trigger 'repopulate'
 
   comparator: (file) ->
     file.sort_value

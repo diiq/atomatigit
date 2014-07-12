@@ -30,5 +30,3 @@ module.exports =
   deactivate: ->
     @repo_view.destroy()
     @repo.destroy()
-
-  serialize: ->

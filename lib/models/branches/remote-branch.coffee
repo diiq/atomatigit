@@ -11,7 +11,7 @@ class RemoteBranch extends Branch
     git.git "push -f #{@remoteName()} :#{@localName()}"
 
   localName: ->
-    @name().replace /.*?\//, ""
+    @name().replace /.*?\//, ''
 
   remoteName: ->
-    @name().replace /\/.*/, ""
+    @name().replace /\/.*/, ''

@@ -7,7 +7,7 @@ ListItem = require '../list-item'
 
 _ = require 'underscore'
 
-##
+#
 # A DiffChunk represents one consecutive block of altered lines. The end-goal of
 # breaking them out separately is to be able to stage them individually.
 #
@@ -21,19 +21,19 @@ class DiffChunk extends ListItem
       new DiffLine line: line
 
   deleteTrailingWhitespace: (chunk) ->
-    chunk.replace /\s*$/, ""
+    chunk.replace /\s*$/, ''
 
   deleteFirstLine: (chunk) ->
-    chunk.replace /.*?\n/, ""
+    chunk.replace /.*?\n/, ''
 
   deleteInitialWhitespace: (chunk) ->
-    chunk.replace /^(\s*?\n)*/, ""
+    chunk.replace /^(\s*?\n)*/, ''
 
   splitIntoLines: (chunk) ->
     chunk.split /\n/g
 
   patch: ->
-    @get("header") + @get("chunk") + "\n"
+    @get('header') + @get('chunk') + '\n'
 
   kill: ->
     (new File @patchPath()).write(@patch())
@@ -48,4 +48,5 @@ class DiffChunk extends ListItem
     git.git "apply --cached --reverse #{@patchPath()}"
 
   patchPath: ->
-    path.join git.getPath(), ".git/atomatigit_diff_patch"
+    cwd = atom.project.getRepo()?.getWorkingDirectory()
+    path.join cwd, '.git/atomatigit_diff_patch'

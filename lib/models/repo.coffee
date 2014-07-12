@@ -1,4 +1,5 @@
 _ = require 'underscore'
+path = require 'path'
 {Model} = require 'backbone'
 {File} = require 'pathwatcher'
 
@@ -31,7 +32,8 @@ class Repo extends Model
     @active_list.leaf()
 
   commitMessagePath: ->
-    atom.project.getRepo().getWorkingDirectory() + '/.git/COMMIT_EDITMSG_ATOMATIGIT'
+    cwd = atom.project.getRepo().getWorkingDirectory()
+    path.join cwd, '/.git/COMMIT_EDITMSG_ATOMATIGIT'
 
   headRefsCount: ->
     atom.project.getRepo().getReferences().heads.length
@@ -63,11 +65,11 @@ class Repo extends Model
       @writeCommitMessage(result)
 
   writeCommitMessage: (editor) =>
-    commitMessage = '\n' + """
+    commitMessage = '\n' + "
       # Please enter the commit message for your changes. Lines starting
       # with '#' will be ignored, and an empty message aborts the commit.
       # On branch #{@current_branch.localName()}\n
-    """
+    "
 
     filesStaged = @file_list.staged()
     filesUnstaged = @file_list.unstaged()
@@ -87,7 +89,7 @@ class Repo extends Model
     editor.setCursorBufferPosition [0, 0]
 
   completeCommit: ->
-    git.git "commit --cleanup=strip --file=\"#{@commitMessagePath()}\""
+    git.git "commit --cleanup=strip --file=\"#{@commitMessagePath()}\'"
     git.decrementTaskCounter()
 
   initiateCreateBranch: ->
