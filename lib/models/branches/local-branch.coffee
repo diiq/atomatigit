@@ -1,25 +1,35 @@
+git    = require '../../git'
 Branch = require './branch'
 
-{git} = require '../../git'
-
-module.exports =
+# Public: LocalBranch class that extends the {Branch} prototype.
 class LocalBranch extends Branch
-  remote: false
 
+  remote: false
   local: true
 
+  # Public: Return the 'unpushed' property.
+  #
+  # Returns the property as {String}.
   unpushed: ->
     @get 'unpushed'
 
+  # Public: Delete the branch.
   delete: ->
-    git.git "branch -D #{@name()}"
+    git.cmd 'branch', {D: true}, @name()
 
   # TODO tracking branch or something?
   remoteName: -> ''
 
+  # Public: Checkout the branch.
+  #
+  # callback - The callback as {Function}.
   checkout: (callback) ->
-    git.git "checkout #{@localName()}"
+    git.checkout @localName()
 
-  push: (remote) ->
-    remote ||= "origin #{@name()}"
-    git.remotePush remote
+  # Public: Push the branch to remote.
+  #
+  # remote - The remote to push to as {String}.
+  push: (remote='origin') ->
+    git.cmd 'push', [remote, @name()]
+
+module.exports = LocalBranch
