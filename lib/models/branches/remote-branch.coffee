@@ -1,17 +1,27 @@
+git    = require '../../git'
 Branch = require './branch'
-{git} = require '../../git'
 
-module.exports =
 class RemoteBranch extends Branch
-  remote: true
 
+  remote: true
   local: false
 
+  # Public: Delete the remote branch.
+  #
+  # Returns the [Description] as {String}.
   delete: ->
-    git.git "push -f #{@remoteName()} :#{@localName()}"
+    git.cmd "push -f #{@remoteName()} :#{@localName()}"
 
+  # Public: Return the local name.
+  #
+  # Returns the local name as {String}.
   localName: ->
     @name().replace /.*?\//, ''
 
+  # Public: Return the remote name.
+  #
+  # Returns the remote name as {String}.
   remoteName: ->
     @name().replace /\/.*/, ''
+
+module.exports = RemoteBranch
