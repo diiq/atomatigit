@@ -12,7 +12,6 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "gift": "~0.4.2",
     "backbone": "1.x",
     "lodash": "~2.4.1",
     "jquery": "~2.1.1",
