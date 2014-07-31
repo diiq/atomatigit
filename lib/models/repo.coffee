@@ -1,6 +1,7 @@
 _ = require 'underscore'
+fs = require 'fs'
+path = require 'path'
 {Model} = require 'backbone'
-{File} = require 'pathwatcher'
 
 {git} = require '../git'
 {FileList} = require './files'
@@ -31,7 +32,10 @@ class Repo extends Model
     @active_list.leaf()
 
   commitMessagePath: ->
-    atom.project.getRepo().getWorkingDirectory() + "/.git/COMMIT_EDITMSG_ATOMATIGIT"
+    path.join(
+      atom.project.getRepo()?.getWorkingDirectory(),
+      '/.git/COMMIT_EDITMSG_ATOMATIGIT'
+    )
 
   headRefsCount: ->
     atom.project.getRepo().getReferences().heads.length
@@ -55,8 +59,7 @@ class Repo extends Model
     if atom.config.get("atomatigit.pre_commit_hook") != ""
       atom.workspaceView.trigger(atom.config.get("atomatigit.pre_commit_hook"))
 
-    file = new File @commitMessagePath()
-    file.write('')
+    fs.writeFileSync(@commitMessagePath(), '')
 
     editor = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
     editor.then (result) =>

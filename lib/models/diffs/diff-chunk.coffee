@@ -1,11 +1,11 @@
+_    = require 'underscore'
+fs   = require 'fs'
 path = require 'path'
 
+{git}    = require '../../git'
 DiffLine = require './diff-line'
 ListItem = require '../list-item'
-{git} = require '../../git'
-{File} = require 'pathwatcher'
 
-_ = require 'underscore'
 
 ##
 # A DiffChunk represents one consecutive block of altered lines. The end-goal of
@@ -36,15 +36,15 @@ class DiffChunk extends ListItem
     @get("header") + @get("chunk") + "\n"
 
   kill: ->
-    (new File @patchPath()).write(@patch())
+    fs.writeFileSync(@patchPath(), @patch())
     git.git "apply --reverse #{@patchPath()}"
 
   stage: ->
-    (new File @patchPath()).write(@patch())
+    fs.writeFileSync(@patchPath(), @patch())
     git.git "apply --cached #{@patchPath()}"
 
   unstage: ->
-    (new File @patchPath()).write(@patch())
+    fs.writeFileSync(@patchPath(), @patch())
     git.git "apply --cached --reverse #{@patchPath()}"
 
   patchPath: ->
