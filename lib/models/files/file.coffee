@@ -1,4 +1,4 @@
-_ = require 'underscore'
+_ = require 'lodash'
 
 ListItem = require '../list-item'
 Diff = require '../diffs/diff'

@@ -1,6 +1,6 @@
 DiffChunk = require './diff-chunk'
 List = require '../list'
-_ = require 'underscore'
+_ = require 'lodash'
 
 ##
 # A diff is a whole-file diff, and is broken into a list of chunks. End-game

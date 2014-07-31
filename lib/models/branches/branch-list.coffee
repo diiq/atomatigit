@@ -1,4 +1,4 @@
-_ = require 'underscore'
+_ = require 'lodash'
 
 List = require '../list'
 LocalBranch = require './local-branch'

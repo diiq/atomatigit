@@ -26,7 +26,7 @@ describe 'Diff', ->
               '@@ -1,37 +1,29 @@',
               "-{Collection} = require 'backbone'",
               "+List = require './list'",
-              "_ = require 'underscore'",
+              "_ = require 'lodash'",
               '@@ -1,54 +1,33 @@',
               "DiffChunk = require './diff-chunk'",
               "-ListModel = require './list-model'"].join '\n'

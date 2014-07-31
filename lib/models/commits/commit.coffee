@@ -1,8 +1,8 @@
-fs = require 'fs-plus'
+fs   = require 'fs-plus'
 path = require 'path'
 
 ListItem = require '../list-item'
-{git} = require '../../git'
+{git}    = require '../../git'
 
 module.exports =
 class Commit extends ListItem

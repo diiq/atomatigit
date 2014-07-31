@@ -14,8 +14,9 @@
   "dependencies": {
     "gift": "~0.4.2",
     "backbone": "1.x",
-    "underscore": "1.x",
+    "lodash": "~2.4.1",
     "jquery": "~2.1.1",
-    "fs-plus": "~2.2.3"
+    "fs-plus": "~2.2.3",
+    "promised-git": "~0.0.2"
   }
 }

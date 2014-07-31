@@ -1,6 +1,6 @@
-gift = require 'gift'
+_       = require 'lodash'
+Git     = require 'promised-git'
 {Model} = require 'backbone'
-_ = require 'underscore'
 
 
 class Git extends Model
