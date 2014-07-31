@@ -1,36 +1,43 @@
-_ = require 'lodash'
-fs = require 'fs'
-path = require 'path'
+_       = require 'lodash'
+fs      = require 'fs'
+path    = require 'path'
 {Model} = require 'backbone'
 
-{git} = require '../git'
-{FileList} = require './files'
+git                         = require '../git'
+{FileList}                  = require './files'
 {CurrentBranch, BranchList} = require './branches'
-{CommitList} = require './commits'
+{CommitList}                = require './commits'
 
-module.exports =
+# Public: Offers access to core functionality regarding the git repository.
 class Repo extends Model
-  initialize: (opts) ->
-    @file_list = new FileList []
-    @branch_list = new BranchList []
-    @commit_list = new CommitList []
-    @current_branch = new CurrentBranch(@headRefsCount() > 0)
+  # Public: Constructor
+  initialize: ->
+    @fileList      = new FileList []
+    @branchList    = new BranchList []
+    @commitList    = new CommitList []
+    @currentBranch = new CurrentBranch(@headRefsCount() > 0)
     git.on 'reload', @reload
 
-  reload: =>
-    git.setPath()
-    @file_list.reload()
+  # Public: Forces a reload on the repository.
+  reload: ->
+    @fileList.reload()
     if @headRefsCount() > 0
-      @current_branch.reload()
-      @branch_list.reload()
-      @commit_list.reload(@current_branch)
+      @currentBranch.reload()
+      @branchList.reload()
+      @commitList.reload(@currentBranch)
 
+  # Public: Returns the active selection.
+  #
+  # Returns the active selection as {Object}.
   selection: ->
     @active_list.selection()
 
   leaf: ->
     @active_list.leaf()
 
+  # Internal: The commit message file path.
+  #
+  # Returns the commit message file path as {String}.
   commitMessagePath: ->
     path.join(
       atom.project.getRepo()?.getWorkingDirectory(),
@@ -46,7 +53,7 @@ class Repo extends Model
       git.decrementTaskCounter()
 
   checkoutBranch: ->
-    @branch_list.checkout_branch
+    @branchList.checkout_branch
 
   stash: ->
     git.git 'stash'
@@ -54,9 +61,9 @@ class Repo extends Model
   stashPop: ->
     git.git 'stash pop'
 
+  # Internal: Initiate a new commit.
   initiateCommit: ->
-    git.incrementTaskCounter()
-    if atom.config.get('atomatigit.pre_commit_hook') != ''
+    if atom.config.get('atomatigit.pre_commit_hook') isnt ''
       atom.workspaceView.trigger(atom.config.get('atomatigit.pre_commit_hook'))
 
     fs.writeFileSync(@commitMessagePath(), '')
@@ -65,16 +72,19 @@ class Repo extends Model
     editor.then (result) =>
       @writeCommitMessage(result)
 
+  # Internal: Writes the commit message template to the message file.
+  #
+  # editor - The editor the file is open in as {Object}.
   writeCommitMessage: (editor) =>
     commitMessage = '\n' + """
       # Please enter the commit message for your changes. Lines starting
       # with '#' will be ignored, and an empty message aborts the commit.
-      # On branch #{@current_branch.localName()}\n
+      # On branch #{@currentBranch.localName()}\n
     """
 
-    filesStaged = @file_list.staged()
-    filesUnstaged = @file_list.unstaged()
-    filesUntracked = @file_list.untracked()
+    filesStaged = @fileList.staged()
+    filesUnstaged = @fileList.unstaged()
+    filesUntracked = @fileList.untracked()
 
     commitMessage += '#\n# Changes to be committed:\n' if filesStaged.length >= 1
     commitMessage += file.commitMessage() for file in filesStaged
@@ -89,10 +99,11 @@ class Repo extends Model
     editor.setText(commitMessage)
     editor.setCursorBufferPosition [0, 0]
 
+  # Internal: Commit the changes.
   completeCommit: ->
-    git.git "commit --cleanup=strip --file=\"#{@commitMessagePath()}\""
-    git.decrementTaskCounter()
+    git.commit @commitMessagePath()
 
+  # Public: Initiate the creation of a new branch.
   initiateCreateBranch: ->
     @trigger 'need_input',
       query: 'Branch name'
@@ -100,10 +111,15 @@ class Repo extends Model
         git.createBranch name, ->
           git.git "checkout #{name}"
 
+  # Public: Initiate a user defined git command.
   initiateGitCommand: ->
     @trigger 'need_input',
       query: 'Git command'
-      callback: (command) -> git.git command
+      callback: (command) -> git.cmd command
 
+  # Public: Push the repository to the remote.
   push: ->
-    @current_branch.push()
+    @currentBranch.push()
+
+# Exports {Repo}.
+module.exports = Repo
