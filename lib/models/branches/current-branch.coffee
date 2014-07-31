@@ -1,22 +1,30 @@
+git         = require '../../git'
 LocalBranch = require './local-branch'
 
-{git} = require '../../git'
-
-module.exports =
+# Public: CurrentBranch class that extends the {LocalBranch} prototype.
 class CurrentBranch extends LocalBranch
+  # Public: Constructor.
+  #
+  # branchExisting - If the branch is existing as {Boolean}.
   initialize: (branchExisting) ->
     @reload() if branchExisting
 
+  # Public: Reload the branch HEAD.
   reload: ->
-    git.branch (head) =>
+    git.revParse().then (head) =>
       @set head
 
-    # git.gitNoChange "log @{u}..", (output) =>
-    #   @set unpushed: (output != '')
-
+  # Public: Return the HEAD.
+  #
+  # Returns 'HEAD'.
   head: ->
     'HEAD'
 
-  delete: -> null
+  # Abstract: Delete the branch.
+  delete: -> return
 
-  checkout: -> null
+  # Public: Checkout the branch. Empty function since this IS our current
+  #         branch.
+  checkout: -> return
+
+module.exports = CurrentBranch
