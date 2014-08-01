@@ -1,57 +1,83 @@
 _ = require 'lodash'
 
+git      = require '../../git'
+Diff     = require '../diffs/diff'
 ListItem = require '../list-item'
-Diff = require '../diffs/diff'
-{git} = require '../../git'
 
-module.exports =
 class File extends ListItem
-  initialize: (path) ->
-    @set 'path': path.path
-    @set 'diffType': path.type
+  # Public: Constructor
+  #
+  # path - The file path as {String}.
+  initialize: (file) ->
+    @set 'path': file.path
+    @set 'diffType': file.type
     @set diff: false
     @loadDiff()
     @deselect()
 
+  # Public: Return the 'path' property.
+  #
+  # Returns the 'path' property as {String}.
   path: ->
     @get 'path'
 
+  # Public: Return the 'diff' property.
+  #
+  # Returns the 'diff' property as {String}.
   showDiffP: ->
     @get 'diff'
 
+  # Public: Return the diff sublist.
+  #
+  # Returns the diff sublist as {List}.
   diff: ->
     @sublist
 
+  # Public: Return the 'diffType' property.
+  #
+  # Returns the 'diffType' property as {String}.
   diffType: ->
     @get 'diffType'
 
+  # Public: Stage the changes made to this file.
   stage: ->
-    git.add @path(), -> null
+    git.add @path()
 
+  # Internal: Set the file diff to diff.
+  #
+  # diff - The diff to set the file diff to as {Diff}.
   setDiff: (diff) =>
-    @sublist = new Diff diff
+    @sublist = new Diff(diff)
     @trigger 'change:diff'
 
+  # Public: Toggle the diff visibility.
   toggleDiff: ->
-    @set diff: not @get 'diff'
+    @set diff: not @get('diff')
 
   useSublist: ->
     @showDiffP()
 
+  # Public: Open the file in atom.
   open: ->
     atom.workspaceView.open @path()
 
-  commitMessage: =>
-    switch_state = (type) ->
+  commitMessage: ->
+    switchState = (type) ->
       switch type
         when 'M' then 'modified:   '
         when 'R' then 'renamed:    '
         when 'D' then 'deleted:    '
         when 'A' then 'new file:   '
         else ''
-    "#\t\t#{switch_state(@diffType())}#{@path()}\n"
+    "#\t\t#{switchState(@diffType())}#{@path()}\n"
 
-  # Interface you'll have to override
+  # Public: Checkout the file to the index.
+  checkout: ->
+    git.checkoutFile @path()
+
+  #############################################################################
+  # Interface you will have to override                                       #
+  #############################################################################
 
   unstage: -> null
 
@@ -64,3 +90,5 @@ class File extends ListItem
   unstagedP: -> false
 
   untrackedP: -> false
+
+module.exports = File

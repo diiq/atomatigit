@@ -1,5 +1,5 @@
 File= require './file'
-{git} = require '../../git'
+git = require '../../git'
 
 module.exports =
 class UnstagedFile extends File
@@ -8,7 +8,7 @@ class UnstagedFile extends File
   sort_value: 1
 
   unstage: ->
-    git.git "reset HEAD #{@path()}", @error_callback
+    git.unstage(@path()).catch (error) => @error_callback(error)
 
   kill: ->
     atom.confirm
@@ -17,10 +17,7 @@ class UnstagedFile extends File
         'Discard': @checkout
         'Cancel': -> null
 
-  checkout: =>
-    git.git "checkout #{@path()}"
-
   loadDiff: ->
-    git.diff @path(), @setDiff
+    git.getDiff(@path()).then (diff) => @setDiff(diff)
 
   unstagedP: -> true
