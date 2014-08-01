@@ -8,36 +8,36 @@
 
 module.exports =
 class List extends Collection
-  selected_index: 0
-  is_sublist: false
+  selectedIndex: 0
+  isSublist: false
 
   leaf: ->
     if @selection()
       @selection().leaf()
 
   selection: ->
-    @at @selected_index
+    @at @selectedIndex
 
   select: (i) ->
-    old_selection = @selected_index
+    old_selection = @selectedIndex
     if @selection()
       @selection().deselect()
 
-    if @is_sublist and i < 0
-      @selected_index = -1
+    if @isSublist and i < 0
+      @selectedIndex = -1
       return false
 
-    @selected_index = Math.max(Math.min(i, @length - 1), 0)
+    @selectedIndex = Math.max(Math.min(i, @length - 1), 0)
 
     if @selection()
       @selection().select()
 
-    old_selection != @selected_index
+    old_selection != @selectedIndex
 
   next: ->
     return false if @selection() and not @selection().allowNext()
-    @select (@selected_index + 1)
+    @select (@selectedIndex + 1)
 
   previous: ->
     return false if @selection() and not @selection().allowPrevious()
-    @select(@selected_index - 1)
+    @select(@selectedIndex - 1)
