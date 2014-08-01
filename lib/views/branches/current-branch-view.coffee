@@ -1,6 +1,5 @@
 {View} = require 'atom'
 
-module.exports =
 class CurrentBranchView extends View
   @content: ->
     @div class: 'current-branch-view', =>
@@ -22,3 +21,5 @@ class CurrentBranchView extends View
     @commit.removeClass 'unpushed'
     if @model.unpushed()
       @commit.addClass 'unpushed'
+
+module.exports = CurrentBranchView

@@ -1,7 +1,6 @@
 {View} = require 'atom'
 BranchBriefView = require './branch-brief-view'
 
-module.exports =
 class BranchListView extends View
   @content: ->
     @div class: 'branch-list-view list-view', tabindex: -1, =>
@@ -10,8 +9,8 @@ class BranchListView extends View
       @h2 'remote:'
       @div outlet: 'remote_dom'
 
-  initialize: (branch_list) ->
-    @model = branch_list
+  initialize: (branchList) ->
+    @model = branchList
     @model.on 'change', @repaint
 
   beforeRemove: ->
@@ -25,7 +24,9 @@ class BranchListView extends View
     @empty_lists()
 
     for branch in @model.local()
-      @local_dom.append new BranchBriefView branch
+      @local_dom.append new BranchBriefView(branch)
 
     for branch in @model.remote()
-      @remote_dom.append new BranchBriefView branch
+      @remote_dom.append new BranchBriefView(branch)
+
+module.exports = BranchListView

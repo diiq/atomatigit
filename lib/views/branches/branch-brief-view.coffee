@@ -1,6 +1,5 @@
 {View} = require 'atom'
 
-module.exports =
 class BranchBriefView extends View
   @content: ->
     @div class: 'branch-brief-view', mousedown: 'clicked', =>
@@ -33,3 +32,5 @@ class BranchBriefView extends View
   showSelection: =>
     @removeClass('selected')
     @addClass('selected') if @model.selectedP()
+
+module.exports = BranchBriefView
