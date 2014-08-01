@@ -1,5 +1,5 @@
+Repo     = require './models/repo'
 RepoView = require './views/repo-view'
-Repo = require './models/repo'
 
 module.exports =
   configDefaults:
@@ -8,25 +8,23 @@ module.exports =
   atomatigitView: null
 
   activate: (state) ->
-    @repo = new Repo
-    @repo_view = new RepoView(@repo)
+    @repo     = new Repo()
+    @repoView = new RepoView(@repo)
 
-    @insert_commands()
+    @insertCommands()
 
-  insert_commands: ->
-    atom.workspaceView.command 'atomatigit:show', => @focus()
+  insertCommands: ->
+    atom.workspaceView.command 'atomatigit:show',  => @focus()
     atom.workspaceView.command 'atomatigit:close', => @close()
 
   close: ->
-    if @repo_view.hasParent()
-      @repo_view.detach()
+    @repoView.detach() if @repoView.hasParent()
 
   focus: ->
-    if !@repo_view.hasParent()
-      atom.workspaceView.appendToRight(@repo_view)
+    atom.workspaceView.appendToRight(@repoView) unless @repoView.hasParent()
     @repo.reload()
-    @repo_view.focus()
+    @repoView.focus()
 
   deactivate: ->
-    @repo_view.destroy()
+    @repoView.destroy()
     @repo.destroy()
