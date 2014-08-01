@@ -19,6 +19,6 @@ class CommitView extends View
 
   showSelection: =>
     @removeClass('selected')
-    @addClass('selected') if @model.selectedP()
+    @addClass('selected') if @model.isSelected()
 
 module.exports = CommitView

@@ -45,12 +45,12 @@ describe 'ListItem', ->
       item.deselect()
       expect(item.get 'selected').toBe false
 
-  describe '.selectedP', ->
+  describe '.isSelected', ->
     it 'returns .selected', ->
       item.set selected: false
-      expect(item.selectedP()).toBe false
+      expect(item.isSelected()).toBe false
       item.set selected: true
-      expect(item.selectedP()).toBe true
+      expect(item.isSelected()).toBe true
 
   describe '.allowPrevious', ->
     it 'returns true if the item useSublist returns false', ->
