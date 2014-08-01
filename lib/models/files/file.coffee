@@ -79,11 +79,11 @@ class File extends ListItem
   # Interface you will have to override                                       #
   #############################################################################
 
-  unstage: -> null
+  unstage: -> return
 
-  kill: -> null
+  kill: -> return
 
-  loadDiff: -> null
+  loadDiff: -> return
 
   stagedP: -> false
 

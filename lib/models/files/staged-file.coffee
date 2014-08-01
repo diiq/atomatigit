@@ -20,7 +20,7 @@ class StagedFile extends File
       message: "Discard all changes to \"#{@path()}\"?"
       buttons:
         'Discard': @discardAllChanges
-        'Cancel': -> null
+        'Cancel': -> return
 
   # Internal: Discard all changes made to this file.
   discardAllChanges: ->
