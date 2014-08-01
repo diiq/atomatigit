@@ -15,9 +15,9 @@ class FileList extends List
   #
   # status - The status to populate the file list with as {Object}.
   populate: (status) ->
-    @populateList(_.map(status.untracked, 'path'), @untracked(), UntrackedFile)
-    @populateList(_.map(status.unstaged, 'path'), @unstaged(), UnstagedFile)
-    @populateList(_.map(status.staged, 'path'), @staged(), StagedFile)
+    @populateList(status.untracked, @untracked(), UntrackedFile)
+    @populateList(status.unstaged, @unstaged(), UnstagedFile)
+    @populateList(status.staged, @staged(), StagedFile)
 
     @select @selectedIndex
     @trigger 'repopulate'
