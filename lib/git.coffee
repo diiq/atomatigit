@@ -1,9 +1,11 @@
-Git     = require 'promised-git'
+Git = require 'promised-git'
 
 getPath = ->
-  if atom.project.getRepo()
+  if atom.project?.getRepo()
     atom.project.getRepo().getWorkingDirectory()
-  else
+  else if atom.project
     atom.project.getPath()
+  else
+    __dirname
 
 module.exports = new Git(getPath())
