@@ -1,32 +1,53 @@
 fs   = require 'fs-plus'
 path = require 'path'
 
+git      = require '../../git'
 ListItem = require '../list-item'
-{git}    = require '../../git'
 
-module.exports =
 class Commit extends ListItem
+  # Public: Handle unicode characters.
+  #
+  # s - The string to handle as {String}.
+  #
+  # Returns the transformed string as {String}.
   unicodify: (s) ->
     decodeURIComponent escape s
 
+  # Public: Return the commit id.
+  #
+  # Returns the id as {String}.
   commitID: ->
     @get 'id'
 
+  # Public: Return the short id.
+  #
+  # Returns the short id as {String}.
   shortID: ->
     @commitID()?.substr(0, 6)
 
+  # Public: Return the author name.
+  #
+  # Returns the author name as {String}.
   authorName: ->
     @unicodify @get('author').name
 
+  # Public: Return the commit message.
+  #
+  # Returns the commit message as {String}.
   message: ->
-    @unicodify (@get('message') || '')
+    @unicodify (@get('message') or '\n')
 
+  # Public: Return the head line of the commit message.
+  #
+  # Returns the commit head line as {String}.
   shortMessage: ->
     @message().split('\n')[0]
 
+  # Public: open -> soft reset to this commit.
   open: ->
     @confirmReset()
 
+  # Public: Ask the user for confirmation to soft-reset to this commit.
   confirmReset: ->
     atom.confirm
       message: "Soft-reset head to #{@shortID()}?"
@@ -35,9 +56,7 @@ class Commit extends ListItem
         'Reset': @reset
         'Cancel': null
 
-  reset: =>
-    git.git "reset #{@commitID()}"
-
+  # Public: Ask the user for confirmation to hard-reset to this commit.
   confirmHardReset: ->
     atom.confirm
       message: "Do you REALLY want to HARD-reset head to #{@shortID()}?"
@@ -46,9 +65,18 @@ class Commit extends ListItem
         'Cancel': null
         'Reset': @hardReset
 
-  showCommit: =>
+  # Internal: Reset to this commit.
+  reset: ->
+    git.reset @commitID()
+
+  # Public: Hard reset to this commit.
+  hardReset: ->
+    git.reset @commitID(), {hard: true}
+
+  # Public: Show this commit.
+  showCommit: ->
     if not @gitShowMessage?
-      git.showObject @commitID(), (data) =>
+      git.show @commitID(), (data) =>
         @gitShowMessage = decodeURIComponent(escape(data))
         @showCommit()
     else
@@ -68,5 +96,5 @@ class Commit extends ListItem
     @editor.buffer.once 'changed', =>
       @showCommitWrite()
 
-  hardReset: =>
-    git.git "reset --hard #{@commitID()}"
+
+module.exports = Commit

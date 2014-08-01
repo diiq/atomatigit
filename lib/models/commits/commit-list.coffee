@@ -1,16 +1,24 @@
-List = require '../list'
+git    = require '../../git'
+List   = require '../list'
 Commit = require './commit'
-{git} = require '../../git'
 
-module.exports =
 class CommitList extends List
   model: Commit
 
+  # Public: Reload the commit list.
+  #
+  # branch - The branch to reload the commits for as {Branch}.
   reload: (branch) ->
     @branch = branch
-    git.commits @branch.head(), @repopulate
+    git.log @branch.head().then (commits) =>
+      @repopulate(_.map(commits, 'ref'))
 
-  repopulate: (commit_hashes) ->
-    @reset(commit_hashes)
+  # Public: Repopulate the commit list with the commitHashes.
+  #
+  # commitHashes - The commit hashes to repopulate with as {Arraya}.
+  repopulate: (commitHashes) ->
+    @reset(commitHashes)
     @trigger 'repopulate'
-    @select @selected_index
+    @select @selectedIndex
+
+module.exports = CommitList
