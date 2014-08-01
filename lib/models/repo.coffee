@@ -16,7 +16,6 @@ class Repo extends Model
     @branchList    = new BranchList []
     @commitList    = new CommitList []
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
-    git.on 'reload', @reload
 
   # Public: Forces a reload on the repository.
   reload: ->
@@ -30,10 +29,10 @@ class Repo extends Model
   #
   # Returns the active selection as {Object}.
   selection: ->
-    @active_list.selection()
+    @activeList.selection()
 
   leaf: ->
-    @active_list.leaf()
+    @activeList.leaf()
 
   # Internal: The commit message file path.
   #
@@ -48,23 +47,21 @@ class Repo extends Model
     atom.project.getRepo().getReferences().heads.length
 
   fetch: ->
-    git.incrementTaskCounter()
-    git.remoteFetch 'origin', ->
-      git.decrementTaskCounter()
+    git.cmd 'fetch'
 
   checkoutBranch: ->
-    @branchList.checkout_branch
+    @branchList.checkoutBranch
 
   stash: ->
-    git.git 'stash'
+    git.cmd 'stash'
 
   stashPop: ->
-    git.git 'stash pop'
+    git.cmd 'stash pop'
 
   # Internal: Initiate a new commit.
   initiateCommit: ->
-    if atom.config.get('atomatigit.pre_commit_hook') isnt ''
-      atom.workspaceView.trigger(atom.config.get('atomatigit.pre_commit_hook'))
+    if atom.config.get('atomatigit.PRE_COMMIT_HOOK') isnt ''
+      atom.workspaceView.trigger(atom.config.get('atomatigit.PRE_COMMIT_HOOK'))
 
     fs.writeFileSync(@commitMessagePath(), '')
 
@@ -107,9 +104,7 @@ class Repo extends Model
   initiateCreateBranch: ->
     @trigger 'need_input',
       query: 'Branch name'
-      callback: (name) ->
-        git.createBranch name, ->
-          git.git "checkout #{name}"
+      callback: (name) -> git.cmd "checkout -b #{name}"
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: ->
