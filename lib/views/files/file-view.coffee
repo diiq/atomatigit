@@ -1,7 +1,6 @@
 {View} = require 'atom'
 DiffView = require '../diffs/diff-view'
 
-module.exports =
 class FileView extends View
   @content: (file) ->
     @div class: 'file', mousedown: 'clicked', =>
@@ -28,3 +27,5 @@ class FileView extends View
     @find('.diff').remove()
     if @model.showDiffP()
       @append new DiffView @model.diff()
+
+module.exports = FileView

@@ -1,7 +1,6 @@
 {View} = require 'atom'
 FileView = require './file-view'
 
-module.exports =
 class FileListView extends View
   @content: ->
     @div class: 'file-list-view list-view', tabindex: -1, =>
@@ -41,3 +40,5 @@ class FileListView extends View
     @repopulateUntracked()
     @repopulateUnstaged()
     @repopulateStaged()
+
+module.exports = FileListView
