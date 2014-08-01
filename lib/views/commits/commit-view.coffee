@@ -1,6 +1,5 @@
 {View} = require 'atom'
 
-module.exports =
 class CommitView extends View
   @content: (commit) ->
     @div class: 'commit', click: 'clicked', =>
@@ -21,3 +20,5 @@ class CommitView extends View
   showSelection: =>
     @removeClass('selected')
     @addClass('selected') if @model.selectedP()
+
+module.exports = CommitView

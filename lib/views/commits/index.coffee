@@ -1,3 +1,3 @@
 module.exports =
-  CommitView: require './commit-view'
-  CommitListView: require './commit-list-view'
+  CommitView     : require './commit-view'
+  CommitListView : require './commit-list-view'
