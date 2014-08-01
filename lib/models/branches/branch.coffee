@@ -9,7 +9,7 @@ class Branch extends ListItem
   name: ->
     # The name should be unicode-encoded. decode/escape repairs the
     # encoding.
-    decodeURIComponent escape @get 'name'
+    decodeURIComponent escape @get('name')
 
   # Public: Return the local branch name.
   #
