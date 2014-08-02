@@ -5,7 +5,7 @@ module.exports =
 class UntrackedFile extends File
 
   # Untracked files appear first in the list
-  sort_value: 0
+  sortValue: 0
 
   kill: ->
     atom.confirm

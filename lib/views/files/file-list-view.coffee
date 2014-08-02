@@ -1,4 +1,6 @@
+_      = require 'lodash'
 {View} = require 'atom'
+
 FileView = require './file-view'
 
 class FileListView extends View
@@ -12,29 +14,22 @@ class FileListView extends View
       @div class: 'staged', outlet: 'staged'
 
   initialize: (@model) ->
-    @model.on 'change', @repopulate
-    @model.on 'repopulate', @repopulate
+    @model.on 'repaint', @repopulate
 
   beforeRemove: =>
-    @model.off 'repopulate', @repopulate
+    @model.off 'repaint', @repopulate
 
   repopulateUntracked: ->
     @untracked.empty()
-
-    for file in @model.untracked()
-      @untracked.append new FileView file
+    _.each @model.untracked, (file) -> @untracked.append new FileView(file)
 
   repopulateUnstaged: ->
     @unstaged.empty()
-
-    for file in @model.unstaged()
-      @unstaged.append new FileView file
+    _.each @model.unstaged(), (file) -> @unstaged.append new FileView(file)
 
   repopulateStaged: ->
     @staged.empty()
-
-    for file in @model.staged()
-      @staged.append new FileView file
+    _.each @model.staged(), (file) -> @staged.append new FileView(file)
 
   repopulate: =>
     @repopulateUntracked()

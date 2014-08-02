@@ -23,10 +23,10 @@ class FileList extends List
     @populateList(status.staged, @staged(), StagedFile)
 
     @select @selectedIndex
-    @trigger 'repopulate'
+    @trigger 'repaint'
 
   comparator: (file) ->
-    file.sort_value
+    file.sortValue
 
   # Public: Return the staged files.
   staged: ->

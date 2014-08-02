@@ -1,4 +1,6 @@
+_      = require 'lodash'
 {View} = require 'atom'
+
 CommitView = require './commit-view'
 
 class CommitListView extends View
@@ -13,7 +15,6 @@ class CommitListView extends View
 
   repaint: =>
     @empty()
-    for commit in @model.models
-      @append new CommitView(commit)
+    _.each @model.models, (commit) => @append new CommitView(commit)
 
 module.exports = CommitListView

@@ -1,4 +1,6 @@
+_      = require 'lodash'
 {View} = require 'atom'
+
 BranchBriefView = require './branch-brief-view'
 
 class BranchListView extends View
@@ -10,22 +12,19 @@ class BranchListView extends View
       @div outlet: 'remoteDom'
 
   initialize: (@model) ->
-    @model.on 'change', @repaint
+    @model.on 'repaint', @repaint
 
   beforeRemove: =>
-    @model.off 'change', @repaint
+    @model.off 'repaint', @repaint
 
-  empty_lists: =>
+  emptyLists: =>
     @localDom.empty()
     @remoteDom.empty()
 
   repaint: =>
-    @empty_lists()
+    @emptyLists()
 
-    for branch in @model.local()
-      @localDom.append new BranchBriefView(branch)
-
-    for branch in @model.remote()
-      @remoteDom.append new BranchBriefView(branch)
+    _.each @model.local(), (branch) => @localDom.append new BranchBriefView(branch)
+    _.each @model.remote(), (branch) => @remoteDom.append new BranchBriefView(branch)
 
 module.exports = BranchListView

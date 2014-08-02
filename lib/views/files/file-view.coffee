@@ -6,8 +6,7 @@ class FileView extends View
     @div class: 'file', mousedown: 'clicked', =>
       @div class: 'filename', "#{file.path()}"
 
-  initialize: (file) ->
-    @model = file
+  initialize: (@model) ->
     @model.on 'change:selected', @showSelection
     @model.on 'change:diff', @showDiff
     @showSelection()

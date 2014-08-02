@@ -16,6 +16,7 @@ class BranchList extends List
       git.remoteBranches().then (branches) =>
         _.each branches, (branch) => @add new RemoteBranch(branch)
         @select(@selectedIndex)
+        @trigger 'repaint'
     .catch (error) -> new ErrorView(error)
 
   # Public: Return the local branches from the branch list.

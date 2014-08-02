@@ -5,7 +5,7 @@ ErrorView = require '../../views/error-view'
 class StagedFile extends File
 
   # Tracked files appear last in the file list
-  sort_value: 2
+  sortValue: 2
 
   # Public: The file is already staged, empty function.
   stage: -> return

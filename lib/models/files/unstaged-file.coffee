@@ -6,7 +6,7 @@ module.exports =
 class UnstagedFile extends File
 
   # Tracked files appear second in the file list
-  sort_value: 1
+  sortValue: 1
 
   unstage: ->
     git.unstage(@path())

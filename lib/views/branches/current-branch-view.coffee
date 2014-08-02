@@ -7,11 +7,11 @@ class CurrentBranchView extends View
       @div class: 'commit', outlet: 'commit'
 
   initialize: (@model) ->
-    @model.on 'change', @repaint
+    @model.on 'repaint', @repaint
     @repaint()
 
   beforeRemove: =>
-    @model.off 'change', @repaint
+    @model.off 'repaint', @repaint
 
   repaint: =>
     @model.reload().then =>

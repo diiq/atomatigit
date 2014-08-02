@@ -6,7 +6,7 @@ class ErrorView extends View
       @div class: 'overlay from-bottom atomatigit-error', outlet: 'messagePanel', =>
         @div class: 'panel-body padded error-message', message
 
-  initialize: ->
+  initialize: (error) ->
     @messagePanel.on 'click', => @detach()
     atom.workspaceView.append(this)
     setTimeout =>
