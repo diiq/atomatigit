@@ -87,23 +87,26 @@ class Commit extends ListItem
   # Public: Hard reset to this commit.
   hardReset: =>
     git.reset @commitID(), {hard: true}
+    .catch (error) -> new ErrorView(error)
 
   # Public: Show this commit.
   showCommit: =>
     if not @gitShowMessage?
-      git.show @commitID(), (data) =>
-        @gitShowMessage = decodeURIComponent(escape(data))
+      git.show @commitID()
+      .then (data) =>
+        @gitShowMessage = @unicodify(data)
         @showCommit()
+      .catch (error) -> new ErrorView(error)
     else
-      fs.writeFileSync path.join(git.getPath(), ".git/#{@commitID()}"), @gitShowMessage
-      editor = atom.workspace.open(".git/#{@commitID()}")
-      editor.then (e) =>
-        @editor = e
+      gitPath = atom.project?.getRepo()?.getPath() or atom.project?.getPath()
+      fs.writeFileSync path.join(gitPath, ".git/#{@commitID()}"), @gitShowMessage
+      editor = atom.workspace.open(path.join(gitPath, ".git/#{@commitID()}"))
+      editor.then (@editor) =>
         @editor.setGrammar atom.syntax.grammarForScopeName('diff.diff')
         @editor.buffer.once 'changed', =>
           @showCommitWrite()
         @editor.buffer.once 'destroyed', =>
-          fs.removeSync path.join(git.getPath(), ".git/#{@commitID()}")
+          fs.removeSync path.join(gitPath, ".git/#{@commitID()}")
 
   showCommitWrite: =>
     return unless @editor? and @gitShowMessage?
