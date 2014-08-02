@@ -10,20 +10,13 @@ class CommitList extends List
   # Public: Reload the commit list.
   #
   # branch - The branch to reload the commits for as {Branch}.
-  reload: (branch) =>
-    @branch = branch
-    git.log(@branch.head())
+  reload: (@branch) =>
+    git.log(@branch?.head() ? 'HEAD')
     .then (commits) =>
-      @repopulate _.map(commits, (commit) -> new Commit(commit))
+      @reset _.map(commits, (commit) -> new Commit(commit))
+      @trigger 'repaint'
+      @select @selectedIndex
     .catch (error) ->
       new ErrorView(error)
-
-  # Public: Repopulate the commit list with the commitHashes.
-  #
-  # commitHashes - The commit hashes to repopulate with as {Arraya}.
-  repopulate: (commitHashes) ->
-    @reset(commitHashes)
-    @trigger 'repopulate'
-    @select @selectedIndex
 
 module.exports = CommitList

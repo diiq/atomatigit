@@ -33,9 +33,10 @@ class RepoView extends View
     @model.on 'needInput', @getInput
 
     @on 'core:confirm', => @completeInput()
-    @on 'core:cancel', => @cancelInput()
-    @on 'click', => @focus()
-    @on 'focusout', => @unfocus()
+    @on 'core:cancel',  => @cancelInput()
+    @on 'click',        => @focus()
+    @on 'focusout',     => @unfocus()
+
     @inputEditor.on 'click', -> false
     @resizeHandle.on 'mousedown', @resizeStarted
 

@@ -17,13 +17,15 @@ class Repo extends Model
     @commitList    = new CommitList []
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
 
+    @branchList.on 'update', => @commitList.reload()
+
   # Public: Forces a reload on the repository.
   reload: =>
-    @fileList.reload().then =>
-      if @headRefsCount() > 0
-        @currentBranch.reload().then =>
-          @branchList.reload().then =>
-            @commitList.reload(@currentBranch)
+    @fileList.reload()
+    if @headRefsCount() > 0
+      @currentBranch.reload()
+      @branchList.reload()
+      @commitList.reload()
 
   # Public: Returns the active selection.
   #

@@ -6,10 +6,10 @@ class CommitListView extends View
     @div class: 'commit-list-view list-view', tabindex: -1
 
   initialize: (@model) ->
-    @model.on 'repopulate', @repaint
+    @model.on 'repaint', @repaint
 
   beforeRemove: =>
-    @model.off 'repopulate', @repaint
+    @model.off 'repaint', @repaint
 
   repaint: =>
     @empty()
