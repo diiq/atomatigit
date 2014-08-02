@@ -7,7 +7,7 @@ class Branch extends ListItem
   # Public: Return the property 'name'.
   #
   # Returns the name as {String}.
-  name: ->
+  getName: ->
     # The name should be unicode-encoded. decode/escape repairs the
     # encoding.
     decodeURIComponent escape @get('name')
@@ -16,7 +16,7 @@ class Branch extends ListItem
   #
   # Returns the local name as {String}.
   localName: ->
-    @name()
+    @getName()
 
   # Public: Return the HEAD id.
   #
@@ -43,7 +43,7 @@ class Branch extends ListItem
   # Public: Delete the branch.
   kill: =>
     atom.confirm
-      message: "Delete branch #{@name()}?"
+      message: "Delete branch #{@getName()}?"
       buttons:
         'Delete': @delete
         'Cancel': null

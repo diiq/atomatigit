@@ -16,7 +16,7 @@ class LocalBranch extends Branch
 
   # Public: Delete the branch.
   delete: =>
-    git.cmd 'branch', {D: true}, @name()
+    git.cmd 'branch', {D: true}, @getName()
     .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
@@ -35,7 +35,7 @@ class LocalBranch extends Branch
   #
   # remote - The remote to push to as {String}.
   push: (remote='origin') =>
-    git.cmd 'push', [remote, @name()]
+    git.cmd 'push', [remote, @getName()]
     .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 

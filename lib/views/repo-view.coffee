@@ -54,7 +54,6 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:open", => @model.selection().open()
     atom.workspaceView.command "atomatigit:toggle-diff", => @model.selection().toggleDiff()
     atom.workspaceView.command "atomatigit:commit", => @model.initiateCommit()
-    atom.workspaceView.command "atomatigit:complete-commit", => @commitAndClose()
     atom.workspaceView.command "atomatigit:push", => @model.push()
     atom.workspaceView.command "atomatigit:fetch", => @model.fetch()
     atom.workspaceView.command "atomatigit:stash", => @model.stash()
@@ -63,19 +62,13 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:showCommit", => @model.selection().showCommit()
     atom.workspaceView.command "atomatigit:create-branch", => @model.initiateCreateBranch()
     atom.workspaceView.command "atomatigit:git-command", => @model.initiateGitCommand()
-    atom.workspaceView.command "atomatigit:input:newline", => @input_newline()
-    atom.workspaceView.command "atomatigit:input:up", => @input_up()
-    atom.workspaceView.command "atomatigit:input:down", => @input_down()
+    atom.workspaceView.command "atomatigit:input:newline", => @inputNewline()
+    atom.workspaceView.command "atomatigit:input:up", => @inputUp()
+    atom.workspaceView.command "atomatigit:input:down", => @inputDown()
     atom.workspaceView.command "atomatigit:branches", => @showBranches()
     atom.workspaceView.command "atomatigit:files", => @showFiles()
     atom.workspaceView.command "atomatigit:commit-log", => @showCommits()
     atom.workspaceView.command "atomatigit:refresh", => @refresh()
-
-  commitAndClose: ->
-    atom.workspaceView.trigger('core:save')
-    atom.workspaceView.trigger('core:close')
-    @model.completeCommit()
-    @focus()
 
   refresh: ->
     @model.reload()

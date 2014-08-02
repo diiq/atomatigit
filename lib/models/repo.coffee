@@ -4,6 +4,7 @@ path    = require 'path'
 {Model} = require 'backbone'
 
 git                         = require '../git'
+ErrorView                   = require '../views/error-view'
 {FileList}                  = require './files'
 {CurrentBranch, BranchList} = require './branches'
 {CommitList}                = require './commits'
@@ -67,20 +68,22 @@ class Repo extends Model
 
   # Internal: Initiate a new commit.
   initiateCommit: ->
-    if atom.config.get('atomatigit.PRE_COMMIT_HOOK') isnt ''
-      atom.workspaceView.trigger(atom.config.get('atomatigit.PRE_COMMIT_HOOK'))
+    preCommitHook = atom.config.get('atomatigit.pre_commit_hook')
+    atom.workspaceView.trigger(preCommitHook) if preCommitHook?.length > 0
 
-    fs.writeFileSync(@commitMessagePath(), '')
+    fs.writeFileSync(@commitMessagePath(), @commitMessage())
 
-    editor = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
-    editor.then (result) =>
-      @writeCommitMessage(result)
+    editorPromise = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
+    editorPromise.then (editor) =>
+      editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
+      editor.setCursorBufferPosition [0, 0]
+      editor.buffer.on 'saved', @completeCommit
 
   # Internal: Writes the commit message template to the message file.
   #
   # editor - The editor the file is open in as {Object}.
-  writeCommitMessage: (editor) =>
-    commitMessage = '\n' + """
+  commitMessage: =>
+    message = '\n' + """
       # Please enter the commit message for your changes. Lines starting
       # with '#' will be ignored, and an empty message aborts the commit.
       # On branch #{@currentBranch.localName()}\n
@@ -90,23 +93,35 @@ class Repo extends Model
     filesUnstaged = @fileList.unstaged()
     filesUntracked = @fileList.untracked()
 
-    commitMessage += '#\n# Changes to be committed:\n' if filesStaged.length >= 1
-    commitMessage += file.commitMessage() for file in filesStaged
+    message += '#\n# Changes to be committed:\n' if filesStaged.length >= 1
+    _.each filesStaged, (file) -> message += file.commitMessage()
 
-    commitMessage += '#\n# Changes not staged for commit:\n' if filesUnstaged.length >= 1
-    commitMessage += file.commitMessage() for file in filesUnstaged
+    message += '#\n# Changes not staged for commit:\n' if filesUnstaged.length >= 1
+    _.each filesUnstaged, (file) -> message += file.commitMessage()
 
-    commitMessage += '#\n# Untracked files:\n' if filesUntracked.length >= 1
-    commitMessage += file.commitMessage() for file in filesUntracked
+    message += '#\n# Untracked files:\n' if filesUntracked.length >= 1
+    _.each filesUntracked, (file) -> message += file.commitMessage()
 
-    editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
-    editor.setText(commitMessage)
-    editor.setCursorBufferPosition [0, 0]
+    return message
+
+  # Internal: Destroys the active EditorView and deletes our temporary commit
+  #           message file.
+  cleanupCommitMessageFile: ->
+    if atom.workspace.getActivePane().getItems().length > 1
+      atom.workspace.destroyActivePaneItem()
+    else
+      atom.workspace.destroyActivePane()
+    try fs.unlinkSync @commitMessagePath()
 
   # Internal: Commit the changes.
-  completeCommit: ->
+  completeCommit: =>
     git.commit @commitMessagePath()
-    .catch (error) -> new ErrorView(error)
+    .then =>
+      @reload()
+      @cleanupCommitMessageFile()
+    .catch (error) =>
+      new ErrorView(error)
+      @cleanupCommitMessageFile()
 
   # Public: Initiate the creation of a new branch.
   initiateCreateBranch: ->

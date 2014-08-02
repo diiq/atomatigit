@@ -19,12 +19,12 @@ class RemoteBranch extends Branch
   #
   # Returns the local name as {String}.
   localName: ->
-    @name().replace /.*?\//, ''
+    @getName().replace /.*?\//, ''
 
   # Public: Return the remote name.
   #
   # Returns the remote name as {String}.
   remoteName: ->
-    @name().replace /\/.*/, ''
+    @getName().replace /\/.*/, ''
 
 module.exports = RemoteBranch

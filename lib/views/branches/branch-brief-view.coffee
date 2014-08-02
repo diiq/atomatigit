@@ -17,7 +17,7 @@ class BranchBriefView extends View
     @model.selfSelect()
 
   repaint: =>
-    @name.html("#{@model.name()}")
+    @name.html("#{@model.getName()}")
     @commit.html("(#{@model.commit().shortID()}: #{@model.commit().shortMessage()})")
 
     @commit.removeClass 'unpushed'
