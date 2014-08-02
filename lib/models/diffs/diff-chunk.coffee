@@ -2,9 +2,10 @@ _    = require 'lodash'
 fs   = require 'fs'
 path = require 'path'
 
-git    = require '../../git'
-DiffLine = require './diff-line'
-ListItem = require '../list-item'
+git       = require '../../git'
+DiffLine  = require './diff-line'
+ListItem  = require '../list-item'
+ErrorView = require '../../views/error-view'
 
 # Public: A {DiffChunk} represents one consecutive block of altered lines.
 #

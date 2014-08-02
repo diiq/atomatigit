@@ -1,5 +1,6 @@
-git    = require '../../git'
-Branch = require './branch'
+git       = require '../../git'
+Branch    = require './branch'
+ErrorView = require '../../views/error-view'
 
 # Public: LocalBranch class that extends the {Branch} prototype.
 class LocalBranch extends Branch

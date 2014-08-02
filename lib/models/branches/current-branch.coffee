@@ -1,6 +1,7 @@
 git         = require '../../git'
 LocalBranch = require './local-branch'
 {Commit}    = require '../commits'
+ErrorView   = require '../../views/error-view'
 
 # Public: CurrentBranch class that extends the {LocalBranch} prototype.
 class CurrentBranch extends LocalBranch

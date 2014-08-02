@@ -1,6 +1,7 @@
-git      = require '../../git'
-ListItem = require '../list-item'
-Commit   = require '../commits/commit'
+git       = require '../../git'
+ListItem  = require '../list-item'
+Commit    = require '../commits/commit'
+ErrorView = require '../../views/error-view'
 
 class Branch extends ListItem
   # Public: Return the property 'name'.
@@ -21,7 +22,7 @@ class Branch extends ListItem
   #
   # Returns the HEAD as {String}.
   head: ->
-    @get('commit').id
+    @get('commit').ref
 
   # Public: Return the HEAD.
   #

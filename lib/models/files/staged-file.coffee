@@ -1,5 +1,6 @@
-git  = require '../../git'
-File = require './file'
+git       = require '../../git'
+File      = require './file'
+ErrorView = require '../../views/error-view'
 
 class StagedFile extends File
 

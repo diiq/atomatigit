@@ -1,5 +1,6 @@
-File= require './file'
-git = require '../../git'
+File      = require './file'
+git       = require '../../git'
+ErrorView = require '../../views/error-view'
 
 module.exports =
 class UnstagedFile extends File

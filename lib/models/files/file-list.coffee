@@ -5,6 +5,7 @@ List          = require '../list'
 UnstagedFile  = require './unstaged-file'
 StagedFile    = require './staged-file'
 UntrackedFile = require './untracked-file'
+ErrorView     = require '../../views/error-view'
 
 class FileList extends List
   # Public: Reload the file list.

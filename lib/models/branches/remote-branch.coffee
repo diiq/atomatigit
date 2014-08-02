@@ -1,5 +1,6 @@
-git    = require '../../git'
-Branch = require './branch'
+git       = require '../../git'
+Branch    = require './branch'
+ErrorView = require '../../views/error-view'
 
 class RemoteBranch extends Branch
 
