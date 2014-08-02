@@ -82,11 +82,13 @@ class Commit extends ListItem
   # Internal: Reset to this commit.
   reset: =>
     git.reset @commitID()
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Hard reset to this commit.
   hardReset: =>
     git.reset @commitID(), {hard: true}
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Show this commit.
