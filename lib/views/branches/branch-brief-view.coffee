@@ -6,8 +6,7 @@ class BranchBriefView extends View
       @div class: 'name', outlet: 'name'
       @div class: 'commit', outlet: 'commit'
 
-  initialize: (branch) ->
-    @model = branch
+  initialize: (@model) ->
     @model.on 'change:selected', @showSelection
     @model.on 'change', @repaint
     @repaint()

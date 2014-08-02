@@ -6,5 +6,4 @@ class DiffLineView extends View
     @div class: "diff-line #{line.type()}", =>
       @raw(line.markup())
 
-  initialize: (line) ->
-    @model = line
+  initialize: (@model) -> return

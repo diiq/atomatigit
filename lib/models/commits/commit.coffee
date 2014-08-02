@@ -2,8 +2,9 @@ _    = require 'lodash'
 fs   = require 'fs-plus'
 path = require 'path'
 
-git      = require '../../git'
-ListItem = require '../list-item'
+git       = require '../../git'
+ListItem  = require '../list-item'
+ErrorView = require '../../views/error-view'
 
 class Commit extends ListItem
   # Public: Constructor.
@@ -81,6 +82,7 @@ class Commit extends ListItem
   # Internal: Reset to this commit.
   reset: =>
     git.reset @commitID()
+    .catch (error) -> new ErrorView(error)
 
   # Public: Hard reset to this commit.
   hardReset: =>

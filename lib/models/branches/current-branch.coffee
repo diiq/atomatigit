@@ -15,6 +15,7 @@ class CurrentBranch extends LocalBranch
     git.revParse('HEAD', 'abbrev-ref': true).then (@name) =>
       git.getCommit('HEAD').then (gitCommit) =>
         @commit = new Commit(gitCommit)
+    .catch (error) -> new ErrorView(error)
 
   # Public: Return the HEAD.
   #

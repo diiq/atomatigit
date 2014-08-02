@@ -15,7 +15,7 @@ class UntrackedFile extends File
         'Cancel': null
 
   moveToTrash: =>
-    shell.moveItemToTrash(git.path + '/' + @path())
+#   shell.moveItemToTrash(git.path + '/' + @path())
     @trigger 'update'
 
   isUntracked: -> true

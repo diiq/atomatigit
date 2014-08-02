@@ -1,8 +1,9 @@
 _ = require 'lodash'
 
-git      = require '../../git'
-Diff     = require '../diffs/diff'
-ListItem = require '../list-item'
+git       = require '../../git'
+Diff      = require '../diffs/diff'
+ListItem  = require '../list-item'
+ErrorView = require '../../views/error-view'
 
 class File extends ListItem
   # Public: Constructor
@@ -41,7 +42,9 @@ class File extends ListItem
 
   # Public: Stage the changes made to this file.
   stage: =>
-    git.add(@path()).then => @trigger 'update'
+    git.add(@path())
+    .then => @trigger 'update'
+    .catch (error) -> new ErrorView(error)
 
   # Internal: Set the file diff to diff.
   #
@@ -73,7 +76,9 @@ class File extends ListItem
 
   # Public: Checkout the file to the index.
   checkout: =>
-    git.checkoutFile(@path()).then => @trigger 'update'
+    git.checkoutFile(@path())
+    .then => @trigger 'update'
+    .catch (error) -> new ErrorView(error)
 
   #############################################################################
   # Interface you will have to override                                       #

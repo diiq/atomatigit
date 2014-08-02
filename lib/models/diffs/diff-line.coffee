@@ -38,7 +38,6 @@ class DiffLine extends Model
   markup: ->
     @escapeHTML @line()
 
-
   # Internal: HTML escape a string.
   #
   # string - The string to escape as {String}.

@@ -9,10 +9,8 @@ class UnstagedFile extends File
 
   unstage: ->
     git.unstage(@path())
-    .catch (error) =>
-      error_callback
-      @errorCallback(error)
-    .finally => @trigger 'update'
+    .then => @trigger 'update'
+    .catch (error) -> new ErrorView(error)
 
   kill: ->
     atom.confirm
@@ -22,6 +20,8 @@ class UnstagedFile extends File
         'Cancel': -> return
 
   loadDiff: ->
-    git.getDiff(@path()).then (diff) => @setDiff(diff)
+    git.getDiff(@path())
+    .then (diff) => @setDiff(diff)
+    .catch (error) -> new ErrorView(error)
 
   isUnstaged: -> true

@@ -11,6 +11,7 @@ class RemoteBranch extends Branch
   # Returns the [Description] as {String}.
   delete: =>
     git.cmd "push -f #{@remoteName()} :#{@localName()}"
+    .catch (error) -> new ErrorView(error)
 
   # Public: Return the local name.
   #

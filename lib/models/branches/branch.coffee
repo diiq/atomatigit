@@ -56,6 +56,7 @@ class Branch extends ListItem
   # callback - The callback as {Function}.
   checkout: (callback) =>
     git.checkout @localName()
+    .catch (error) -> new ErrorView(error)
 
   # Abstract: Push the branch.
   push: -> return

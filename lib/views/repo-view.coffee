@@ -1,7 +1,6 @@
 $                                 = require 'jquery'
 {View, EditorView}                = require 'atom'
 
-git                                  = require '../git'
 {FileListView}                       = require './files'
 {CurrentBranchView, BranchListView}  = require './branches'
 {CommitListView}                     = require './commits'
@@ -13,7 +12,6 @@ class RepoView extends View
     @div class: 'atomatigit', =>
       @div class: 'resize-handle', outlet: 'resizeHandle'
       @subview 'currentBranchView', new CurrentBranchView(model.currentBranch)
-#      @subview 'error', new ErrorView git
       @div class: 'input', outlet: 'input', =>
         @subview 'inputEditor', new EditorView(mini: true)
 

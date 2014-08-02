@@ -9,8 +9,9 @@ UntrackedFile = require './untracked-file'
 class FileList extends List
   # Public: Reload the file list.
   reload: =>
-    git.status().then (status) =>
-      @populate(status)
+    git.status()
+    .then (status) => @populate(status)
+    .catch (error) -> new ErrorView(error)
 
   # Internal: Populate the file list.
   #

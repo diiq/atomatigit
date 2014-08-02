@@ -16,7 +16,6 @@ class Repo extends Model
     @branchList    = new BranchList []
     @commitList    = new CommitList []
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
-    @on 'changed', -> console.log 'changed'
 
   # Public: Forces a reload on the repository.
   reload: =>
@@ -55,9 +54,11 @@ class Repo extends Model
 
   stash: ->
     git.cmd 'stash'
+    .catch (error) -> new ErrorView(error)
 
   stashPop: ->
     git.cmd 'stash pop'
+    .catch (error) -> new ErrorView(error)
 
   # Internal: Initiate a new commit.
   initiateCommit: ->
@@ -100,22 +101,27 @@ class Repo extends Model
   # Internal: Commit the changes.
   completeCommit: ->
     git.commit @commitMessagePath()
+    .catch (error) -> new ErrorView(error)
 
   # Public: Initiate the creation of a new branch.
   initiateCreateBranch: ->
     @trigger 'needInput',
       query: 'Branch name'
-      callback: (name) -> git.cmd "checkout -b #{name}"
+      callback: (name) ->
+        git.cmd "checkout -b #{name}"
+        .catch (error) -> new ErrorView(error)
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: ->
     @trigger 'needInput',
       query: 'Git command'
-      callback: (command) -> git.cmd command
+      callback: (command) ->
+        git.cmd command
+        .then (output) -> console.log output
+        .catch (error) -> new ErrorView(error)
 
   # Public: Push the repository to the remote.
   push: ->
     @currentBranch.push()
 
-# Exports {Repo}.
 module.exports = Repo

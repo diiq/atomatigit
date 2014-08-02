@@ -63,16 +63,19 @@ class DiffChunk extends ListItem
   kill: ->
     fs.writeFileSync(@patchPath(), @patch())
     git.cmd "apply --reverse #{@patchPath()}"
+    .catch (error) -> new ErrorView(error)
 
   # Public: Stage this chunk.
   stage: ->
     fs.writeFileSync(@patchPath(), @patch())
     git.cmd "apply --cached #{@patchPath()}"
+    .catch (error) -> new ErrorView(error)
 
   # Public: Unstage this chunk.
   unstage: ->
     fs.writeFileSync(@patchPath(), @patch())
     git.cmd "apply --cached --reverse #{@patchPath()}"
+    .catch (error) -> new ErrorView(error)
 
   # Internal: Return the path to the patch file.
   #
