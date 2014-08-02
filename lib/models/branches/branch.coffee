@@ -28,7 +28,7 @@ class Branch extends ListItem
   #
   # Returns the HEAD as {Commit}.
   commit: ->
-    new Commit @get 'commit'
+    new Commit(@get 'commit')
 
   # Public: Return the remote name.
   #
@@ -57,6 +57,7 @@ class Branch extends ListItem
   # callback - The callback as {Function}.
   checkout: (callback) =>
     git.checkout @localName()
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Abstract: Push the branch.

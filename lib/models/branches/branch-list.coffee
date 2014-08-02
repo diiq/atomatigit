@@ -4,31 +4,19 @@ git          = require '../../git'
 List         = require '../list'
 LocalBranch  = require './local-branch'
 RemoteBranch = require './remote-branch'
+ErrorView    = require '../../views/error-view'
 
 # Public: BranchList class that extends the {List} prototype.
 class BranchList extends List
   # Public: Reload the branch list.
   reload: =>
-    git.branches()
-    .then (branches) => @addLocals(branches)
+    git.branches().then (branches) =>
+      @reset()
+      _.each branches, (branch) => @add new LocalBranch(branch)
+      git.remoteBranches().then (branches) =>
+        _.each branches, (branch) => @add new RemoteBranch(branch)
+        @select(@selectedIndex)
     .catch (error) -> new ErrorView(error)
-#    git.remoteRefs().then (branches) => @addRemotes(branches)
-
-  # Public: Add local branches to the branch list.
-  #
-  # locals - The locals to add as {Array}.
-  addLocals: (locals) =>
-    _.each @local(), (branch) => @remove branch
-    _.each locals, (branch) => @add new LocalBranch(branch)
-
-  # Public: Add remote branches to the branch list.
-  #
-  # remotes - The remote branches as {Array}.
-  addRemotes: (remotes) =>
-    _.each @remote(), (branch) => @remove branch
-    _.each remotes, (branch) => @add new RemoteBranch(branch)
-
-    @select @selectedIndex
 
   # Public: Return the local branches from the branch list.
   #

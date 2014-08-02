@@ -17,6 +17,7 @@ class LocalBranch extends Branch
   # Public: Delete the branch.
   delete: =>
     git.cmd 'branch', {D: true}, @name()
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # TODO tracking branch or something?
@@ -27,6 +28,7 @@ class LocalBranch extends Branch
   # callback - The callback as {Function}.
   checkout: (callback) =>
     git.checkout @localName()
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Push the branch to remote.
@@ -34,6 +36,7 @@ class LocalBranch extends Branch
   # remote - The remote to push to as {String}.
   push: (remote='origin') =>
     git.cmd 'push', [remote, @name()]
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
 module.exports = LocalBranch
