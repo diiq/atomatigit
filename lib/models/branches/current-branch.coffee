@@ -12,11 +12,11 @@ class CurrentBranch extends LocalBranch
     @reload() if branchExisting
 
   # Public: Reload the branch HEAD.
-  reload: =>
+  reload: ({silent}={}) =>
     git.revParse('HEAD', 'abbrev-ref': true).then (@name) =>
       git.getCommit('HEAD').then (gitCommit) =>
         @commit = new Commit(gitCommit)
-        @trigger 'repaint'
+        @trigger('repaint') unless silent
     .catch (error) -> new ErrorView(error)
 
   # Public: Return the HEAD.

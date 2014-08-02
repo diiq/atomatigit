@@ -10,13 +10,13 @@ class CommitList extends List
   # Public: Reload the commit list.
   #
   # branch - The branch to reload the commits for as {Branch}.
-  reload: (@branch) =>
+  reload: (@branch, options={}) =>
+    [@branch, options] = [null, @branch] if _.isPlainObject(@branch)
     git.log(@branch?.head() ? 'HEAD')
     .then (commits) =>
       @reset _.map(commits, (commit) -> new Commit(commit))
       @select @selectedIndex
-      @trigger 'repaint'
-    .catch (error) ->
-      new ErrorView(error)
+      @trigger('repaint') unless options.silent
+    .catch (error) -> new ErrorView(error)
 
 module.exports = CommitList

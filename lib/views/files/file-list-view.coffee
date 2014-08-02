@@ -21,15 +21,15 @@ class FileListView extends View
 
   repopulateUntracked: ->
     @untracked.empty()
-    _.each @model.untracked, (file) -> @untracked.append new FileView(file)
+    _.each @model.untracked, (file) => @untracked.append new FileView(file)
 
   repopulateUnstaged: ->
     @unstaged.empty()
-    _.each @model.unstaged(), (file) -> @unstaged.append new FileView(file)
+    _.each @model.unstaged(), (file) => @unstaged.append new FileView(file)
 
   repopulateStaged: ->
     @staged.empty()
-    _.each @model.staged(), (file) -> @staged.append new FileView(file)
+    _.each @model.staged(), (file) => @staged.append new FileView(file)
 
   repopulate: =>
     @repopulateUntracked()

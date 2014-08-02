@@ -14,12 +14,11 @@ class CurrentBranchView extends View
     @model.off 'repaint', @repaint
 
   repaint: =>
-    @model.reload().then =>
-      @name.html("#{@model.name}")
-      @commit.html("(#{@model.commit.shortID()}: #{@model.commit.shortMessage()})")
+    @name.html("#{@model.name}")
+    @commit.html("(#{@model.commit.shortID()}: #{@model.commit.shortMessage()})")
 
-      @commit.removeClass 'unpushed'
-      if @model.unpushed()
-        @commit.addClass 'unpushed'
+    @commit.removeClass 'unpushed'
+    if @model.unpushed()
+      @commit.addClass 'unpushed'
 
 module.exports = CurrentBranchView

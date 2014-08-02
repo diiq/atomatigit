@@ -9,14 +9,14 @@ ErrorView    = require '../../views/error-view'
 # Public: BranchList class that extends the {List} prototype.
 class BranchList extends List
   # Public: Reload the branch list.
-  reload: =>
+  reload: ({silent}={}) =>
     git.branches().then (branches) =>
       @reset()
       _.each branches, (branch) => @add new LocalBranch(branch)
       git.remoteBranches().then (branches) =>
         _.each branches, (branch) => @add new RemoteBranch(branch)
         @select(@selectedIndex)
-        @trigger 'repaint'
+        @trigger('repaint') unless silent
     .catch (error) -> new ErrorView(error)
 
   # Public: Return the local branches from the branch list.

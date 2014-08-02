@@ -9,21 +9,21 @@ ErrorView     = require '../../views/error-view'
 
 class FileList extends List
   # Public: Reload the file list.
-  reload: =>
+  reload: ({silent}={}) =>
     git.status()
-    .then (status) => @populate(status)
+    .then (status) => @populate(status, silent)
     .catch (error) -> new ErrorView(error)
 
   # Internal: Populate the file list.
   #
   # status - The status to populate the file list with as {Object}.
-  populate: (status) ->
+  populate: (status, silent) ->
     @populateList(status.untracked, @untracked(), UntrackedFile)
     @populateList(status.unstaged, @unstaged(), UnstagedFile)
     @populateList(status.staged, @staged(), StagedFile)
 
-    @select @selectedIndex
-    @trigger 'repaint'
+    @select(@selectedIndex)
+    @trigger('repaint') unless silent
 
   comparator: (file) ->
     file.sortValue

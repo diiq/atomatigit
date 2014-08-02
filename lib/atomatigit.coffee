@@ -5,16 +5,12 @@ module.exports =
   configDefaults:
     pre_commit_hook: '',
 
-  atomatigitView: null
-  repo: null
-  repoView: null
-
   activate: (state) ->
-    @repo     ?= new Repo()
-    @repoView ?= new RepoView(@repo)
-
-    @insertCommands()
-    @focus()
+    @repo = new Repo()
+    @repo.reload().then =>
+      @repoView = new RepoView(@repo)
+      @insertCommands()
+      @focus()
 
   insertCommands: ->
     atom.workspaceView.command 'atomatigit:show',  => @focus()
@@ -31,5 +27,3 @@ module.exports =
   deactivate: ->
     @repoView.destroy()
     @repo.destroy()
-    @repoView = null
-    @repo = null

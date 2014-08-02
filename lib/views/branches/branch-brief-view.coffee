@@ -8,12 +8,10 @@ class BranchBriefView extends View
 
   initialize: (@model) ->
     @model.on 'change:selected', @showSelection
-    @model.on 'update', @repaint
     @repaint()
 
   beforeRemove: =>
     @model.off 'change:selected', @showSelection
-    @model.off 'update', @repaint
 
   clicked: =>
     @model.selfSelect()

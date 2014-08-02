@@ -18,16 +18,16 @@ class Repo extends Model
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
 
     @branchList.on 'repaint', =>
-      @currentBranch.reload()
       @commitList.reload()
+      @currentBranch.reload()
 
   # Public: Forces a reload on the repository.
   reload: =>
-    @fileList.reload()
-    if @headRefsCount() > 0
-      @branchList.reload()
-      @commitList.reload()
-      @currentBranch.reload()
+    @fileList.reload().then =>
+      if @headRefsCount() > 0
+        @branchList.reload()
+        .then => @commitList.reload()
+        .then => @currentBranch.reload()
 
   # Public: Returns the active selection.
   #
@@ -52,6 +52,7 @@ class Repo extends Model
 
   fetch: ->
     git.cmd 'fetch'
+    .catch (error) -> new ErrorView(error)
 
   checkoutBranch: ->
     @branchList.checkoutBranch

@@ -8,9 +8,7 @@ class DiffChunkView extends View
 
   initialize: (@model) ->
     @model.on 'change:selected', @showSelection
-
-    for line in @model.lines
-      @append new DiffLineView line
+    _.each @model.lines, (line) => @append new DiffLineView(line)
 
   beforeRemove: =>
     @model.off 'change:selected', @showSelection
