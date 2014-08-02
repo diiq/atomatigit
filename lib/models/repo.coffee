@@ -106,7 +106,7 @@ class Repo extends Model
 
   # Internal: Destroys the active EditorView and deletes our temporary commit
   #           message file.
-  cleanupCommitMessageFile: ->
+  cleanupCommitMessageFile: =>
     if atom.workspace.getActivePane().getItems().length > 1
       atom.workspace.destroyActivePaneItem()
     else
@@ -116,12 +116,9 @@ class Repo extends Model
   # Internal: Commit the changes.
   completeCommit: =>
     git.commit @commitMessagePath()
-    .then =>
-      @reload()
-      @cleanupCommitMessageFile()
-    .catch (error) =>
-      new ErrorView(error)
-      @cleanupCommitMessageFile()
+    .then @reload
+    .catch (error) => new ErrorView(error)
+    .finally @cleanupCommitMessageFile
 
   # Public: Initiate the creation of a new branch.
   initiateCreateBranch: ->
