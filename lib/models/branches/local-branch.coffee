@@ -10,11 +10,11 @@ class LocalBranch extends Branch
   # Public: Return the 'unpushed' property.
   #
   # Returns the property as {String}.
-  unpushed: ->
+  unpushed: =>
     @get 'unpushed'
 
   # Public: Delete the branch.
-  delete: ->
+  delete: =>
     git.cmd 'branch', {D: true}, @name()
 
   # TODO tracking branch or something?
@@ -23,13 +23,13 @@ class LocalBranch extends Branch
   # Public: Checkout the branch.
   #
   # callback - The callback as {Function}.
-  checkout: (callback) ->
+  checkout: (callback) =>
     git.checkout @localName()
 
   # Public: Push the branch to remote.
   #
   # remote - The remote to push to as {String}.
-  push: (remote='origin') ->
+  push: (remote='origin') =>
     git.cmd 'push', [remote, @name()]
 
 module.exports = LocalBranch

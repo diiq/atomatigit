@@ -7,6 +7,10 @@ class List extends Collection
   selectedIndex: 0
   isSublist: false
 
+  # Public: Constructor
+  initialize: ->
+    @on 'update', @reload
+
   # Public: Leaf??
   #
   # Returns the leaf as {???}.
@@ -48,5 +52,8 @@ class List extends Collection
   previous: ->
     return false if @selection() and not @selection().allowPrevious()
     @select(@selectedIndex - 1)
+
+  # Abstract: Method to be called when reloading the list.
+  reload: -> return
 
 module.exports = List

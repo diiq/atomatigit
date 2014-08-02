@@ -13,10 +13,10 @@ class BranchListView extends View
     @model = branchList
     @model.on 'change', @repaint
 
-  beforeRemove: ->
+  beforeRemove: =>
     @model.off 'change', @repaint
 
-  empty_lists: ->
+  empty_lists: =>
     @local_dom.empty()
     @remote_dom.empty()
 

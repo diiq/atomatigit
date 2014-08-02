@@ -11,7 +11,7 @@ class StagedFile extends File
 
   # Public: Unstage the changes made to this file.
   unstage: ->
-    git.unstage @path()
+    git.unstage(@path()).then => @trigger 'update'
 
   # Public: Ask for the user's confirmation to discard all changes made to this
   #         file.
@@ -23,7 +23,7 @@ class StagedFile extends File
         'Cancel': -> return
 
   # Internal: Discard all changes made to this file.
-  discardAllChanges: ->
+  discardAllChanges: =>
     @unstage()
     @checkout()
 
@@ -31,6 +31,6 @@ class StagedFile extends File
   loadDiff: ->
     git.getDiff(@path(), {staged: true}).then (diff) => @setDiff(diff)
 
-  stagedP: -> true
+  isStaged: -> true
 
 module.exports = StagedFile

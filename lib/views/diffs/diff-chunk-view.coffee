@@ -12,10 +12,10 @@ class DiffChunkView extends View
     for line in @model.lines
       @append new DiffLineView line
 
-  beforeRemove: ->
+  beforeRemove: =>
     @model.off 'change:selected', @showSelection
 
-  clicked: ->
+  clicked: =>
     @model.selfSelect()
 
   showSelection: =>

@@ -8,8 +8,9 @@ UntrackedFile = require './untracked-file'
 
 class FileList extends List
   # Public: Reload the file list.
-  reload: ->
-    git.status().then (status) => @populate(status)
+  reload: =>
+    git.status().then (status) =>
+      @populate(status)
 
   # Internal: Populate the file list.
   #
@@ -27,15 +28,15 @@ class FileList extends List
 
   # Public: Return the staged files.
   staged: ->
-    @filter (f) -> f.stagedP()
+    @filter (file) -> file.isStaged()
 
   # Public: Return the unstaged files.
   unstaged: ->
-    @filter (f) -> f.unstagedP()
+    @filter (file) -> file.isUnstaged()
 
   # Public: Return the untracked files.
   untracked: ->
-    @filter (f) -> f.untrackedP()
+    @filter (file) -> file.isUntracked()
 
   # Internal: Which of the paths are new?
   #

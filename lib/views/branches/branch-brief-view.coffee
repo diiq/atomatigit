@@ -12,7 +12,7 @@ class BranchBriefView extends View
     @model.on 'change', @repaint
     @repaint()
 
-  beforeRemove: ->
+  beforeRemove: =>
     @model.off 'change:selected', @showSelection
     @model.off 'change', @repaint
 

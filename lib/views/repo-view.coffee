@@ -12,8 +12,8 @@ class RepoView extends View
   @content: (model) ->
     @div class: 'atomatigit', =>
       @div class: 'resize-handle', outlet: 'resizeHandle'
-      @subview 'currentBranchView', new CurrentBranchView model.currentBranch
-      @subview 'error', new ErrorView git
+      @subview 'currentBranchView', new CurrentBranchView(model.currentBranch)
+#      @subview 'error', new ErrorView git
       @div class: 'input', outlet: 'input', =>
         @subview 'inputEditor', new EditorView(mini: true)
 
@@ -30,12 +30,9 @@ class RepoView extends View
         @subview 'branchListView', new BranchListView model.branchList
         @subview 'commitListView', new CommitListView model.commitList
 
-  initialize: (repo) ->
-    @model = repo
-
+  initialize: (@model) ->
     @insertCommands()
-
-    @model.on 'need_input', @get_input
+    @model.on 'needInput', @getInput
 
     @on 'core:confirm', => @completeInput()
     @on 'core:cancel', => @cancelInput()
@@ -45,57 +42,34 @@ class RepoView extends View
     @resizeHandle.on 'mousedown', @resizeStarted
 
     atomGit = atom.project.getRepo()
-    @subscribe atomGit, 'status-changed', @model.reload
+    @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
 
     @showFiles()
 
   insertCommands: ->
-    atom.workspaceView.command 'atomatigit:next', =>
-      @model.activeList.next()
-    atom.workspaceView.command 'atomatigit:previous', =>
-      @model.activeList.previous()
-    atom.workspaceView.command 'atomatigit:stage', =>
-      @model.leaf().stage()
-    atom.workspaceView.command 'atomatigit:unstage', =>
-      @model.leaf().unstage()
-    atom.workspaceView.command 'atomatigit:kill', =>
-      @model.leaf().kill()
-    atom.workspaceView.command 'atomatigit:open', =>
-      @model.selection().open()
-    atom.workspaceView.command 'atomatigit:toggle-diff', =>
-      @model.selection().toggleDiff()
-    atom.workspaceView.command 'atomatigit:commit', =>
-      @model.initiateCommit()
-    atom.workspaceView.command 'atomatigit:complete-commit', =>
-      @commitAndClose()
-    atom.workspaceView.command 'atomatigit:push', =>
-      @model.push()
-    atom.workspaceView.command 'atomatigit:fetch', =>
-      @model.fetch()
-    atom.workspaceView.command 'atomatigit:stash', =>
-      @model.stash()
-    atom.workspaceView.command 'atomatigit:stash-pop', =>
-      @model.stashPop()
-    atom.workspaceView.command 'atomatigit:hard-reset-to-commit', =>
-      @model.selection().confirmHardReset()
-    atom.workspaceView.command 'atomatigit:create-branch', =>
-      @model.initiateCreateBranch()
-    atom.workspaceView.command 'atomatigit:git-command', =>
-      @model.initiateGitCommand()
-    atom.workspaceView.command 'atomatigit:input:newline', =>
-      @input_newline()
-    atom.workspaceView.command 'atomatigit:input:up', =>
-      @input_up()
-    atom.workspaceView.command 'atomatigit:input:down', =>
-      @input_down()
-    atom.workspaceView.command 'atomatigit:branches', =>
-      @showBranches()
-    atom.workspaceView.command 'atomatigit:files', =>
-      @showFiles()
-    atom.workspaceView.command 'atomatigit:commit-log', =>
-      @showCommits()
-    atom.workspaceView.command 'atomatigit:refresh', =>
-      @refresh()
+    atom.workspaceView.command 'atomatigit:next',                 => @model.activeList.next()
+    atom.workspaceView.command 'atomatigit:previous',             => @model.activeList.previous()
+    atom.workspaceView.command 'atomatigit:stage',                => @model.leaf().stage()
+    atom.workspaceView.command 'atomatigit:unstage',              => @model.leaf().unstage()
+    atom.workspaceView.command 'atomatigit:kill',                 => @model.leaf().kill()
+    atom.workspaceView.command 'atomatigit:open',                 => @model.selection().open()
+    atom.workspaceView.command 'atomatigit:toggle-diff',          => @model.selection().toggleDiff()
+    atom.workspaceView.command 'atomatigit:commit',               => @model.initiateCommit()
+    atom.workspaceView.command 'atomatigit:complete-commit',      => @commitAndClose()
+    atom.workspaceView.command 'atomatigit:push',                 => @model.push()
+    atom.workspaceView.command 'atomatigit:fetch',                => @model.fetch()
+    atom.workspaceView.command 'atomatigit:stash',                => @model.stash()
+    atom.workspaceView.command 'atomatigit:stash-pop',            => @model.stashPop()
+    atom.workspaceView.command 'atomatigit:hard-reset-to-commit', => @model.selection().confirmHardReset()
+    atom.workspaceView.command 'atomatigit:create-branch',        => @model.initiateCreateBranch()
+    atom.workspaceView.command 'atomatigit:git-command',          => @model.initiateGitCommand()
+    atom.workspaceView.command 'atomatigit:input:newline',        => @inputNewline()
+    atom.workspaceView.command 'atomatigit:input:up',             => @inputUp()
+    atom.workspaceView.command 'atomatigit:input:down',           => @inputDown()
+    atom.workspaceView.command 'atomatigit:branches',             => @showBranches()
+    atom.workspaceView.command 'atomatigit:files',                => @showFiles()
+    atom.workspaceView.command 'atomatigit:commit-log',           => @showCommits()
+    atom.workspaceView.command 'atomatigit:refresh',              => @refresh()
 
   commitAndClose: ->
     atom.workspaceView.trigger('core:save')
@@ -122,7 +96,7 @@ class RepoView extends View
     @showViews()
 
   showViews: ->
-    @mode_switch_flag = true
+    @modeSwitchFlag = true
     @fileListView.toggleClass 'hidden', @activeView != @fileListView
     @fileTab.toggleClass 'active', @activeView == @fileListView
 
@@ -132,27 +106,27 @@ class RepoView extends View
     @commitListView.toggleClass 'hidden', @activeView != @commitListView
     @commitTab.toggleClass 'active', @activeView == @commitListView
 
-  resizeStarted: =>
+  resizeStarted: ->
     $(document.body).on 'mousemove', @resize
     $(document.body).on 'mouseup', @resizeStopped
 
-  resizeStopped: =>
+  resizeStopped: ->
     $(document.body).off 'mousemove', @resize
     $(document.body).off 'mouseup', @resizeStopped
 
-  resize: ({pageX}) =>
+  resize: ({pageX}) ->
     width = $(document.body).width() - pageX
     @width(width)
 
-  get_input: (options) =>
+  getInput: (options) ->
     @input.removeClass 'block'
-    extra_query = ''
+    extraQuery = ''
     if options.block
       @input.addClass 'block'
-      extra_query = ' (shift+enter to finish)'
+      extraQuery = ' (shift+enter to finish)'
 
-    @input_callback = options.callback
-    @inputEditor.setPlaceholderText options.query + extra_query
+    @inputCallback = options.callback
+    @inputEditor.setPlaceholderText options.query + extraQuery
     @inputEditor.setText ''
     @input.show 100, =>
       @inputEditor.redraw()
@@ -161,14 +135,14 @@ class RepoView extends View
 
   completeInput: ->
     @input.hide()
-    @input_callback @inputEditor.getText()
-    @mode_switch_flag = true
+    @inputCallback @inputEditor.getText()
+    @modeSwitchFlag = true
     @focus()
 
-  cancelInput: =>
+  cancelInput: ->
     @input.hide()
-    @input_callback = null
-    @mode_switch_flag = true
+    @inputCallback = null
+    @modeSwitchFlag = true
     @inputEditor.off 'focusout', @cancelInput
     @focus()
 
@@ -177,11 +151,11 @@ class RepoView extends View
     @activeView.focus()
 
   unfocus: ->
-    if !@mode_switch_flag
+    if !@modeSwitchFlag
       @removeClass 'focused'
     else
       @focus()
-      @mode_switch_flag = false
+      @modeSwitchFlag = false
 
   # Tear down any state and detach
   destroy: ->

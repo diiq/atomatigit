@@ -40,7 +40,7 @@ class Branch extends ListItem
   unpushed: -> false
 
   # Public: Delete the branch.
-  kill: ->
+  kill: =>
     atom.confirm
       message: "Delete branch #{@name()}?"
       buttons:
@@ -48,13 +48,13 @@ class Branch extends ListItem
         'Cancel': null
 
   # Public: Open (= checkout) the branch.
-  open: ->
+  open: =>
     @checkout()
 
   # Public: Checkout the branch.
   #
   # callback - The callback as {Function}.
-  checkout: (callback) ->
+  checkout: (callback) =>
     git.checkout @localName()
 
   # Abstract: Push the branch.

@@ -1,3 +1,4 @@
+_ = require 'lodash'
 git    = require '../../git'
 List   = require '../list'
 Commit = require './commit'
@@ -8,9 +9,9 @@ class CommitList extends List
   # Public: Reload the commit list.
   #
   # branch - The branch to reload the commits for as {Branch}.
-  reload: (branch) ->
+  reload: (branch) =>
     @branch = branch
-    git.log @branch.head().then (commits) =>
+    git.log(@branch.head()).then (commits) =>
       @repopulate(_.map(commits, 'ref'))
 
   # Public: Repopulate the commit list with the commitHashes.

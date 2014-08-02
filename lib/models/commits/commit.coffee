@@ -1,3 +1,4 @@
+_    = require 'lodash'
 fs   = require 'fs-plus'
 path = require 'path'
 
@@ -5,6 +6,16 @@ git      = require '../../git'
 ListItem = require '../list-item'
 
 class Commit extends ListItem
+  # Public: Constructor.
+  #
+  # gitCommit - The promisedgit commit object as {Object}.
+  initialize: (gitCommit) ->
+    super()
+    if not _.isString(gitCommit) and _.isObject(gitCommit)
+      @set 'author', gitCommit.author
+      @set 'id', gitCommit.ref
+      @set 'message', gitCommit.message
+
   # Public: Handle unicode characters.
   #
   # s - The string to handle as {String}.
@@ -29,7 +40,7 @@ class Commit extends ListItem
   #
   # Returns the author name as {String}.
   authorName: ->
-    @unicodify @get('author').name
+    @unicodify @get('author')?.name
 
   # Public: Return the commit message.
   #

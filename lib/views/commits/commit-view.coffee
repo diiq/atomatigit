@@ -11,7 +11,7 @@ class CommitView extends View
     @model = commit
     @model.on 'change:selected', @showSelection
 
-  beforeRemove: ->
+  beforeRemove: =>
     @model.off 'change:selected', @showSelection
 
   clicked: =>

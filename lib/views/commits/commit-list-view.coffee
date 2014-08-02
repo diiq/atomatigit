@@ -9,12 +9,12 @@ class CommitListView extends View
     @model = commitList
     @model.on 'repopulate', @repaint
 
-  beforeRemove: ->
+  beforeRemove: =>
     @model.off 'repopulate', @repaint
 
   repaint: =>
     @empty()
     for commit in @model.models
-      @append new CommitView commit
+      @append new CommitView(commit)
 
 module.exports = CommitListView

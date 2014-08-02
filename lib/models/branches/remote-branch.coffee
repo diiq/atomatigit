@@ -9,7 +9,7 @@ class RemoteBranch extends Branch
   # Public: Delete the remote branch.
   #
   # Returns the [Description] as {String}.
-  delete: ->
+  delete: =>
     git.cmd "push -f #{@remoteName()} :#{@localName()}"
 
   # Public: Return the local name.

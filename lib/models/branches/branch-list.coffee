@@ -8,9 +8,9 @@ RemoteBranch = require './remote-branch'
 # Public: BranchList class that extends the {List} prototype.
 class BranchList extends List
   # Public: Reload the branch list.
-  reload: ->
+  reload: =>
     git.branches().then (branches) => @addLocals(branches)
-    git.remoteRefs().then (branches) => @addRemotes(branches)
+#    git.remoteRefs().then (branches) => @addRemotes(branches)
 
   # Public: Add local branches to the branch list.
   #

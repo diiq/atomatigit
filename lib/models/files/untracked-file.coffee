@@ -14,10 +14,10 @@ class UntrackedFile extends File
         'Trash': @moveToTrash
         'Cancel': null
 
-  moveToTrash: ->
+  moveToTrash: =>
     shell.moveItemToTrash(git.path + '/' + @path())
-    git.trigger 'reload'
+    @trigger 'update'
 
-  untrackedP: -> true
+  isUntracked: -> true
 
   toggleDiff: -> return

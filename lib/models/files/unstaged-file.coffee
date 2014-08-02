@@ -8,7 +8,11 @@ class UnstagedFile extends File
   sort_value: 1
 
   unstage: ->
-    git.unstage(@path()).catch (error) => @error_callback(error)
+    git.unstage(@path())
+    .catch (error) =>
+      error_callback
+      @errorCallback(error)
+    .finally => @trigger 'update'
 
   kill: ->
     atom.confirm
@@ -20,4 +24,4 @@ class UnstagedFile extends File
   loadDiff: ->
     git.getDiff(@path()).then (diff) => @setDiff(diff)
 
-  unstagedP: -> true
+  isUnstaged: -> true

@@ -11,11 +11,11 @@ class FileListView extends View
       @h2 outlet: 'stagedHeader', 'staged:'
       @div class: 'staged', outlet: 'staged'
 
-  initialize: (fileList) ->
-    @model = fileList
+  initialize: (@model) ->
+    @model.on 'change', @repopulate
     @model.on 'repopulate', @repopulate
 
-  beforeRemove: ->
+  beforeRemove: =>
     @model.off 'repopulate', @repopulate
 
   repopulateUntracked: ->

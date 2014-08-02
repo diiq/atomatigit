@@ -30,7 +30,7 @@ class File extends ListItem
   # Public: Return the diff sublist.
   #
   # Returns the diff sublist as {List}.
-  diff: ->
+  diff: =>
     @sublist
 
   # Public: Return the 'diffType' property.
@@ -40,8 +40,8 @@ class File extends ListItem
     @get 'diffType'
 
   # Public: Stage the changes made to this file.
-  stage: ->
-    git.add @path()
+  stage: =>
+    git.add(@path()).then => @trigger 'update'
 
   # Internal: Set the file diff to diff.
   #
@@ -51,14 +51,14 @@ class File extends ListItem
     @trigger 'change:diff'
 
   # Public: Toggle the diff visibility.
-  toggleDiff: ->
+  toggleDiff: =>
     @set diff: not @get('diff')
 
   useSublist: ->
     @showDiffP()
 
   # Public: Open the file in atom.
-  open: ->
+  open: =>
     atom.workspaceView.open @path()
 
   commitMessage: ->
@@ -72,8 +72,8 @@ class File extends ListItem
     "#\t\t#{switchState(@diffType())}#{@path()}\n"
 
   # Public: Checkout the file to the index.
-  checkout: ->
-    git.checkoutFile @path()
+  checkout: =>
+    git.checkoutFile(@path()).then => @trigger 'update'
 
   #############################################################################
   # Interface you will have to override                                       #
@@ -85,10 +85,10 @@ class File extends ListItem
 
   loadDiff: -> return
 
-  stagedP: -> false
+  isStaged: -> false
 
-  unstagedP: -> false
+  isUnstaged: -> false
 
-  untrackedP: -> false
+  isUntracked: -> false
 
 module.exports = File

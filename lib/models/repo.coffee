@@ -16,14 +16,15 @@ class Repo extends Model
     @branchList    = new BranchList []
     @commitList    = new CommitList []
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
+    @on 'changed', -> console.log 'changed'
 
   # Public: Forces a reload on the repository.
-  reload: ->
-    @fileList.reload()
-    if @headRefsCount() > 0
-      @currentBranch.reload()
-      @branchList.reload()
-      @commitList.reload(@currentBranch)
+  reload: =>
+    @fileList.reload().then =>
+      if @headRefsCount() > 0
+        @currentBranch.reload().then =>
+          @branchList.reload().then =>
+            @commitList.reload(@currentBranch)
 
   # Public: Returns the active selection.
   #
@@ -44,7 +45,7 @@ class Repo extends Model
     )
 
   headRefsCount: ->
-    atom.project.getRepo().getReferences().heads.length
+    atom.project.getRepo()?.getReferences()?.heads?.length ? 0
 
   fetch: ->
     git.cmd 'fetch'
@@ -102,13 +103,13 @@ class Repo extends Model
 
   # Public: Initiate the creation of a new branch.
   initiateCreateBranch: ->
-    @trigger 'need_input',
+    @trigger 'needInput',
       query: 'Branch name'
       callback: (name) -> git.cmd "checkout -b #{name}"
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: ->
-    @trigger 'need_input',
+    @trigger 'needInput',
       query: 'Git command'
       callback: (command) -> git.cmd command
 
