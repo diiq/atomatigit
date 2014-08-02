@@ -1,30 +1,16 @@
-{View} = require 'atom'
+{$, View} = require 'atom'
 
 class ErrorView extends View
-  @content: ->
+  @content: ({message}) ->
     @div =>
-      @div class: 'loading loading-spinner-small spinner', outlet: 'spinner'
-      @div class: 'inset-panel atomatigit-error', outlet: 'messagePanel', =>
-        @div class: 'panel-heading', =>
-          @div class: 'close-button', outlet: 'close_button', =>
-            @raw('&#10006;')
-          @text 'git output'
-        @div class: 'panel-body padded error-message', outlet: 'message'
+      @div class: 'overlay from-bottom atomatigit-error', outlet: 'messagePanel', =>
+        @div class: 'panel-body padded error-message', message
 
-  initialize: (model) ->
-#    @model = model
-#    @model.on 'error', => @repaint()
-#    @model.on 'change:task_counter', => @toggleSpinner()
-    @close_button.on 'click', => @messagePanel.hide()
-
-  repaint: ->
-    @messagePanel.show()
-    @message.html @model.messageMarkup()
-
-  toggleSpinner: ->
-    if @model.workingP()
-      @spinner.show()
-    else
-      @spinner.hide()
+  initialize: ->
+    @messagePanel.on 'click', => @detach()
+    atom.workspaceView.append(this)
+    setTimeout =>
+      @detach()
+    , 10000
 
 module.exports = ErrorView
