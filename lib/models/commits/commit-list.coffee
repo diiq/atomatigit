@@ -12,7 +12,7 @@ class CommitList extends List
   reload: (branch) =>
     @branch = branch
     git.log(@branch.head()).then (commits) =>
-      @repopulate(_.map(commits, 'ref'))
+      @repopulate _.map(commits, (commit) -> new Commit(commit))
 
   # Public: Repopulate the commit list with the commitHashes.
   #

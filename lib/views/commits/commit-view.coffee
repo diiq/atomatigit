@@ -7,8 +7,7 @@ class CommitView extends View
       @div class: 'author-name', "(#{commit.authorName()})"
       @div class: 'message text-subtle', "#{commit.shortMessage()}"
 
-  initialize: (commit) ->
-    @model = commit
+  initialize: (@model) ->
     @model.on 'change:selected', @showSelection
 
   beforeRemove: =>

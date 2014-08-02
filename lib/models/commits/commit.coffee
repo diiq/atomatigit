@@ -21,31 +21,33 @@ class Commit extends ListItem
   # s - The string to handle as {String}.
   #
   # Returns the transformed string as {String}.
-  unicodify: (s) ->
-    decodeURIComponent escape s
+  unicodify: (str) ->
+    try
+      str = decodeURIComponent(escape(str))
+    str
 
   # Public: Return the commit id.
   #
   # Returns the id as {String}.
-  commitID: ->
+  commitID: =>
     @get 'id'
 
   # Public: Return the short id.
   #
   # Returns the short id as {String}.
-  shortID: ->
+  shortID: =>
     @commitID()?.substr(0, 6)
 
   # Public: Return the author name.
   #
   # Returns the author name as {String}.
-  authorName: ->
+  authorName: =>
     @unicodify @get('author')?.name
 
   # Public: Return the commit message.
   #
   # Returns the commit message as {String}.
-  message: ->
+  message: =>
     @unicodify (@get('message') or '\n')
 
   # Public: Return the head line of the commit message.
@@ -55,11 +57,11 @@ class Commit extends ListItem
     @message().split('\n')[0]
 
   # Public: open -> soft reset to this commit.
-  open: ->
+  open: =>
     @confirmReset()
 
   # Public: Ask the user for confirmation to soft-reset to this commit.
-  confirmReset: ->
+  confirmReset: =>
     atom.confirm
       message: "Soft-reset head to #{@shortID()}?"
       detailedMessage: @message()
@@ -68,7 +70,7 @@ class Commit extends ListItem
         'Cancel': null
 
   # Public: Ask the user for confirmation to hard-reset to this commit.
-  confirmHardReset: ->
+  confirmHardReset: =>
     atom.confirm
       message: "Do you REALLY want to HARD-reset head to #{@shortID()}?"
       detailedMessage: @message()
@@ -77,15 +79,15 @@ class Commit extends ListItem
         'Reset': @hardReset
 
   # Internal: Reset to this commit.
-  reset: ->
+  reset: =>
     git.reset @commitID()
 
   # Public: Hard reset to this commit.
-  hardReset: ->
+  hardReset: =>
     git.reset @commitID(), {hard: true}
 
   # Public: Show this commit.
-  showCommit: ->
+  showCommit: =>
     if not @gitShowMessage?
       git.show @commitID(), (data) =>
         @gitShowMessage = decodeURIComponent(escape(data))
