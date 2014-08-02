@@ -46,8 +46,8 @@ class RepoView extends View
     @showFiles()
 
   insertCommands: ->
-    atom.workspaceView.command "atomatigit:next", => @model.active_list.next()
-    atom.workspaceView.command "atomatigit:previous", => @model.active_list.previous()
+    atom.workspaceView.command "atomatigit:next", => @model.activeList.next()
+    atom.workspaceView.command "atomatigit:previous", => @model.activeList.previous()
     atom.workspaceView.command "atomatigit:stage", => @model.leaf().stage()
     atom.workspaceView.command "atomatigit:unstage", => @model.leaf().unstage()
     atom.workspaceView.command "atomatigit:kill", => @model.leaf().kill()
