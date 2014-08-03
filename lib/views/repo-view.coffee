@@ -70,8 +70,8 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:commit-log", => @showCommits()
     atom.workspaceView.command "atomatigit:refresh", => @refresh()
 
-  refresh: ->
-    @model.reload()
+  refresh: =>
+    @model.reload().then => @activeView.repaint()
 
   showBranches: ->
     @model.activeList = @model.branchList

@@ -3,8 +3,8 @@ fs      = require 'fs'
 path    = require 'path'
 {Model} = require 'backbone'
 
-git                         = require '../git'
 ErrorView                   = require '../views/error-view'
+{Promise} = git             = require '../git'
 {FileList}                  = require './files'
 {CurrentBranch, BranchList} = require './branches'
 {CommitList}                = require './commits'
@@ -24,11 +24,12 @@ class Repo extends Model
 
   # Public: Forces a reload on the repository.
   reload: =>
-    @fileList.reload().then =>
-      if @headRefsCount() > 0
-        @branchList.reload()
-        .then => @commitList.reload()
-        .then => @currentBranch.reload()
+    promises = [@fileList.reload()]
+    if @headRefsCount() > 0
+      promises.push @branchList.reload()
+      promises.push @commitList.reload()
+      promises.push @currentBranch.reload()
+    Promise.all(promises)
 
   # Public: Returns the active selection.
   #
