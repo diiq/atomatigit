@@ -13,9 +13,10 @@
   },
   "dependencies": {
     "backbone": "1.x",
-    "lodash": "~2.4.1",
-    "jquery": "~2.1.1",
     "fs-plus": "~2.2.3",
+    "jquery": "~2.1.1",
+    "lodash": "~2.4.1",
+    "prettyjson": "^1.0.0",
     "promised-git": "~0.0.2"
   }
 }

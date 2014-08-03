@@ -3,7 +3,8 @@ RepoView = require './views/repo-view'
 
 module.exports =
   configDefaults:
-    pre_commit_hook: '',
+    debug: false
+    pre_commit_hook: ''
 
   activate: (state) ->
     @repo = new Repo()
