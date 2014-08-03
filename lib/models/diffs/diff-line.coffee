@@ -1,3 +1,4 @@
+_       = require 'lodash'
 {Model} = require 'backbone'
 
 # Public: {DiffLine} represents a single line of a diff.
@@ -44,14 +45,17 @@ class DiffLine extends Model
   #
   # Returns the html escaped string as {String}.
   escapeHTML: (string) ->
-    entityMap:
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;',
-      '/': '&#x2F;',
+    entityMap =
+      '&': '&amp;'
+      '<': '&lt;'
+      '>': '&gt;'
+      '"': '&quot;'
+      "'": '&#39;'
+      '/': '&#x2F;'
       ' ': '&nbsp;'
-    String(string).replace /[&<>"'\/ ]/g, (s) -> entityMap[s]
+    if _.isString(string)
+      string.replace /[&<>"'\/ ]/g, (s) -> entityMap[s]
+    else
+      string
 
 module.exports = DiffLine

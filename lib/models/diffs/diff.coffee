@@ -17,31 +17,15 @@ class Diff extends List
   # diff - The raw diff as {String}.
   #
   # Returns the diff minus the first two lines as {String}.
-  removeHeader: (diff) ->
-    @header = diff?.match(/^(.*?\n){2}/)?[0]
-    diff?.replace /^(.*?\n){2}/, ''
-
-  # Internal: Split the remining diff into chunks.
-  #
-  # We will treat '@@' at the beginning of a line as characteristic of the
-  # start of a new diff chunk.
-  #
-  # diff - The remaining raw diff as {String}.
-  #
-  # Returns the chunks as {Array}.
-  splitChunks: (diff) ->
-    diff?.split /(?=^@@ )/gm
+  extractHeader: =>
+    @header = @raw?.match(/^(.*?\n){2}/)?[0]
 
   # Public: Constructor
   #
   # diff - The raw diff as {String}.
-  constructor: (diff) ->
-    @giftDiff = diff
-    @raw = diff?.diff
-    diff = @removeHeader(@raw)
-    chunks = @splitChunks(diff)
-    chunks = _.map chunks, (chunk) => {chunk: chunk, header: @header}
-    super(chunks)
+  constructor: ({@raw, chunks}={}) ->
+    @extractHeader()
+    super _.map(chunks, (chunk) => {chunk: chunk, header: @header})
 
     @select -1
 

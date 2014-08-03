@@ -15,36 +15,9 @@ class DiffChunk extends ListItem
   # Public: Constructor.
   #
   # options - The options as {Object}.
-  initialize: (options) ->
-    chunk = @deleteFirstLine options.chunk
-    chunk = @deleteInitialWhitespace chunk
-    chunk = @deleteTrailingWhitespace chunk
-    @lines = _.map @splitIntoLines(chunk), (line) ->
-      new DiffLine line: line
-
-  # Internal: Deletes trailing whitespaces from chunk.
-  #
-  # chunk - The chunk as {String}.
-  #
-  # Returns the chunk without the trailing whitespaces as {String}.
-  deleteTrailingWhitespace: (chunk) ->
-    chunk.replace /\s*$/, ''
-
-  # Internal: Deletes the first line from chunk.
-  #
-  # chunk - The chunk as {String}.
-  #
-  # Returns the chunk without the first line as {String}.
-  deleteFirstLine: (chunk) ->
-    chunk.replace /.*?\n/, ''
-
-  # Internal: Deletes initial whitespaces from chunk.
-  #
-  # chunk - The chunk as {String}.
-  #
-  # Returns the chunk without the initial whitespaces as {String}.
-  deleteInitialWhitespace: (chunk) ->
-    chunk.replace /^(\s*?\n)*/, ''
+  initialize: ({@header, chunk}={}) ->
+    @lines = _.map @splitIntoLines(chunk.trim()), (line) ->
+      new DiffLine(line: line)
 
   # Internal: Splits chunk into singles lines.
   #
@@ -61,21 +34,24 @@ class DiffChunk extends ListItem
     @get('header') + @get('chunk') + '\n'
 
   # Public: Revert this chunk.
-  kill: ->
+  kill: =>
     fs.writeFileSync(@patchPath(), @patch())
     git.cmd "apply --reverse #{@patchPath()}"
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Stage this chunk.
-  stage: ->
+  stage: =>
     fs.writeFileSync(@patchPath(), @patch())
     git.cmd "apply --cached #{@patchPath()}"
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Unstage this chunk.
-  unstage: ->
+  unstage: =>
     fs.writeFileSync(@patchPath(), @patch())
     git.cmd "apply --cached --reverse #{@patchPath()}"
+    .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Internal: Return the path to the patch file.

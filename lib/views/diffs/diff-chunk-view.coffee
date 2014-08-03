@@ -1,4 +1,5 @@
-{View} = require 'atom'
+_            = require 'lodash'
+{View}       = require 'atom'
 DiffLineView = require './diff-line-view'
 
 module.exports =

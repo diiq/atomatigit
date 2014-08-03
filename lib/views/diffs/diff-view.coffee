@@ -7,6 +7,6 @@ class DiffView extends View
     @div class: 'diff'
 
   initialize: (@model) ->
-    _.each @model?.chunks(), (chunk) => @append new DiffChunkView chunk
+    _.each @model?.chunks(), (chunk) => @append new DiffChunkView(chunk)
 
 module.exports = DiffView
