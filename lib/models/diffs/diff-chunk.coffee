@@ -14,7 +14,9 @@ ErrorView = require '../../views/error-view'
 class DiffChunk extends ListItem
   # Public: Constructor.
   #
-  # options - The options as {Object}.
+  # arguments - {Object}
+  #   :header - The diff header used for patch generation as {String}.
+  #   :chunk  - The chunk as {String}.
   initialize: ({@header, chunk}={}) ->
     @lines = _.map @splitIntoLines(chunk.trim()), (line) ->
       new DiffLine(line: line)
