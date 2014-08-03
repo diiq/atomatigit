@@ -34,7 +34,7 @@ class ListItem extends Model
   # Returns: {Boolean}
   allowPrevious: ->
     if @useSublist()
-      not @sublist.previous()
+      not @sublist?.previous()
     else
       true
 
@@ -43,7 +43,7 @@ class ListItem extends Model
   # Returns: {Boolean}
   allowNext: ->
     if @useSublist()
-      not @sublist.next()
+      not @sublist?.next()
     else
       true
 
