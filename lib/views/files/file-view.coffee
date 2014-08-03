@@ -1,10 +1,11 @@
-{View} = require 'atom'
+{$$, View} = require 'atom'
 DiffView = require '../diffs/diff-view'
 
 class FileView extends View
   @content: (file) ->
     @div class: 'file', mousedown: 'clicked', =>
-      @div class: 'filename', "#{file.path()}"
+      @span class: 'mode', file.getMode()
+      @span class: 'path', file.path()
 
   initialize: (@model) ->
     @model.on 'change:selected', @showSelection

@@ -65,7 +65,7 @@ class File extends ListItem
         when 'D' then 'deleted:    '
         when 'A' then 'new file:   '
         else ''
-    "#\t\t#{switchState(@diffType())}#{@path()}\n"
+    "#\t\t#{switchState(@getMode())}#{@path()}\n"
 
   # Public: Checkout the file to the index.
   checkout: =>
@@ -82,6 +82,8 @@ class File extends ListItem
   kill: -> return
 
   loadDiff: -> return
+
+  getMode: -> return
 
   isStaged: -> false
 

@@ -32,10 +32,13 @@ class StagedFile extends File
 
   # Internal: Update the diff.
   loadDiff: =>
-    return if @get('modeIndex') is 'D'
+    return if @getMode() is 'D'
     git.getDiff(@path(), {staged: true})
     .then (diff) => @setDiff(diff)
     .catch (error) -> new ErrorView(error)
+
+  getMode: =>
+    @get 'modeIndex'
 
   isStaged: -> true
 
