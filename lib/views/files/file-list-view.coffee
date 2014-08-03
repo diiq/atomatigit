@@ -14,10 +14,10 @@ class FileListView extends View
       @div class: 'staged', outlet: 'staged'
 
   initialize: (@model) ->
-    @model.on 'repaint', @repopulate
+    @model.on 'repaint', @repaint
 
   beforeRemove: =>
-    @model.off 'repaint', @repopulate
+    @model.off 'repaint', @repaint
 
   repopulateUntracked: ->
     @untracked.empty()
@@ -31,7 +31,7 @@ class FileListView extends View
     @staged.empty()
     _.each @model.staged(), (file) => @staged.append new FileView(file)
 
-  repopulate: =>
+  repaint: =>
     @repopulateUntracked()
     @repopulateUnstaged()
     @repopulateStaged()

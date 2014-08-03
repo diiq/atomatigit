@@ -21,6 +21,7 @@ class UnstagedFile extends File
         'Cancel': -> return
 
   loadDiff: ->
+    return if @get('modeWorkingTree') is 'D'
     git.getDiff(@path())
     .then (diff) => @setDiff(diff)
     .catch (error) -> new ErrorView(error)

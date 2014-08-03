@@ -31,7 +31,8 @@ class StagedFile extends File
     @checkout()
 
   # Internal: Update the diff.
-  loadDiff: ->
+  loadDiff: =>
+    return if @get('modeIndex') is 'D'
     git.getDiff(@path(), {staged: true})
     .then (diff) => @setDiff(diff)
     .catch (error) -> new ErrorView(error)

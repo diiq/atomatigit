@@ -10,8 +10,7 @@ class File extends ListItem
   #
   # path - The file path as {String}.
   initialize: (file) ->
-    @set 'path': file.path
-    @set 'diffType': file.type
+    @set file
     @set diff: false
     @loadDiff()
     @deselect()
@@ -33,12 +32,6 @@ class File extends ListItem
   # Returns the diff sublist as {List}.
   diff: =>
     @sublist
-
-  # Public: Return the 'diffType' property.
-  #
-  # Returns the 'diffType' property as {String}.
-  diffType: ->
-    @get 'diffType'
 
   # Public: Stage the changes made to this file.
   stage: =>
