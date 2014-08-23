@@ -1,5 +1,6 @@
-Repo     = require './models/repo'
-RepoView = require './views/repo-view'
+Repo      = require './models/repo'
+RepoView  = require './views/repo-view'
+ErrorView = require './views/error-view'
 
 module.exports =
   configDefaults:
@@ -7,10 +8,12 @@ module.exports =
     pre_commit_hook: ''
 
   activate: (state) ->
+    @insertCommands()
+    return @errorNoGitRepo() unless atom.project.getRepo()
+
     @repo = new Repo()
     @repo.reload().then =>
       @repoView = new RepoView(@repo)
-      @insertCommands()
       @focus()
 
   insertCommands: ->
@@ -18,9 +21,11 @@ module.exports =
     atom.workspaceView.command 'atomatigit:close', => @close()
 
   close: ->
+    return @errorNoGitRepo() unless atom.project.getRepo()
     @repoView.detach() if @repoView.hasParent()
 
   focus: ->
+    return @errorNoGitRepo() unless atom.project.getRepo()
     atom.workspaceView.appendToRight(@repoView) unless @repoView.hasParent()
     @repo.reload().then =>
       @repoView.focus()
@@ -28,3 +33,6 @@ module.exports =
   deactivate: ->
     @repoView.destroy()
     @repo.destroy()
+
+  errorNoGitRepo: ->
+    new ErrorView(message: 'Project is no git repository!')
