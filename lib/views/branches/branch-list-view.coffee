@@ -3,6 +3,7 @@ _      = require 'lodash'
 
 BranchBriefView = require './branch-brief-view'
 
+# Public: Visual representation of the branch list.
 class BranchListView extends View
   @content: ->
     @div class: 'branch-list-view list-view', tabindex: -1, =>
@@ -11,19 +12,22 @@ class BranchListView extends View
       @h2 'remote:'
       @div outlet: 'remoteDom'
 
+  # Public: Constructor.
   initialize: (@model) ->
     @model.on 'repaint', @repaint
 
+  # Public: 'beforeRemove' handler.
   beforeRemove: =>
     @model.off 'repaint', @repaint
 
+  # Internal: Empty the 'localDom' and 'remoteDom' lists.
   emptyLists: =>
     @localDom.empty()
     @remoteDom.empty()
 
+  # Public: Trigger a repaint.
   repaint: =>
     @emptyLists()
-
     _.each @model.local(), (branch) => @localDom.append new BranchBriefView(branch)
     _.each @model.remote(), (branch) => @remoteDom.append new BranchBriefView(branch)
 

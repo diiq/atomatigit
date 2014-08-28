@@ -28,6 +28,7 @@ class RepoView extends View
         @subview 'branchListView', new BranchListView model.branchList
         @subview 'commitListView', new CommitListView model.commitList
 
+  # Public: Constructor.
   initialize: (@model) ->
     @insertCommands()
     @model.on 'needInput', @getInput
@@ -45,6 +46,7 @@ class RepoView extends View
 
     @showFiles()
 
+  # Internal: Register atomatigit commands with atom.
   insertCommands: ->
     atom.workspaceView.command "atomatigit:branches", => @showBranches()
     atom.workspaceView.command "atomatigit:commit", => @model.initiateCommit()
@@ -70,25 +72,30 @@ class RepoView extends View
     atom.workspaceView.command "atomatigit:toggle-diff", => @model.selection()?.toggleDiff()
     atom.workspaceView.command "atomatigit:unstage", => @model.leaf()?.unstage()
 
+  # Public: Force a full refresh.
   refresh: =>
     @model.reload().then => @activeView.repaint()
 
+  # Public: Show the 'branches' tab.
   showBranches: ->
     @model.activeList = @model.branchList
     @activeView = @branchListView
-    @showViews()
+    @activateView()
 
+  # Public: Show the 'files' tab.
   showFiles: ->
     @model.activeList = @model.fileList
     @activeView = @fileListView
-    @showViews()
+    @activateView()
 
+  # Public: Show the 'commits' tab.
   showCommits: ->
     @model.activeList = @model.commitList
     @activeView = @commitListView
-    @showViews()
+    @activateView()
 
-  showViews: ->
+  # Internal: Toggle the visibility of the selected view.
+  activateView: ->
     @modeSwitchFlag = true
     @fileListView.toggleClass 'hidden', @activeView != @fileListView
     @fileTab.toggleClass 'active', @activeView == @fileListView
@@ -99,18 +106,24 @@ class RepoView extends View
     @commitListView.toggleClass 'hidden', @activeView != @commitListView
     @commitTab.toggleClass 'active', @activeView == @commitListView
 
+  # Internal: Handler for 'resizeStarted'.
   resizeStarted: ->
     $(document.body).on 'mousemove', @resize
     $(document.body).on 'mouseup', @resizeStopped
 
+  # Internal: Handler for 'resizeStopped'.
   resizeStopped: ->
     $(document.body).off 'mousemove', @resize
     $(document.body).off 'mouseup', @resizeStopped
 
+  # Internal: Resize the width.
+  #   object.pageX: The width to resize atomatigit to.
   resize: ({pageX}) ->
     width = $(document.body).width() - pageX
     @width(width)
 
+  # Public: Request user input.
+  #   options - The options as {Object}.
   getInput: (options) ->
     @input.removeClass 'block'
     extraQuery = ''
@@ -124,14 +137,15 @@ class RepoView extends View
     @input.show 100, =>
       @inputEditor.redraw()
       @inputEditor.focus()
-      #@inputEditor.on 'focusout', @cancelInput
 
+  # Internal: Handler to be called to complete the user input.
   completeInput: ->
     @input.hide()
     @inputCallback @inputEditor.getText()
     @modeSwitchFlag = true
     @focus()
 
+  # Internal: Handler to be called to cancel data input.
   cancelInput: ->
     @input.hide()
     @inputCallback = null
@@ -139,10 +153,12 @@ class RepoView extends View
     @inputEditor.off 'focusout', @cancelInput
     @focus()
 
+  # Public: Focus the atomatigit pane.
   focus: ->
     @addClass 'focused'
     @activeView.focus()
 
+  # Public: Toggle the focus on the atomatigit pane.
   unfocus: ->
     if !@modeSwitchFlag
       @removeClass 'focused'
@@ -150,7 +166,7 @@ class RepoView extends View
       @focus()
       @modeSwitchFlag = false
 
-  # Tear down any state and detach
+  # Public: Destructor.
   destroy: ->
     @detach()
 

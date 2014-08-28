@@ -3,6 +3,8 @@ _      = require 'lodash'
 
 FileView = require './file-view'
 
+# Public: Represents the file list view with an individual list for staged,
+#         unstaged and untracked files.
 class FileListView extends View
   @content: ->
     @div class: 'file-list-view list-view', tabindex: -1, =>
@@ -13,24 +15,30 @@ class FileListView extends View
       @h2 outlet: 'stagedHeader', 'staged:'
       @div class: 'staged', outlet: 'staged'
 
+  # Public: Constructor.
   initialize: (@model) ->
     @model.on 'repaint', @repaint
 
+  # Internal: Prepare removing this view.
   beforeRemove: =>
     @model.off 'repaint', @repaint
 
+  # Internal: Trigger repopulation of the untracked file list view.
   repopulateUntracked: ->
     @untracked.empty()
     _.each @model.untracked(), (file) => @untracked.append new FileView(file)
 
+  # Internal: Trigger repopulation of the unstaged file list view.
   repopulateUnstaged: ->
     @unstaged.empty()
     _.each @model.unstaged(), (file) => @unstaged.append new FileView(file)
 
+  # Internal: Trigger repopulation of the staged file list view.
   repopulateStaged: ->
     @staged.empty()
     _.each @model.staged(), (file) => @staged.append new FileView(file)
 
+  # Public: Trigger repainting of all file list views.
   repaint: =>
     @repopulateUntracked()
     @repopulateUnstaged()
