@@ -134,9 +134,7 @@ class RepoView extends View
     @inputCallback = options.callback
     @inputEditor.setPlaceholderText options.query + extraQuery
     @inputEditor.setText ''
-    @input.show 100, =>
-      @inputEditor.redraw()
-      @inputEditor.focus()
+    @input.show 100, => @inputEditor.focus()
 
   # Internal: Handler to be called to complete the user input.
   completeInput: ->
