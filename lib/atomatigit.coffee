@@ -22,11 +22,11 @@ module.exports =
 
   close: ->
     return @errorNoGitRepo() unless atom.project.getRepo()
-    @repoView.detach() if @repoView.hasParent()
+    @repoView.detach() if @repoView?.hasParent()
 
   focus: ->
     return @errorNoGitRepo() unless atom.project.getRepo()
-    atom.workspaceView.appendToRight(@repoView) unless @repoView.hasParent()
+    atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
     @repo.reload().then =>
       @repoView.focus()
 
