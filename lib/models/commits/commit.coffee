@@ -105,16 +105,7 @@ class Commit extends ListItem
       editor = atom.workspace.open(path.join(gitPath, ".git/#{@commitID()}"))
       editor.then (@editor) =>
         @editor.setGrammar atom.syntax.grammarForScopeName('diff.diff')
-        @editor.buffer.once 'changed', =>
-          @showCommitWrite()
         @editor.buffer.once 'destroyed', =>
           fs.removeSync path.join(gitPath, ".git/#{@commitID()}")
-
-  showCommitWrite: =>
-    return unless @editor? and @gitShowMessage?
-    @editor.setText(@gitShowMessage)
-    @editor.buffer.once 'changed', =>
-      @showCommitWrite()
-
 
 module.exports = Commit
