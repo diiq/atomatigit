@@ -20,9 +20,9 @@ class DiffLine extends Model
   #   'subtraction': '-'
   #   'context': 'context'
   type: ->
-    if !!(@line().match /^\+/)
+    if @line().match(/^\+/)
       'addition'
-    else if !!(@line().match /^\-/)
+    else if @line().match(/^\-/)
       'subtraction'
     else
       'context'

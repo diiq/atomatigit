@@ -158,11 +158,11 @@ class RepoView extends View
 
   # Public: Toggle the focus on the atomatigit pane.
   unfocus: ->
-    if !@modeSwitchFlag
-      @removeClass 'focused'
-    else
+    if @modeSwitchFlag
       @focus()
       @modeSwitchFlag = false
+    else
+      @removeClass 'focused'
 
   # Public: Destructor.
   destroy: ->
