@@ -1,10 +1,11 @@
-$                                 = require 'jquery'
-{View, EditorView}                = require 'atom'
+# $                  = require 'jquery'
+{$, View, EditorView} = require 'atom'
 
 {FileListView}                       = require './files'
 {CurrentBranchView, BranchListView}  = require './branches'
 {CommitListView}                     = require './commits'
 ErrorView                            = require './error-view'
+InputCommandView                     = require './input-command-view'
 
 # Public: RepoView class that extends the {View} prototype.
 class RepoView extends View
@@ -12,8 +13,6 @@ class RepoView extends View
     @div class: 'atomatigit', =>
       @div class: 'resize-handle', outlet: 'resizeHandle'
       @subview 'currentBranchView', new CurrentBranchView(model.currentBranch)
-      @div class: 'input', outlet: 'input', =>
-        @subview 'inputEditor', new EditorView(mini: true)
 
       @ul class: 'list-inline tab-bar inset-panel', =>
         @li outlet: 'fileTab', class: 'tab active', click: 'showFiles', =>
@@ -33,12 +32,9 @@ class RepoView extends View
     @insertCommands()
     @model.on 'needInput', @getInput
 
-    @on 'core:confirm', => @completeInput()
-    @on 'core:cancel',  => @cancelInput()
-    @on 'click',        => @focus()
-    @on 'focusout',     => @unfocus()
+    @on 'click',    => @focus()
+    @on 'focusout', => @unfocus()
 
-    @inputEditor.on 'click', -> false
     @resizeHandle.on 'mousedown', @resizeStarted
 
     atomGit = atom.project.getRepo()
@@ -125,31 +121,7 @@ class RepoView extends View
   # Public: Request user input.
   #   options - The options as {Object}.
   getInput: (options) ->
-    @input.removeClass 'block'
-    extraQuery = ''
-    if options.block
-      @input.addClass 'block'
-      extraQuery = ' (shift+enter to finish)'
-
-    @inputCallback = options.callback
-    @inputEditor.setPlaceholderText options.query + extraQuery
-    @inputEditor.setText ''
-    @input.show 100, => @inputEditor.focus()
-
-  # Internal: Handler to be called to complete the user input.
-  completeInput: ->
-    @input.hide()
-    @inputCallback @inputEditor.getText()
-    @modeSwitchFlag = true
-    @focus()
-
-  # Internal: Handler to be called to cancel data input.
-  cancelInput: ->
-    @input.hide()
-    @inputCallback = null
-    @modeSwitchFlag = true
-    @inputEditor.off 'focusout', @cancelInput
-    @focus()
+    new InputCommandView()
 
   # Public: Focus the atomatigit pane.
   focus: ->

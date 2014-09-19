@@ -71,8 +71,7 @@ describe 'ListItem', ->
       expect(item.sublist.previous).toHaveBeenCalled
 
   describe '.allowNext', ->
-    it 'returns true if the item.useSublist returns false
-', ->
+    it 'returns true if the item.useSublist returns false', ->
       expect(item.allowNext()).toBe true
 
     it 'returns false if sublist.next returns true', ->
