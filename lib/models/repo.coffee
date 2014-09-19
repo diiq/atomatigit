@@ -4,6 +4,7 @@ path    = require 'path'
 {Model} = require 'backbone'
 
 ErrorView                   = require '../views/error-view'
+OutputView                  = require '../views/output-view'
 {Promise} = git             = require '../git'
 {FileList}                  = require './files'
 {CurrentBranch, BranchList} = require './branches'
@@ -124,7 +125,7 @@ class Repo extends Model
   # Public: Initiate the creation of a new branch.
   initiateCreateBranch: ->
     @trigger 'needInput',
-      query: 'Branch name'
+      message: 'Branch name'
       callback: (name) ->
         git.cmd "checkout -b #{name}"
         .catch (error) -> new ErrorView(error)
@@ -132,10 +133,10 @@ class Repo extends Model
   # Public: Initiate a user defined git command.
   initiateGitCommand: ->
     @trigger 'needInput',
-      query: 'Git command'
+      message: 'Git command'
       callback: (command) ->
         git.cmd command
-        .then (output) -> console.log output
+        .then (output) -> new OutputView(output)
         .catch (error) -> new ErrorView(error)
 
   # Public: Push the repository to the remote.

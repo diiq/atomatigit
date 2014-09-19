@@ -1,11 +1,10 @@
-# $                  = require 'jquery'
 {$, View, EditorView} = require 'atom'
 
 {FileListView}                       = require './files'
 {CurrentBranchView, BranchListView}  = require './branches'
 {CommitListView}                     = require './commits'
 ErrorView                            = require './error-view'
-InputCommandView                     = require './input-command-view'
+InputView                            = require './input-view'
 
 # Public: RepoView class that extends the {View} prototype.
 class RepoView extends View
@@ -121,7 +120,7 @@ class RepoView extends View
   # Public: Request user input.
   #   options - The options as {Object}.
   getInput: (options) ->
-    new InputCommandView()
+    new InputView(options)
 
   # Public: Focus the atomatigit pane.
   focus: ->
