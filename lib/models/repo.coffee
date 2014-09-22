@@ -119,7 +119,7 @@ class Repo extends Model
   completeCommit: =>
     git.commit @commitMessagePath()
     .then @reload
-    .catch (error) => new ErrorView(error)
+    .catch (error) -> new ErrorView(error)
     .finally @cleanupCommitMessageFile
 
   # Public: Initiate the creation of a new branch.

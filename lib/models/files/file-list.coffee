@@ -24,7 +24,7 @@ class FileList extends List
     @populateList(status.unstaged, UnstagedFile)
     @populateList(status.untracked, UntrackedFile)
 
-    @select(@selectedIndex)
+    @select(@selectedIndex ? 0)
     @trigger('repaint') unless silent
 
   # Public: Return the staged files.

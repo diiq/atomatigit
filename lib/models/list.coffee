@@ -15,8 +15,7 @@ class List extends Collection
   #
   # Returns the leaf as {???}.
   leaf: ->
-    if @selection()
-      @selection().leaf()
+    @selection()?.leaf()
 
   # Public: Returns the selected entry.
   #
@@ -28,20 +27,17 @@ class List extends Collection
   #
   # i - The item to select as {ListItem}.
   select: (i) ->
-    old_selection = @selectedIndex
-    if @selection()
-      @selection().deselect()
+    oldSelection = @selectedIndex
+    @selection().deselect() if @selection()
 
     if @isSublist and i < 0
       @selectedIndex = -1
       return false
 
     @selectedIndex = Math.max(Math.min(i, @length - 1), 0)
+    @selection()?.select()
 
-    if @selection()
-      @selection().select()
-
-    old_selection != @selectedIndex
+    @selectedIndex isnt oldSelection
 
   # Public: Select the next item from the List.
   next: ->

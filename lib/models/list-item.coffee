@@ -23,13 +23,13 @@ class ListItem extends Model
   deselect: ->
     @set selected: false
 
-  # Public: Check if this item is selected.
+  # Public: Check if item is currently selected
   #
   # Returns: {Boolean}
   isSelected: ->
     @get 'selected'
 
-  # Public: ???
+  # Public:
   #
   # Returns: {Boolean}
   allowPrevious: ->
@@ -38,7 +38,7 @@ class ListItem extends Model
     else
       true
 
-  # Public: ???
+  # Public:
   #
   # Returns: {Boolean}
   allowNext: ->

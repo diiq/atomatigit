@@ -23,8 +23,7 @@ class Commit extends ListItem
   #
   # Returns the transformed string as {String}.
   unicodify: (str) ->
-    try
-      str = decodeURIComponent(escape(str))
+    try str = decodeURIComponent(escape(str))
     str
 
   # Public: Return the commit id.
