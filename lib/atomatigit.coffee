@@ -40,5 +40,5 @@ module.exports =
 
   # Internal: Register package commands with atom.
   insertCommands: ->
-    atom.workspaceView.command 'atomatigit:show',  => @focus()
-    atom.workspaceView.command 'atomatigit:close', => @close()
+    atom.workspaceView.command 'atomatigit:show', @focus
+    atom.workspaceView.command 'atomatigit:close', @close

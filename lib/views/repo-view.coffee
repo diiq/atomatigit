@@ -31,8 +31,8 @@ class RepoView extends View
     @insertCommands()
     @model.on 'needInput', @getInput
 
-    @on 'click',    => @focus()
-    @on 'focusout', => @unfocus()
+    @on 'click', @focus
+    @on 'focusout', @unfocus
     @resizeHandle.on 'mousedown', @resizeStarted
 
     atomGit = atom.project.getRepo()

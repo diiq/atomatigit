@@ -12,7 +12,7 @@ class InputView extends View
     @currentPane = atom.workspace.getActivePane()
     atom.workspaceView.append(this)
     @inputEditor.focus()
-    @on 'core:cancel', => @detach()
+    @on 'core:cancel', @detach
     @inputEditor.on 'core:confirm', =>
       @detach()
       callback?(@inputEditor.getText())

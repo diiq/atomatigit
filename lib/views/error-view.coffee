@@ -15,10 +15,8 @@ class ErrorView extends View
     if atom.config.get('atomatigit.debug')
       console.trace prettyjson.render(error, noColor: true)
 
-    @messagePanel.on 'click', => @detach()
+    @messagePanel.on 'click', @detach
     atom.workspaceView.append(this)
-    setTimeout =>
-      @detach()
-    , 10000
+    setTimeout @detach, 10000
 
 module.exports = ErrorView
