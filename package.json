@@ -12,7 +12,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "backbone": "1.x",
+    "backbone": "~1.1.2",
     "fs-plus": "~2.2.3",
     "lodash": "~2.4.1",
     "prettyjson": "^1.0.0",
