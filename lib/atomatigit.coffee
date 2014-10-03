@@ -7,6 +7,9 @@ module.exports =
     debug: false
     pre_commit_hook: ''
 
+  repo: null
+  repoView: null
+
   # Public: Package activation.
   activate: (state) ->
     return @errorNoGitRepo() unless atom.project.getRepo()
@@ -15,30 +18,22 @@ module.exports =
     @repo.reload().then =>
       @repoView = new RepoView(@repo)
       @focus()
-    @insertCommands()
+      @insertCommands()
 
   # Public: Close the atomatigit pane.
-  close: =>
-    return @errorNoGitRepo() unless atom.project.getRepo()
-    @repoView.detach() if @repoView?.hasParent()
+  close: ->
+    @repoView.detach() if @repoView.hasParent()
 
   # Public: Open (or focus) the atomatigit window.
-  focus: =>
+  focus: ->
     return @errorNoGitRepo() unless atom.project.getRepo()
-    unless @repo
-      @repo = new Repo()
-      @repo.reload().then =>
-        @repoView = new RepoView(@repo)
-        atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
-        @repo.reload().then =>
-          @repoView.focus()
-    else
+    @repo.reload().then =>
+      @repoView = new RepoView(@repo) unless @repoView
       atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
-      @repo.reload().then =>
-        @repoView.focus()
+      @repoView.focus()
 
   # Internal: Destroy atomatigit instance.
-  deactivate: =>
+  deactivate: ->
     @repo.destroy()
     @repoView.destroy()
 
@@ -47,6 +42,6 @@ module.exports =
     new ErrorView(message: 'Project is no git repository!')
 
   # Internal: Register package commands with atom.
-  insertCommands: =>
-    atom.workspaceView.command 'atomatigit:show', @focus
-    atom.workspaceView.command 'atomatigit:close', @close
+  insertCommands: ->
+    atom.workspaceView.command 'atomatigit:show', => @focus()
+    atom.workspaceView.command 'atomatigit:close', => @close()

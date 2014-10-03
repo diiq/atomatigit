@@ -35,10 +35,10 @@ class Repo extends Model
   # Public: Returns the active selection.
   #
   # Returns the active selection as {Object}.
-  selection: ->
+  selection: =>
     @activeList.selection()
 
-  leaf: ->
+  leaf: =>
     @activeList.leaf()
 
   # Internal: The commit message file path.
@@ -69,7 +69,7 @@ class Repo extends Model
     .catch (error) -> new ErrorView(error)
 
   # Internal: Initiate a new commit.
-  initiateCommit: ->
+  initiateCommit: =>
     preCommitHook = atom.config.get('atomatigit.pre_commit_hook')
     atom.workspaceView.trigger(preCommitHook) if preCommitHook?.length > 0
 
@@ -140,7 +140,7 @@ class Repo extends Model
         .catch (error) -> new ErrorView(error)
 
   # Public: Push the repository to the remote.
-  push: ->
+  push: =>
     @currentBranch.push()
 
 module.exports = Repo
