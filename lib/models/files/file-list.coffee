@@ -20,23 +20,23 @@ class FileList extends List
   populate: (status, silent) =>
     @reset()
 
-    @populateList(status.staged, StagedFile)
-    @populateList(status.unstaged, UnstagedFile)
     @populateList(status.untracked, UntrackedFile)
+    @populateList(status.unstaged, UnstagedFile)
+    @populateList(status.staged, StagedFile)
 
     @select(@selectedIndex ? 0)
     @trigger('repaint') unless silent
 
   # Public: Return the staged files.
-  staged: ->
+  staged: =>
     @filter (file) -> file.isStaged()
 
   # Public: Return the unstaged files.
-  unstaged: ->
+  unstaged: =>
     @filter (file) -> file.isUnstaged()
 
   # Public: Return the untracked files.
-  untracked: ->
+  untracked: =>
     @filter (file) -> file.isUntracked()
 
   # Internal: Populate the list.

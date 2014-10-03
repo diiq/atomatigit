@@ -28,7 +28,6 @@ class RepoView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
-    @insertCommands()
     @model.on 'needInput', @getInput
 
     @on 'click', @focus
@@ -37,12 +36,14 @@ class RepoView extends View
 
     atomGit = atom.project.getRepo()
     @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
+
     @showFiles()
+    @insertCommands()
 
   # Internal: Register atomatigit commands with atom.
-  insertCommands: ->
-    atom.workspaceView.command 'atomatigit:next', => @model.activeList?.next()
-    atom.workspaceView.command 'atomatigit:previous', => @model.activeList?.previous()
+  insertCommands: =>
+    atom.workspaceView.command 'atomatigit:next', => @model.activeList.next()
+    atom.workspaceView.command 'atomatigit:previous', => @model.activeList.previous()
 
     atom.workspaceView.command 'atomatigit:files', => @showFiles()
     atom.workspaceView.command 'atomatigit:branches', => @showBranches()
@@ -126,12 +127,12 @@ class RepoView extends View
     new InputView(options)
 
   # Public: Focus the atomatigit pane.
-  focus: ->
+  focus: =>
     @addClass 'focused'
     @activeView.focus()
 
   # Public: Toggle the focus on the atomatigit pane.
-  unfocus: ->
+  unfocus: =>
     if @modeSwitchFlag
       @focus()
       @modeSwitchFlag = false

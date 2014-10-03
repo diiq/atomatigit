@@ -24,17 +24,17 @@ class FileListView extends View
     @model.off 'repaint', @repaint
 
   # Internal: Trigger repopulation of the untracked file list view.
-  repopulateUntracked: ->
+  repopulateUntracked: =>
     @untracked.empty()
     _.each @model.untracked(), (file) => @untracked.append new FileView(file)
 
   # Internal: Trigger repopulation of the unstaged file list view.
-  repopulateUnstaged: ->
+  repopulateUnstaged: =>
     @unstaged.empty()
     _.each @model.unstaged(), (file) => @unstaged.append new FileView(file)
 
   # Internal: Trigger repopulation of the staged file list view.
-  repopulateStaged: ->
+  repopulateStaged: =>
     @staged.empty()
     _.each @model.staged(), (file) => @staged.append new FileView(file)
 
