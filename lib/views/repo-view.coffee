@@ -45,31 +45,31 @@ class RepoView extends View
     atom.workspaceView.command 'atomatigit:next', => @model.activeList.next()
     atom.workspaceView.command 'atomatigit:previous', => @model.activeList.previous()
 
-    atom.workspaceView.command 'atomatigit:files', => @showFiles()
-    atom.workspaceView.command 'atomatigit:branches', => @showBranches()
-    atom.workspaceView.command 'atomatigit:commit-log', => @showCommits()
+    atom.workspaceView.command 'atomatigit:files', @showFiles
+    atom.workspaceView.command 'atomatigit:branches', @showBranches
+    atom.workspaceView.command 'atomatigit:commit-log', @showCommits
 
-    atom.workspaceView.command 'atomatigit:commit', => @model.initiateCommit()
-    atom.workspaceView.command 'atomatigit:git-command', => @model.initiateGitCommand()
+    atom.workspaceView.command 'atomatigit:commit', @model.initiateCommit
+    atom.workspaceView.command 'atomatigit:git-command', @model.initiateGitCommand
 
-    atom.workspaceView.command 'atomatigit:input:down', => @inputDown()
-    atom.workspaceView.command 'atomatigit:input:newline', => @inputNewline()
-    atom.workspaceView.command 'atomatigit:input:up', => @inputUp()
+    atom.workspaceView.command 'atomatigit:input:down', @inputDown
+    atom.workspaceView.command 'atomatigit:input:newline', @inputNewline
+    atom.workspaceView.command 'atomatigit:input:up', @inputUp
 
     atom.workspaceView.command 'atomatigit:stage', => @model.leaf()?.stage()
-    atom.workspaceView.command 'atomatigit:stash', => @model.stash()
-    atom.workspaceView.command 'atomatigit:stash-pop', => @model.stashPop()
+    atom.workspaceView.command 'atomatigit:stash', @model.stash
+    atom.workspaceView.command 'atomatigit:stash-pop', @model.stashPop
     atom.workspaceView.command 'atomatigit:toggle-diff', => @model.selection()?.toggleDiff()
     atom.workspaceView.command 'atomatigit:unstage', => @model.leaf()?.unstage()
     atom.workspaceView.command 'atomatigit:hard-reset-to-commit', => @model.selection()?.confirmHardReset()
 
-    atom.workspaceView.command 'atomatigit:create-branch', => @model.initiateCreateBranch()
-    atom.workspaceView.command 'atomatigit:fetch', => @model.fetch()
+    atom.workspaceView.command 'atomatigit:create-branch', @model.initiateCreateBranch
+    atom.workspaceView.command 'atomatigit:fetch', @model.fetch
     atom.workspaceView.command 'atomatigit:kill', => @model.leaf()?.kill()
     atom.workspaceView.command 'atomatigit:open', => @model.selection()?.open()
-    atom.workspaceView.command 'atomatigit:push', => @model.push()
-    atom.workspaceView.command 'atomatigit:refresh', => @refresh()
-    atom.workspaceView.command 'atomatigit:showCommit', => @model.selection()?.showCommit()
+    atom.workspaceView.command 'atomatigit:push', @model.push
+    atom.workspaceView.command 'atomatigit:refresh', @refresh
+    atom.workspaceView.command 'atomatigit:showCommit', => @model.selection()?.showCommit?()
 
   # Public: Force a full refresh.
   refresh: =>

@@ -14,19 +14,19 @@ class List extends Collection
   # Public: Leaf??
   #
   # Returns the leaf as {???}.
-  leaf: ->
+  leaf: =>
     @selection()?.leaf()
 
   # Public: Returns the selected entry.
   #
   # Returns the selected entry as {ListItem}.
-  selection: ->
+  selection: =>
     @at @selectedIndex
 
   # Public: Select a {ListItem} from this List.
   #
   # i - The item to select as {ListItem}.
-  select: (i) ->
+  select: (i) =>
     oldSelection = @selectedIndex
     @selection().deselect() if @selection()
 
@@ -40,12 +40,12 @@ class List extends Collection
     @selectedIndex isnt oldSelection
 
   # Public: Select the next item from the List.
-  next: ->
+  next: =>
     return false if @selection() and not @selection().allowNext()
     @select (@selectedIndex + 1)
 
   # Public: Select the previous item in the List.
-  previous: ->
+  previous: =>
     return false if @selection() and not @selection().allowPrevious()
     @select(@selectedIndex - 1)
 
