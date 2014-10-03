@@ -15,7 +15,7 @@ class RepoView extends View
 
       @ul class: 'list-inline tab-bar inset-panel', =>
         @li outlet: 'fileTab', class: 'tab active', click: 'showFiles', =>
-          @div class: 'title', 'Staging'
+          @div class: 'title', 'Files'
         @li outlet: 'branchTab', class: 'tab', click: 'showBranches', =>
           @div class: 'title', 'Branches'
         @li outlet: 'commitTab', class: 'tab', click: 'showCommits', =>
@@ -37,8 +37,8 @@ class RepoView extends View
     atomGit = atom.project.getRepo()
     @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
 
-    @showFiles()
     @insertCommands()
+    @model.reload().then @showFiles
 
   # Internal: Register atomatigit commands with atom.
   insertCommands: =>
@@ -76,25 +76,25 @@ class RepoView extends View
     @model.reload().then => @activeView.repaint()
 
   # Public: Show the 'branches' tab.
-  showBranches: ->
+  showBranches: =>
     @model.activeList = @model.branchList
     @activeView = @branchListView
     @activateView()
 
   # Public: Show the 'files' tab.
-  showFiles: ->
+  showFiles: =>
     @model.activeList = @model.fileList
     @activeView = @fileListView
     @activateView()
 
   # Public: Show the 'commits' tab.
-  showCommits: ->
+  showCommits: =>
     @model.activeList = @model.commitList
     @activeView = @commitListView
     @activateView()
 
   # Internal: Toggle the visibility of the selected view.
-  activateView: ->
+  activateView: =>
     @modeSwitchFlag = true
     @fileListView.toggleClass 'hidden', @activeView != @fileListView
     @fileTab.toggleClass 'active', @activeView == @fileListView
@@ -104,6 +104,8 @@ class RepoView extends View
 
     @commitListView.toggleClass 'hidden', @activeView != @commitListView
     @commitTab.toggleClass 'active', @activeView == @commitListView
+
+    @focus()
 
   # Internal: Handler for 'resizeStarted'.
   resizeStarted: =>
@@ -128,8 +130,7 @@ class RepoView extends View
 
   # Public: Focus the atomatigit pane.
   focus: =>
-    @addClass 'focused'
-    @activeView.focus()
+    @activeView?.focus?() and @addClass 'focused'
 
   # Public: Toggle the focus on the atomatigit pane.
   unfocus: =>
@@ -140,7 +141,7 @@ class RepoView extends View
       @removeClass 'focused'
 
   # Public: Destructor.
-  destroy: ->
+  destroy: =>
     @detach()
 
 module.exports = RepoView

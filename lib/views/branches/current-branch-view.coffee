@@ -19,7 +19,7 @@ class CurrentBranchView extends View
   # Public: Trigger a repaint.
   repaint: =>
     @name.html("#{@model.name}")
-    @commit.html("(#{@model.commit.shortID()}: #{@model.commit.shortMessage()})")
+    @commit.html("(#{@model.commit.shortID?()}: #{@model.commit.shortMessage?()})")
 
     @commit.removeClass 'unpushed'
     @commit.addClass 'unpushed' if @model.unpushed()

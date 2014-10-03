@@ -13,27 +13,24 @@ module.exports =
   # Public: Package activation.
   activate: (state) ->
     return @errorNoGitRepo() unless atom.project.getRepo()
-
-    @repo = new Repo()
-    @repo.reload().then =>
-      @repoView = new RepoView(@repo)
-      @focus()
-      @insertCommands()
+    @insertCommands()
+    @show()
 
   # Public: Close the atomatigit pane.
-  close: ->
+  hide: ->
     @repoView.detach() if @repoView.hasParent()
 
   # Public: Open (or focus) the atomatigit window.
-  focus: ->
+  show: ->
     return @errorNoGitRepo() unless atom.project.getRepo()
+    @repo ?= new Repo()
+    @repoView ?= new RepoView(@repo)
     @repo.reload().then =>
-      @repoView = new RepoView(@repo) unless @repoView
       atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
       @repoView.focus()
 
   # Internal: Destroy atomatigit instance.
-  deactivate: ->
+  deactivate: =>
     @repo.destroy()
     @repoView.destroy()
 
@@ -43,5 +40,5 @@ module.exports =
 
   # Internal: Register package commands with atom.
   insertCommands: ->
-    atom.workspaceView.command 'atomatigit:show', => @focus()
-    atom.workspaceView.command 'atomatigit:close', => @close()
+    atom.workspaceView.command 'atomatigit:show', => @show()
+    atom.workspaceView.command 'atomatigit:close', => @hide()
