@@ -22,13 +22,13 @@ class BranchList extends List
   # Public: Return the local branches from the branch list.
   #
   # Returns the local branches as {Array}.
-  local: ->
+  local: =>
     @filter (branch) -> branch.local
 
   # Public: Return the remote branches from the branch list.
   #
   # Returns the remote branches as {Array}.
-  remote: ->
+  remote: =>
     @filter (branch) -> branch.remote
 
 module.exports = BranchList

@@ -57,8 +57,8 @@ class Repo extends Model
     git.cmd 'fetch'
     .catch (error) -> new ErrorView(error)
 
-  checkoutBranch: ->
-    @branchList.checkoutBranch
+  # checkoutBranch: =>
+  #   @branchList.checkoutBranch
 
   stash: ->
     git.cmd 'stash'
@@ -123,7 +123,7 @@ class Repo extends Model
     .finally @cleanupCommitMessageFile
 
   # Public: Initiate the creation of a new branch.
-  initiateCreateBranch: ->
+  initiateCreateBranch: =>
     @trigger 'needInput',
       message: 'Branch name'
       callback: (name) ->
@@ -131,7 +131,7 @@ class Repo extends Model
         .catch (error) -> new ErrorView(error)
 
   # Public: Initiate a user defined git command.
-  initiateGitCommand: ->
+  initiateGitCommand: =>
     @trigger 'needInput',
       message: 'Git command'
       callback: (command) ->

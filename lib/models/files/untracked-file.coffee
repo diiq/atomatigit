@@ -7,7 +7,7 @@ class UntrackedFile extends File
   # Untracked files appear first in the list
   sortValue: 0
 
-  kill: ->
+  kill: =>
     atom.confirm
       message: "Move \"#{@path()}\" to trash?"
       buttons:

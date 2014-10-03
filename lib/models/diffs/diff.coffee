@@ -30,7 +30,7 @@ class Diff extends List
   # Public: Get the diff chunks.
   #
   # Returns the chunks as {Array}.
-  chunks: ->
+  chunks: =>
     @models
 
 module.exports = Diff

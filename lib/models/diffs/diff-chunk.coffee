@@ -32,7 +32,7 @@ class DiffChunk extends ListItem
   # Internal: Generate a git patch for this {DiffChunk}.
   #
   # Returns the patch as {String}.
-  patch: ->
+  patch: =>
     @get('header') + @get('chunk') + '\n'
 
   # Public: Revert this chunk.

@@ -11,14 +11,14 @@ class StagedFile extends File
   stage: -> return
 
   # Public: Unstage the changes made to this file.
-  unstage: ->
+  unstage: =>
     git.unstage(@path())
     .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Ask for the user's confirmation to discard all changes made to this
   #         file.
-  kill: ->
+  kill: =>
     atom.confirm
       message: "Discard all changes to \"#{@path()}\"?"
       buttons:

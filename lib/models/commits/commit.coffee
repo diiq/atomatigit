@@ -53,7 +53,7 @@ class Commit extends ListItem
   # Public: Return the head line of the commit message.
   #
   # Returns the commit head line as {String}.
-  shortMessage: ->
+  shortMessage: =>
     @message().split('\n')[0]
 
   # Public: open -> soft reset to this commit.

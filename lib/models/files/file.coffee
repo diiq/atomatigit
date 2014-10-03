@@ -18,13 +18,13 @@ class File extends ListItem
   # Public: Return the 'path' property.
   #
   # Returns the 'path' property as {String}.
-  path: ->
+  path: =>
     @get 'path'
 
   # Public: Return the 'diff' property.
   #
   # Returns the 'diff' property as {String}.
-  showDiffP: ->
+  showDiffP: =>
     @get 'diff'
 
   # Public: Return the diff sublist.
@@ -50,14 +50,14 @@ class File extends ListItem
   toggleDiff: =>
     @set diff: not @get('diff')
 
-  useSublist: ->
+  useSublist: =>
     @showDiffP()
 
   # Public: Open the file in atom.
   open: =>
     atom.workspaceView.open @path()
 
-  commitMessage: ->
+  commitMessage: =>
     switchState = (type) ->
       switch type
         when 'M' then 'modified:   '

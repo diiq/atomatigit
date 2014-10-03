@@ -10,7 +10,7 @@ class DiffLine extends Model
   # Public: Returns the contents of the DiffLine.
   #
   # Returns the diff line as {String}.
-  line: ->
+  line: =>
     @get 'line'
 
   # Public: Return the type of diff this line is.
@@ -19,7 +19,7 @@ class DiffLine extends Model
   #   'addition': '+'
   #   'subtraction': '-'
   #   'context': 'context'
-  type: ->
+  type: =>
     if @line().match(/^\+/)
       'addition'
     else if @line().match(/^\-/)
@@ -30,13 +30,13 @@ class DiffLine extends Model
   # Public: Returns the 'repo' property.
   #
   # Returns the 'repo' property as {String}.
-  repo: ->
+  repo: =>
     @get 'repo'
 
   # Public: Return the HTML rendered line content.
   #
   # Returns the rendered line content as {String}.
-  markup: ->
+  markup: =>
     @escapeHTML @line()
 
   # Internal: HTML escape a string.

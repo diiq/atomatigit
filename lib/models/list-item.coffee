@@ -16,23 +16,23 @@ class ListItem extends Model
       @select()
 
   # Internal: Set the 'selected' property to true.
-  select: ->
+  select: =>
     @set selected: true
 
   # Internal: Set the 'selected' property to false.
-  deselect: ->
+  deselect: =>
     @set selected: false
 
   # Public: Check if item is currently selected
   #
   # Returns: {Boolean}
-  isSelected: ->
+  isSelected: =>
     @get 'selected'
 
   # Public:
   #
   # Returns: {Boolean}
-  allowPrevious: ->
+  allowPrevious: =>
     if @useSublist()
       not @sublist?.previous()
     else
@@ -41,7 +41,7 @@ class ListItem extends Model
   # Public:
   #
   # Returns: {Boolean}
-  allowNext: ->
+  allowNext: =>
     if @useSublist()
       not @sublist?.next()
     else
@@ -50,7 +50,7 @@ class ListItem extends Model
   # Public: Leaf???
   #
   # Returns the leaf as {Object}.
-  leaf: ->
+  leaf: =>
     if @useSublist()
       @sublist.leaf() || this
     else
