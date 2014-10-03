@@ -106,18 +106,18 @@ class RepoView extends View
     @commitTab.toggleClass 'active', @activeView == @commitListView
 
   # Internal: Handler for 'resizeStarted'.
-  resizeStarted: ->
+  resizeStarted: =>
     $(document.body).on 'mousemove', @resize
     $(document.body).on 'mouseup', @resizeStopped
 
   # Internal: Handler for 'resizeStopped'.
-  resizeStopped: ->
+  resizeStopped: =>
     $(document.body).off 'mousemove', @resize
     $(document.body).off 'mouseup', @resizeStopped
 
   # Internal: Resize the width.
   #   object.pageX: The width to resize atomatigit to.
-  resize: ({pageX}) ->
+  resize: ({pageX}) =>
     width = $(document.body).width() - pageX
     @width(width)
 
