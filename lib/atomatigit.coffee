@@ -1,34 +1,44 @@
-RepoView = require './views/repo-view'
-Repo = require './models/repo'
+Repo      = require './models/repo'
+RepoView  = require './views/repo-view'
+ErrorView = require './views/error-view'
 
 module.exports =
   configDefaults:
-    pre_commit_hook: "",
+    debug: false
+    pre_commit_hook: ''
 
-  atomatigitView: null
+  repo: null
+  repoView: null
 
+  # Public: Package activation.
   activate: (state) ->
-    @repo = new Repo
-    @repo_view = new RepoView(@repo)
+    return @errorNoGitRepo() unless atom.project.getRepo()
+    @insertCommands()
+    @show()
 
-    @insert_commands()
+  # Public: Close the atomatigit pane.
+  hide: ->
+    @repoView.detach() if @repoView.hasParent()
 
-  insert_commands: ->
-    atom.workspaceView.command "atomatigit:show", => @focus()
-    atom.workspaceView.command "atomatigit:close", => @close()
+  # Public: Open (or focus) the atomatigit window.
+  show: ->
+    return @errorNoGitRepo() unless atom.project.getRepo()
+    @repo ?= new Repo()
+    @repoView ?= new RepoView(@repo)
+    @repo.reload().then =>
+      atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
+      @repoView.focus()
 
-  close: ->
-    if @repo_view.hasParent()
-      @repo_view.detach()
-
-  focus: ->
-    if !@repo_view.hasParent()
-      atom.workspaceView.appendToRight(@repo_view)
-    @repo.reload()
-    @repo_view.focus()
-
-  deactivate: ->
-    @repo_view.destroy()
+  # Internal: Destroy atomatigit instance.
+  deactivate: =>
     @repo.destroy()
+    @repoView.destroy()
 
-  serialize: ->
+  # Internal: Display error message if the project is no git repository.
+  errorNoGitRepo: ->
+    new ErrorView(message: 'Project is no git repository!')
+
+  # Internal: Register package commands with atom.
+  insertCommands: ->
+    atom.workspaceView.command 'atomatigit:show', => @show()
+    atom.workspaceView.command 'atomatigit:close', => @hide()

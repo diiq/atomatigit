@@ -1,23 +1,28 @@
 {View} = require 'atom'
 
-module.exports =
+# Public: Visual representation of a commit object.
 class CommitView extends View
   @content: (commit) ->
-    @div class: "commit", click: "clicked", =>
-      @div class: "id", "#{commit.shortID()}"
-      @div class: "author-name", "(#{commit.authorName()})"
-      @div class: "message text-subtle", "#{commit.shortMessage()}"
+    @div class: 'commit', click: 'clicked', =>
+      @div class: 'id', "#{commit.shortID()}"
+      @div class: 'author-name', "(#{commit.authorName()})"
+      @div class: 'message text-subtle', "#{commit.shortMessage()}"
 
-  initialize: (commit) ->
-    @model = commit
-    @model.on "change:selected", @showSelection
+  # Public: Constructor.
+  initialize: (@model) ->
+    @model.on 'change:selected', @showSelection
 
-  beforeRemove: ->
-    @model.off "change:selected", @showSelection
+  # Internal: 'beforeRemove' handler.
+  beforeRemove: =>
+    @model.off 'change:selected', @showSelection
 
+  # Internal: 'Clicked' handler.
   clicked: =>
     @model.selfSelect()
 
+  # Public: Show the selection.
   showSelection: =>
-    @removeClass("selected")
-    @addClass("selected") if @model.selectedP()
+    @removeClass('selected')
+    @addClass('selected') if @model.isSelected()
+
+module.exports = CommitView

@@ -1,19 +1,24 @@
+_      = require 'lodash'
 {View} = require 'atom'
+
 CommitView = require './commit-view'
 
-module.exports =
+# Public: Visual representation of the commit list.
 class CommitListView extends View
   @content: ->
-    @div class: "commit-list-view list-view", tabindex: -1
+    @div class: 'commit-list-view list-view', tabindex: -1
 
-  initialize: (commit_list) ->
-    @model = commit_list
-    @model.on "repopulate", @repaint
+  # Public: Constructor.
+  initialize: (@model) ->
+    @model.on 'repaint', @repaint
 
-  beforeRemove: ->
-    @model.off "repopulate", @repaint
+  # Public: 'beforeRemove' handler.
+  beforeRemove: =>
+    @model.off 'repaint', @repaint
 
+  # Public: Trigger a repaint.
   repaint: =>
     @empty()
-    for commit in @model.models
-      @append new CommitView commit
+    _.each @model.models, (commit) => @append new CommitView(commit)
+
+module.exports = CommitListView

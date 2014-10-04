@@ -79,12 +79,12 @@
     }
   }
   .file {
-    .filename {
+    .mode {
       padding: 5 * @units;
       padding-left: 25 * @units;
     }
 
-    &.selected .filename {
+    &.selected {
       background-color: @button-background-color;
     }
 
@@ -180,21 +180,6 @@
       }
     }
   }
-
-  .atomatigit-error {
-    display: none;
-    margin: 20 * @units;
-    .close-button {
-      float: right;
-      cursor: pointer;
-    }
-    .error-message {
-      background-color: #000;
-      color: #fff;
-    }
-  }
-
-
   .tab-bar {
     display: -webkit-flex;
   	margin: 0px;
@@ -221,6 +206,13 @@
         }
       }
     }
+  }
+}
+
+.atomatigit-error {
+  .error-message {
+    background-color: #000;
+    color: #FF6600;
   }
 }
 

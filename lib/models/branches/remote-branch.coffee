@@ -1,17 +1,30 @@
-Branch = require './branch'
-{git} = require '../../git'
+git       = require '../../git'
+Branch    = require './branch'
+ErrorView = require '../../views/error-view'
 
-module.exports =
 class RemoteBranch extends Branch
-  remote: true
 
+  remote: true
   local: false
 
-  delete: ->
-    git.git "push -f #{@remoteName()} :#{@localName()}"
+  # Public: Delete the remote branch.
+  #
+  # Returns the [Description] as {String}.
+  delete: =>
+    git.cmd "push -f #{@remoteName()} :#{@localName()}"
+    .then => @trigger 'update'
+    .catch (error) -> new ErrorView(error)
 
+  # Public: Return the local name.
+  #
+  # Returns the local name as {String}.
   localName: ->
-    @name().replace /.*?\//, ""
+    @getName().replace /.*?\//, ''
 
+  # Public: Return the remote name.
+  #
+  # Returns the remote name as {String}.
   remoteName: ->
-    @name().replace /\/.*/, ""
+    @getName().replace /\/.*/, ''
+
+module.exports = RemoteBranch

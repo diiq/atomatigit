@@ -1,30 +1,36 @@
-{View} = require 'atom'
+{$$, View} = require 'atom'
 DiffView = require '../diffs/diff-view'
 
-module.exports =
+# Public: Visual representation of a file.
 class FileView extends View
   @content: (file) ->
-    @div class: "file", mousedown: "clicked", =>
-      @div class: "filename", "#{file.path()}"
+    @div class: 'file', mousedown: 'clicked', =>
+      @span class: 'mode', file.getMode()
+      @span class: 'path', file.path()
 
-  initialize: (file) ->
-    @model = file
-    @model.on "change:selected", @showSelection
-    @model.on "change:diff", @showDiff
+  # Public: Constructor.
+  initialize: (@model) ->
+    @model.on 'change:selected', @showSelection
+    @model.on 'change:diff', @showDiff
     @showSelection()
     @showDiff()
 
-  beforeRemove: ->
-    @model.off "change:selected", @showSelection
-    @model.off "change:diff", @showDiff
+  # Public: 'beforeRemove' handler.
+  beforeRemove: =>
+    @model.off 'change:selected', @showSelection
+    @model.off 'change:diff', @showDiff
 
-  clicked: ->
+  # Public: 'clicked' handler.
+  clicked: =>
     @model.selfSelect()
 
+  # Public: Show the selection.
   showSelection: =>
-    @toggleClass "selected", @model.selectedP()
+    @toggleClass 'selected', @model.isSelected()
 
+  # Public: Show the file diff if there is any.
   showDiff: =>
-    @find(".diff").remove()
-    if @model.showDiffP()
-      @append new DiffView @model.diff()
+    @find('.diff').remove()
+    @append new DiffView(@model.diff()) if @model.showDiffP()
+
+module.exports = FileView

@@ -1,32 +1,45 @@
-shell = require 'shell'
+git       = require '../../git'
+File      = require './file'
+ErrorView = require '../../views/error-view'
 
-File = require './file'
-{git} = require '../../git'
-
-module.exports =
 class StagedFile extends File
 
   # Tracked files appear last in the file list
-  sort_value: 2
+  sortValue: 2
 
-  stage: ->
-    null
+  # Public: The file is already staged, empty function.
+  stage: -> return
 
-  unstage: ->
-    git.git "reset HEAD #{@path()}"
+  # Public: Unstage the changes made to this file.
+  unstage: =>
+    git.unstage(@path())
+    .then => @trigger 'update'
+    .catch (error) -> new ErrorView(error)
 
-  kill: ->
+  # Public: Ask for the user's confirmation to discard all changes made to this
+  #         file.
+  kill: =>
     atom.confirm
       message: "Discard all changes to \"#{@path()}\"?"
       buttons:
-        "Discard": @discardAllChanges
-        "Cancel": -> null
+        'Discard': @discardAllChanges
+        'Cancel': -> return
 
+  # Internal: Discard all changes made to this file.
   discardAllChanges: =>
-    git.git "reset HEAD #{@path()}", =>
-      git.git "checkout #{@path()}"
+    @unstage()
+    @checkout()
 
-  loadDiff: ->
-    git.diff @path(), @setDiff, flags: "--staged"
+  # Internal: Update the diff.
+  loadDiff: =>
+    return if @getMode() is 'D'
+    git.getDiff(@path(), {staged: true})
+    .then (diff) => @setDiff(diff)
+    .catch (error) -> new ErrorView(error)
 
-  stagedP: -> true
+  getMode: =>
+    @get 'modeIndex'
+
+  isStaged: -> true
+
+module.exports = StagedFile

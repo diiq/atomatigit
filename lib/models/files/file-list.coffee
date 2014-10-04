@@ -1,91 +1,49 @@
-_ = require 'underscore'
+_ = require 'lodash'
 
-List = require '../list'
-UnstagedFile = require './unstaged-file'
-StagedFile = require './staged-file'
+git           = require '../../git'
+List          = require '../list'
+StagedFile    = require './staged-file'
+UnstagedFile  = require './unstaged-file'
 UntrackedFile = require './untracked-file'
-{git} = require '../../git'
+ErrorView     = require '../../views/error-view'
 
-module.exports =
 class FileList extends List
-  reload: ->
-    git.status @populate
+  # Public: Reload the file list.
+  reload: ({silent}={}) =>
+    git.status()
+    .then (status) => @populate(status, silent)
+    .catch (error) -> new ErrorView(error)
 
-  populate: (filelist) =>
-    filelist = @convertFileList(filelist)
-    @populateList(filelist.untracked, @untracked(), UntrackedFile)
-    @populateList(filelist.unstaged, @unstaged(), UnstagedFile)
-    @populateList(filelist.staged, @staged(), StagedFile)
+  # Internal: Populate the file list.
+  #
+  # status - The status to populate the file list with as {Object}.
+  populate: (status, silent) =>
+    @reset()
 
-    @select @selected_index
-    @trigger "repopulate"
+    @populateList(status.untracked, UntrackedFile)
+    @populateList(status.unstaged, UnstagedFile)
+    @populateList(status.staged, StagedFile)
 
-  comparator: (file) ->
-    file.sort_value
+    @select(@selectedIndex ? 0)
+    @trigger('repaint') unless silent
 
-  staged: ->
-    @filter (f) -> f.stagedP()
+  # Public: Return the staged files.
+  staged: =>
+    @filter (file) -> file.isStaged()
 
-  unstaged: ->
-    @filter (f) -> f.unstagedP()
+  # Public: Return the unstaged files.
+  unstaged: =>
+    @filter (file) -> file.isUnstaged()
 
-  untracked: ->
-    @filter (f) -> f.untrackedP()
+  # Public: Return the untracked files.
+  untracked: =>
+    @filter (file) -> file.isUntracked()
 
-  newPaths: (paths, files) ->
-    _.filter paths, (path) ->
-      not _.any files, (file) ->
-        file.path() == path.path
+  # Internal: Populate the list.
+  #
+  # files - The files to populate the list with as {Array}.
+  # Klass - The Klass these paths are to be tracked as as {Object}.
+  populateList: (files, Klass) =>
+    _.each files, (file) => @add new Klass(file)
 
-  missingFiles: (paths, files) ->
-    paths = @_filePathsFromPaths paths
-    _.filter files, (file) ->
-      not _.contains(paths, file.path())
-
-  stillThereFiles: (paths, files) ->
-    paths = @_filePathsFromPaths paths
-    _.filter files, (file) ->
-      _.contains(paths, file.path())
-
-  _filePathsFromPaths: (paths) -> file.path for file in paths
-
-  populateList: (paths, files, Klass) ->
-    _.each @stillThereFiles(paths, files), (file) ->
-      file.loadDiff()
-
-    _.each @newPaths(paths, files), (path) =>
-      @add new Klass path
-
-    _.each @missingFiles(paths, files), (file) =>
-      @remove file
-
-  convertFileList: (files) ->
-    filesStaged = []
-    filesNotStaged = []
-    filesNotTracked = []
-    stateStaged = stateNotStaged = stateUntracked = false
-    for own file, fileData of files
-      fileData['path'] = file
-
-      stateStaged = true if fileData.staged
-      stateNotStaged = true if not fileData.staged and fileData.tracked
-      stateUntracked = true if not fileData.tracked
-
-      filesStaged.push fileData if fileData.staged
-      filesNotStaged.push fileData if not fileData.staged and fileData.tracked
-      filesNotTracked.push fileData if not fileData.tracked
-
-    for file in filesStaged
-      gitStatusType = file.type
-      if gitStatusType?.length > 1
-        stateNotStaged = true
-
-        fileObjClone = _.clone(file)
-        fileObjClone['type'] = gitStatusType.charAt(1)
-        file.type = file.type?.charAt(0)
-
-        # Rare case type 'RM', file has been renamed and modified
-        fileObjClone.path = file.path.match(/(.*) -> (.*)/)?[2] if gitStatusType is 'RM'
-        filesNotStaged.push fileObjClone
-
-    {'staged': filesStaged, 'unstaged': filesNotStaged, 'untracked': filesNotTracked}
+module.exports = FileList

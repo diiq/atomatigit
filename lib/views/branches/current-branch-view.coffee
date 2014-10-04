@@ -1,24 +1,27 @@
 {View} = require 'atom'
 
-module.exports =
+# Public: Visual representation of the current branch.
 class CurrentBranchView extends View
   @content: ->
-    @div class: "current-branch-view", =>
-      @div class: "name", outlet: "name"
-      @div class: "commit", outlet: "commit"
+    @div class: 'current-branch-view', =>
+      @div class: 'name', outlet: 'name'
+      @div class: 'commit', outlet: 'commit'
 
-  initialize: (branch) ->
-    @model = branch
-    @model.on "change", @repaint
+  # Public: Constructor.
+  initialize: (@model) ->
+    @model.on 'repaint', @repaint
     @repaint()
 
-  beforeRemove: ->
-    @model.off "change", @repaint
+  # Public: 'beforeRemove' handler.
+  beforeRemove: =>
+    @model.off 'repaint', @repaint
 
+  # Public: Trigger a repaint.
   repaint: =>
-    @name.html("#{@model.name()}")
-    @commit.html("(#{@model.commit().shortID()}: #{@model.commit().shortMessage()})")
+    @name.html("#{@model.name}")
+    @commit.html("(#{@model.commit.shortID?()}: #{@model.commit.shortMessage?()})")
 
-    @commit.removeClass "unpushed"
-    if @model.unpushed()
-      @commit.addClass "unpushed"
+    @commit.removeClass 'unpushed'
+    @commit.addClass 'unpushed' if @model.unpushed()
+
+module.exports = CurrentBranchView

@@ -1,12 +1,14 @@
-{View} = require 'atom'
+_             = require 'lodash'
+{View}        = require 'atom'
 DiffChunkView = require './diff-chunk-view'
 
-module.exports =
+# Public: Visual representation of a diff object.
 class DiffView extends View
   @content: (diff) ->
-    @div class: "diff"
+    @div class: 'diff'
 
-  initialize: (diff) ->
-    @model = diff
-    for chunk in @model.chunks()
-      @append new DiffChunkView chunk
+  # Public: Constructor.
+  initialize: (@model) ->
+    _.each @model?.chunks(), (chunk) => @append new DiffChunkView(chunk)
+
+module.exports = DiffView

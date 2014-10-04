@@ -1,35 +1,39 @@
 {View} = require 'atom'
 
-module.exports =
+# Public: Visual representation of a brief branch.
 class BranchBriefView extends View
   @content: ->
-    @div class: "branch-brief-view", mousedown: "clicked", =>
-      @div class: "name", outlet: "name"
-      @div class: "commit", outlet: "commit"
+    @div class: 'branch-brief-view', mousedown: 'clicked', =>
+      @div class: 'name', outlet: 'name'
+      @div class: 'commit', outlet: 'commit'
 
-  initialize: (branch) ->
-    @model = branch
-    @model.on "change:selected", @showSelection
-    @model.on "change", @repaint
+  # Public: Constructor.
+  initialize: (@model) ->
+    @model.on 'change:selected', @showSelection
     @repaint()
 
-  beforeRemove: ->
-    @model.off "change:selected", @showSelection
-    @model.off "change", @repaint
+  # Public: 'beforeRemove' handler.
+  beforeRemove: =>
+    @model.off 'change:selected', @showSelection
 
+  # Public: 'clicked' handler.
   clicked: =>
     @model.selfSelect()
 
+  # Public: Trigger a repaint.
   repaint: =>
-    @name.html("#{@model.name()}")
+    @name.html("#{@model.getName()}")
     @commit.html("(#{@model.commit().shortID()}: #{@model.commit().shortMessage()})")
 
-    @commit.removeClass "unpushed"
+    @commit.removeClass 'unpushed'
     if @model.unpushed()
-      @commit.addClass "unpushed"
+      @commit.addClass 'unpushed'
 
     @showSelection()
 
+  # Public: Show the selection.
   showSelection: =>
-    @removeClass("selected")
-    @addClass("selected") if @model.selectedP()
+    @removeClass('selected')
+    @addClass('selected') if @model.isSelected()
+
+module.exports = BranchBriefView

@@ -1,16 +1,22 @@
-List = require '../list'
+_ = require 'lodash'
+git    = require '../../git'
+List   = require '../list'
 Commit = require './commit'
-{git} = require '../../git'
+ErrorView = require '../../views/error-view'
 
-module.exports =
 class CommitList extends List
   model: Commit
 
-  reload: (branch) ->
-    @branch = branch
-    git.commits @branch.head(), @repopulate
+  # Public: Reload the commit list.
+  #
+  # branch - The branch to reload the commits for as {Branch}.
+  reload: (@branch, options={}) =>
+    [@branch, options] = [null, @branch] if _.isPlainObject(@branch)
+    git.log(@branch?.head() ? 'HEAD')
+    .then (commits) =>
+      @reset _.map(commits, (commit) -> new Commit(commit))
+      @select @selectedIndex
+      @trigger('repaint') unless options.silent
+    .catch (error) -> new ErrorView(error)
 
-  repopulate: (commit_hashes) =>
-    @reset(commit_hashes)
-    @trigger "repopulate"
-    @select @selected_index
+module.exports = CommitList

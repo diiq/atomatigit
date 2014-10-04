@@ -1,10 +1,8 @@
 '.platform-darwin .workspace':
   'cmd-alt-g': 'atomatigit:show'
-  'cmd-alt-c': 'atomatigit:complete-commit'
 
 '.platform-win32 .workspace, .platform-linux .workspace':
   'ctrl-alt-g': 'atomatigit:show'
-  'ctrl-alt-c': 'atomatigit:complete-commit'
 
 '.platform-darwin .atomatigit':
   'cmd-alt-g': 'atomatigit:close'

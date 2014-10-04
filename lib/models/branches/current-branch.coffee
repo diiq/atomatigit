@@ -1,22 +1,35 @@
+git         = require '../../git'
 LocalBranch = require './local-branch'
+{Commit}    = require '../commits'
+ErrorView   = require '../../views/error-view'
 
-{git} = require '../../git'
-
-module.exports =
+# Public: CurrentBranch class that extends the {LocalBranch} prototype.
 class CurrentBranch extends LocalBranch
+  # Public: Constructor.
+  #
+  # branchExisting - If the branch is existing as {Boolean}.
   initialize: (branchExisting) ->
-    if branchExisting then @reload()
+    @reload() if branchExisting
 
-  reload: ->
-    git.branch (head) =>
-      @set head
+  # Public: Reload the branch HEAD.
+  reload: ({silent}={}) =>
+    git.revParse('HEAD', 'abbrev-ref': true).then (@name) =>
+      git.getCommit('HEAD').then (gitCommit) =>
+        @commit = new Commit(gitCommit)
+        @trigger('repaint') unless silent
+    .catch (error) -> new ErrorView(error)
 
-    # git.gitNoChange "log @{u}..", (output) =>
-    #   @set unpushed: (output != "")
-
+  # Public: Return the HEAD.
+  #
+  # Returns 'HEAD'.
   head: ->
-    "HEAD"
+    'HEAD'
 
-  delete: -> null
+  # Abstract: Delete the branch.
+  delete: -> return
 
-  checkout: -> null
+  # Public: Checkout the branch. Empty function since this IS our current
+  #         branch.
+  checkout: -> return
+
+module.exports = CurrentBranch

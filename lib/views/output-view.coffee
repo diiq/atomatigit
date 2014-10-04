@@ -2,13 +2,13 @@ _          = require 'lodash'
 prettyjson = require 'prettyjson'
 {$, View}  = require 'atom'
 
-# Public: The {ErrorView} class generates an error message box.
-class ErrorView extends View
+# Public: The {OutputView} class generates an output message box.
+class OutputView extends View
   @content: (raw) ->
     message = if _.isString(raw) then raw else raw.message
     @div =>
-      @div class: 'overlay from-bottom atomatigit-error', outlet: 'messagePanel', =>
-        @div class: 'panel-body padded error-message', message
+      @div class: 'overlay from-bottom atomatigit-output', outlet: 'messagePanel', =>
+        @div class: 'panel-body padded output-message', message
 
   # Public: Constructor.
   initialize: (error) ->
@@ -19,4 +19,4 @@ class ErrorView extends View
     atom.workspaceView.append(this)
     setTimeout @detach, 10000
 
-module.exports = ErrorView
+module.exports = OutputView

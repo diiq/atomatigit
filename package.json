@@ -12,10 +12,10 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "gift": "0.4.0",
-    "backbone": "1.x",
-    "underscore": "1.x",
-    "jquery": "1.x",
-    "fs-plus": "~2.2.3"
+    "backbone": "~1.1.2",
+    "fs-plus": "~2.3.1",
+    "lodash": "~2.4.1",
+    "prettyjson": "^1.0.0",
+    "promised-git": "~0.1.1"
   }
 }

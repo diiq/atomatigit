@@ -1,10 +1,12 @@
 {View} = require 'atom'
 
-module.exports =
+# Public: Visual representation of a {DiffLine}.
 class DiffLineView extends View
   @content: (line) ->
     @div class: "diff-line #{line.type()}", =>
       @raw(line.markup())
 
-  initialize: (line) ->
-    @model = line
+  # Public: Constructor.
+  initialize: (@model) -> return
+
+module.exports = DiffLineView

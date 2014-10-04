@@ -1,3 +1,3 @@
 module.exports =
-  CommitList: require './commit-list'
-  Commit: require './commit'
+  Commit     : require './commit'
+  CommitList : require './commit-list'
