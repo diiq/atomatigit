@@ -17,6 +17,6 @@ class OutputView extends View
 
     @messagePanel.on 'click', @detach
     atom.workspaceView.append(this)
-    setTimeout @detach, 10000
+    setTimeout (=> @detach()), 10000
 
 module.exports = OutputView
