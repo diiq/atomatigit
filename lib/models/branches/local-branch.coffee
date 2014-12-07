@@ -1,6 +1,7 @@
-git       = require '../../git'
-Branch    = require './branch'
-ErrorView = require '../../views/error-view'
+git        = require '../../git'
+Branch     = require './branch'
+ErrorView  = require '../../views/error-view'
+OutputView = require '../../views/output-view'
 
 # Public: LocalBranch class that extends the {Branch} prototype.
 class LocalBranch extends Branch
@@ -36,7 +37,9 @@ class LocalBranch extends Branch
   # remote - The remote to push to as {String}.
   push: (remote='origin') =>
     git.cmd 'push', [remote, @getName()]
-    .then => @trigger 'update'
+    .then =>
+      @trigger 'update'
+      new OutputView('Pushing to remote repository successful')
     .catch (error) -> new ErrorView(error)
 
 module.exports = LocalBranch
