@@ -114,6 +114,7 @@ class Repo extends Model
     else
       atom.workspace.destroyActivePane()
     try fs.unlinkSync @commitMessagePath()
+    atom.project.getRepo()?.refreshStatus?()
 
   # Internal: Commit the changes.
   completeCommit: =>
