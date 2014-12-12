@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "backbone": "~1.1.2",
-    "fs-plus": "~2.3.1",
+    "fs-plus": "~2.3.2",
     "lodash": "~2.4.1",
     "prettyjson": "^1.0.0",
     "promised-git": "~0.1.1"
