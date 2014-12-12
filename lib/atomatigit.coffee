@@ -30,7 +30,7 @@ module.exports =
       @repoView.focus()
 
   # Internal: Destroy atomatigit instance.
-  deactivate: =>
+  deactivate: ->
     @repo.destroy()
     @repoView.destroy()
 
