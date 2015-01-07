@@ -31,7 +31,8 @@ class RepoView extends View
     @model.on 'needInput', @getInput
 
     @on 'click', @focus
-    @on 'focusout', @unfocus
+    $(document.body).on 'click', @unfocusIfNotClicked
+      .on 'keyup', @unfocusIfNotActive
     @resizeHandle.on 'mousedown', @resizeStarted
 
     atomGit = atom.project.getRepo()
@@ -49,8 +50,12 @@ class RepoView extends View
     atom.workspaceView.command 'atomatigit:branches', @showBranches
     atom.workspaceView.command 'atomatigit:commit-log', @showCommits
 
-    atom.workspaceView.command 'atomatigit:commit', @model.initiateCommit
-    atom.workspaceView.command 'atomatigit:git-command', @model.initiateGitCommand
+    atom.workspaceView.command 'atomatigit:commit', =>
+      @model.initiateCommit()
+      @unfocus()
+    atom.workspaceView.command 'atomatigit:git-command', =>
+      @model.initiateGitCommand()
+      @unfocus()
 
     atom.workspaceView.command 'atomatigit:input:down', @inputDown
     atom.workspaceView.command 'atomatigit:input:newline', @inputNewline
@@ -71,9 +76,14 @@ class RepoView extends View
     atom.workspaceView.command 'atomatigit:refresh', @refresh
     atom.workspaceView.command 'atomatigit:showCommit', => @model.selection()?.showCommit?()
 
+    atom.workspaceView.command 'atomatigit:focus', @focus
+    atom.workspaceView.command 'atomatigit:unfocus', @unfocus
+    atom.workspaceView.command 'atomatigit:toggle-focus', @toggleFocus
+
   # Public: Force a full refresh.
   refresh: =>
     @model.reload().then => @activeView.repaint()
+    @focus()
 
   # Public: Show the 'branches' tab.
   showBranches: =>
@@ -95,7 +105,6 @@ class RepoView extends View
 
   # Internal: Toggle the visibility of the selected view.
   activateView: =>
-    @modeSwitchFlag = true
     @fileListView.toggleClass 'hidden', @activeView != @fileListView
     @fileTab.toggleClass 'active', @activeView == @fileListView
 
@@ -128,17 +137,31 @@ class RepoView extends View
   getInput: (options) ->
     new InputView(options)
 
+  # Internal: Checks if the atomatigit pane has focus.
+  hasFocus: =>
+    @activeView?.is(':focus') or document.activeElement is @activeView
+
+  # Internal: Determine if the atomatigit pane was clicked. If not, remove focus.
+  unfocusIfNotClicked: (e) =>
+    return @unfocus() unless e.target.matches '.atomatigit, .atomatigit *'
+
+  # Internal: Unfocus when losing focus by keyboard.
+  unfocusIfNotActive: (e) =>
+    return @unfocus() unless @hasFocus()
+
   # Public: Focus the atomatigit pane.
   focus: =>
     @activeView?.focus?() and @addClass 'focused'
 
-  # Public: Toggle the focus on the atomatigit pane.
+  # Public: Unfocus the atomatigit pane.
   unfocus: =>
-    if @modeSwitchFlag
-      @focus()
-      @modeSwitchFlag = false
-    else
-      @removeClass 'focused'
+    @removeClass 'focused'
+
+  # Public: Toggle the focus on the atomatigit pane.
+  toggleFocus: =>
+    return @focus() unless @hasFocus()
+    @unfocus()
+    atom.workspace.getActivePane().activate()
 
   # Public: Destructor.
   destroy: =>
