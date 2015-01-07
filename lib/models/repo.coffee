@@ -130,6 +130,7 @@ class Repo extends Model
       callback: (name) ->
         git.cmd "checkout -b #{name}"
         .catch (error) -> new ErrorView(error)
+        .done -> atom.workspaceView.trigger 'atomatigit:refresh'
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: =>
