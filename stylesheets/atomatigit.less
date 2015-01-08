@@ -84,10 +84,6 @@
       padding-left: 25 * @units;
     }
 
-    &.selected {
-      background-color: @button-background-color;
-    }
-
     .diff {
       font-family: monospace;
 
@@ -126,9 +122,6 @@
   .branch-brief-view {
     padding: 5 * @units;
     padding-left: 25 * @units;
-    &.selected {
-      background-color: @button-background-color;
-    }
 
     .name {
       margin: 0px;
@@ -162,6 +155,7 @@
     .name {
       display: block;
       font-size: 2em;
+      font-weight: bold;
     }
     .commit {
       display: block;
@@ -173,11 +167,16 @@
 
   &.focused {
     background-color: darken(@tree-view-background-color, 2%);
-    .selected .filename, .branch-brief-view.selected, .commit.selected {
+    .selected .filename, .branch-brief-view.selected, .commit.selected, .file.selected {
       background-color: @background-color-selected;
       .message {
         color: @text-color;
       }
+    }
+
+    border-left: solid 1px @background-color-selected;
+    .current-branch-view .name {
+      color: @background-color-selected;
     }
   }
   .tab-bar {

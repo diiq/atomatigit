@@ -123,6 +123,7 @@ class Repo extends Model
   completeCommit: =>
     git.commit @commitMessagePath()
     .then @reload
+    .then -> atom.workspaceView.trigger 'atomatigit:focus'
     .catch (error) -> new ErrorView(error)
     .finally @cleanupCommitMessageFile
 

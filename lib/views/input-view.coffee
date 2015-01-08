@@ -12,9 +12,8 @@ class InputView extends View
     @currentPane = atom.workspace.getActivePane()
     atom.workspaceView.append(this)
     @inputEditor.focus()
-    @on 'core:cancel', @detach
-    @inputEditor.on 'core:confirm', =>
-      @detach()
-      callback?(@inputEditor.getText())
+    @on 'focusout', @detach
+    @on 'core:cancel', -> atom.workspaceView.trigger 'atomatigit:focus'
+    @inputEditor.on 'core:confirm', => callback?(@inputEditor.getText())
 
 module.exports = InputView

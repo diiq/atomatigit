@@ -15,8 +15,8 @@ class CommitList extends List
     git.log(@branch?.head() ? 'HEAD')
     .then (commits) =>
       @reset _.map(commits, (commit) -> new Commit(commit))
-      @select @selectedIndex
       @trigger('repaint') unless options.silent
+      @select @selectedIndex
     .catch (error) -> new ErrorView(error)
 
 module.exports = CommitList
