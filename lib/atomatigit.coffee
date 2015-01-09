@@ -16,6 +16,12 @@ module.exports =
       type: 'string'
       default: ''
       order: 2
+    show_on_startup:
+      title: 'Show on Startup'
+      description: 'Check this if you want atomatigit to show up when Atom is loaded'
+      type: 'boolean'
+      default: false
+      order: 3
 
   repo: null
   repoView: null
