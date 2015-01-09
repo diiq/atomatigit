@@ -3,9 +3,19 @@ RepoView  = require './views/repo-view'
 ErrorView = require './views/error-view'
 
 module.exports =
-  configDefaults:
-    debug: false
-    pre_commit_hook: ''
+  config:
+    debug:
+      title: 'Debug'
+      description: 'Toggle debugging tools'
+      type: 'boolean'
+      default: false
+      order: 1
+    pre_commit_hook:
+      title: 'Pre Commit Hook'
+      description: 'Command to run for the pre commit hook'
+      type: 'string'
+      default: ''
+      order: 2
 
   repo: null
   repoView: null
