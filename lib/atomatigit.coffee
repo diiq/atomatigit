@@ -24,6 +24,8 @@ module.exports =
   repo: null
   repoView: null
 
+  startup_error_shown: false
+
   # Public: Package activation.
   activate: (state) ->
     @insertShowCommand()
@@ -54,7 +56,8 @@ module.exports =
 
   # Internal: Display error message if the project is no git repository.
   errorNoGitRepo: ->
-    new ErrorView(message: 'Project is no git repository!')
+    new ErrorView(message: 'Project is no git repository!') if @startup_error_shown
+    @startup_error_shown = true
 
   # Internal: Register show command with atom.
   insertShowCommand: ->
