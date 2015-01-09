@@ -3,9 +3,6 @@
   "main": "./lib/atomatigit",
   "version": "1.1.0",
   "description": "Full git interaction, a la magit",
-  "activationEvents": [
-    "atomatigit:show"
-  ],
   "repository": "https://github.com/diiq/atomatigit",
   "license": "MIT",
   "engines": {
