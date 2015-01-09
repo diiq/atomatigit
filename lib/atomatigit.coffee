@@ -32,7 +32,7 @@ module.exports =
     Repo      = require './models/repo'
     RepoView  = require './views/repo-view'
     @insertCommands()
-    @show()
+    atom.workspaceView.trigger 'atomatigit:show' if atom.config.get('atomatigit.show_on_startup')
 
   # Public: Close the atomatigit pane.
   hide: ->
