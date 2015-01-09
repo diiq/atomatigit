@@ -1,6 +1,4 @@
-Repo      = require './models/repo'
-RepoView  = require './views/repo-view'
-ErrorView = require './views/error-view'
+Repo = RepoView = ErrorView = null
 
 module.exports =
   config:
@@ -28,7 +26,10 @@ module.exports =
 
   # Public: Package activation.
   activate: (state) ->
+    ErrorView = require './views/error-view'
     return @errorNoGitRepo() unless atom.project.getRepo()
+    Repo      = require './models/repo'
+    RepoView  = require './views/repo-view'
     @insertCommands()
     @show()
 
