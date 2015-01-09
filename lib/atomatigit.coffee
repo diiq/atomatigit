@@ -26,6 +26,7 @@ module.exports =
 
   # Public: Package activation.
   activate: (state) ->
+    @insertShowCommand()
     ErrorView = require './views/error-view'
     return @errorNoGitRepo() unless atom.project.getRepo()
     Repo      = require './models/repo'
@@ -55,7 +56,10 @@ module.exports =
   errorNoGitRepo: ->
     new ErrorView(message: 'Project is no git repository!')
 
+  # Internal: Register show command with atom.
+  insertShowCommand: ->
+    atom.workspaceView.command 'atomatigit:show', => @show()
+
   # Internal: Register package commands with atom.
   insertCommands: ->
-    atom.workspaceView.command 'atomatigit:show', => @show()
     atom.workspaceView.command 'atomatigit:close', => @hide()
