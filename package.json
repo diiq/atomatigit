@@ -1,7 +1,7 @@
 {
   "name": "atomatigit",
   "main": "./lib/atomatigit",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Full git interaction, a la magit",
   "repository": "https://github.com/diiq/atomatigit",
   "license": "MIT",
