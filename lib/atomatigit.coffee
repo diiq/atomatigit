@@ -34,10 +34,9 @@ module.exports =
 
   # Public: Package activation.
   activate: (state) ->
-    @insertShowCommand()
+    @insertCommands()
     return @errorNoGitRepo() unless atom.project.getRepo()
     @loadClasses()
-    @insertCommands()
     atom.workspaceView.trigger 'atomatigit:show' if atom.config.get('atomatigit.show_on_startup')
 
   # Public: Close the atomatigit pane.
@@ -72,12 +71,9 @@ module.exports =
     new ErrorView(message: 'Project is no git repository!') if @startup_error_shown
     @startup_error_shown = true
 
-  # Internal: Register show command with atom.
-  insertShowCommand: ->
-    atom.workspaceView.command 'atomatigit:show', => @show()
-
   # Internal: Register package commands with atom.
   insertCommands: ->
+    atom.workspaceView.command 'atomatigit:show', => @show()
     atom.workspaceView.command 'atomatigit:close', => @hide()
 
   # Internal: Load required classes on activation
