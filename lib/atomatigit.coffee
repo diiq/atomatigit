@@ -37,6 +37,7 @@ module.exports =
   # Public: Close the atomatigit pane.
   hide: ->
     @repoView.detach() if @repoView.hasParent()
+    atom.workspace.getActivePane().activate()
 
   # Internal: Append the repoView (if not already) and focus the pane
   append: ->
