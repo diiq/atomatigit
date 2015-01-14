@@ -20,6 +20,12 @@ module.exports =
       type: 'boolean'
       default: false
       order: 3
+    display_commit_comparisons:
+      title: 'Display Commit Comparisons'
+      description: 'Display how many commits ahead/behind your branches are'
+      type: 'boolean'
+      default: true
+      order: 4
 
   repo: null
   repoView: null

@@ -9,6 +9,55 @@ class LocalBranch extends Branch
   remote: false
   local: true
 
+  # Public: Constructor
+  initialize: ->
+    @compareCommits() if atom.config.get('atomatigit.display_commit_comparisons')
+
+  # Internal: Compares this branches commits and stores it as {String}
+  #
+  # Returns {Promise}
+  compareCommits: =>
+    @comparison = comparison = ''
+    name = @localName().trim()
+    @getTrackingBranch(name).then =>
+      if @tracking_branch is ''
+        @comparison = 'No upstream configured'
+        return @trigger 'comparison-loaded'
+      tracking_branch = @tracking_branch
+      git.cmd("rev-list #{name}@{u}..#{name} |wc -l").then (output) =>
+        number = +output.trim()
+        comparison = @getComparisonString number, 'ahead of', tracking_branch if number isnt 0
+        git.cmd("rev-list #{name}..#{name}@{u} |wc -l").then (output) =>
+          number = +output.trim()
+          if number isnt 0
+            comparison += '<br>' if comparison isnt ''
+            comparison += @getComparisonString number, 'behind', tracking_branch
+          else if comparison is ''
+            comparison = "Up-to-date with #{tracking_branch}"
+          @comparison = comparison
+          @trigger 'comparison-loaded'
+
+  # Internal: Stores the tracking branch in @tracking_branch as {String}
+  #
+  # Returns {Promise}
+  getTrackingBranch: (name) =>
+    @tracking_branch = ''
+    git.cmd("config branch.#{name}.remote").then (output) =>
+      output = output.trim()
+      remote = "#{output}/"
+      git.cmd("config branch.#{name}.merge").then (output) =>
+        @tracking_branch = remote + output.trim().replace('refs/heads/', '')
+    .catch -> '' # Throws when there's no upstream configured. We handle that elsewhere.
+
+  # Internal: Formats the commit comparison string
+  #
+  # Returns {String}
+  getComparisonString: (number, ahead_of_or_behind, tracking_branch) ->
+    str = "#{number} commit"
+    str += "s" unless number is 1
+    str += " #{ahead_of_or_behind} "
+    str += tracking_branch
+
   # Public: Return the 'unpushed' property.
   #
   # Returns the property as {String}.

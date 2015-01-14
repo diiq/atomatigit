@@ -16,7 +16,9 @@ class CurrentBranch extends LocalBranch
     git.revParse('HEAD', 'abbrev-ref': true).then (@name) =>
       git.getCommit('HEAD').then (gitCommit) =>
         @commit = new Commit(gitCommit)
-        @trigger('repaint') unless silent
+        if !silent
+          @trigger 'repaint'
+          @compareCommits() if atom.config.get('atomatigit.display_commit_comparisons')
     .catch (error) -> new ErrorView(error)
 
   # Public: Return the HEAD.
