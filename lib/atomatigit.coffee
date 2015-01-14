@@ -52,7 +52,7 @@ module.exports =
       @repoView = new RepoView(@repo)
       @repoView.InitPromise.then => @append()
     else
-      @repo.reload().then => @append()
+      @append()
 
   # Internal: Destroy atomatigit instance.
   deactivate: ->

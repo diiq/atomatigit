@@ -35,9 +35,6 @@ class RepoView extends View
       .on 'keyup', @unfocusIfNotActive
     @resizeHandle.on 'mousedown', @resizeStarted
 
-    atomGit = atom.project.getRepo()
-    @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
-
     @insertCommands()
     @InitPromise = @model.reload().then @showFiles
 
@@ -83,7 +80,6 @@ class RepoView extends View
   # Public: Force a full refresh.
   refresh: =>
     @model.reload().then => @activeView.repaint()
-    @focus()
 
   # Public: Show the 'branches' tab.
   showBranches: =>
@@ -149,9 +145,9 @@ class RepoView extends View
   unfocusIfNotActive: (e) =>
     return @unfocus() unless @hasFocus()
 
-  # Public: Focus the atomatigit pane.
+  # Public: Focus the atomatigit pane. Refresh if we're not refocusing.
   focus: =>
-    @activeView?.focus?() and @addClass 'focused'
+    @activeView?.focus?() and (@hasClass('focused') or @refresh()) and @addClass 'focused'
 
   # Public: Unfocus the atomatigit pane.
   unfocus: =>

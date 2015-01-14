@@ -134,7 +134,7 @@ class Repo extends Model
       callback: (name) ->
         git.cmd "checkout -b #{name}"
         .catch (error) -> new ErrorView(error)
-        .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+        .done -> atom.workspaceView.trigger 'atomatigit:focus'
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: =>
@@ -144,7 +144,7 @@ class Repo extends Model
         git.cmd command
         .then (output) -> new OutputView(output)
         .catch (error) -> new ErrorView(error)
-        .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+        .done -> atom.workspaceView.trigger 'atomatigit:focus'
 
   # Public: Push the repository to the remote.
   push: =>
