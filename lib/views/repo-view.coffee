@@ -39,7 +39,7 @@ class RepoView extends View
     @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
 
     @insertCommands()
-    @model.reload().then @showFiles
+    @InitPromise = @model.reload().then @showFiles
 
   # Internal: Register atomatigit commands with atom.
   insertCommands: =>

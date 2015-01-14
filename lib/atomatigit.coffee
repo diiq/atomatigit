@@ -38,15 +38,21 @@ module.exports =
   hide: ->
     @repoView.detach() if @repoView.hasParent()
 
+  # Internal: Append the repoView (if not already) and focus the pane
+  append: ->
+    atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
+    @repoView.focus()
+
   # Public: Open (or focus) the atomatigit window.
   show: ->
     return @errorNoGitRepo() unless atom.project.getRepo()
     @loadClasses() unless Repo and RepoView
     @repo ?= new Repo()
-    @repoView ?= new RepoView(@repo)
-    @repo.reload().then =>
-      atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
-      @repoView.focus()
+    if !@repoView?
+      @repoView = new RepoView(@repo)
+      @repoView.InitPromise.then => @append()
+    else
+      @repo.reload().then => @append()
 
   # Internal: Destroy atomatigit instance.
   deactivate: ->
