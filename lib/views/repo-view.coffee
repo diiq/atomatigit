@@ -35,6 +35,9 @@ class RepoView extends View
       .on 'keyup', @unfocusIfNotActive
     @resizeHandle.on 'mousedown', @resizeStarted
 
+    atomGit = atom.project.getRepo()
+    @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
+
     @insertCommands()
     @InitPromise = @model.reload().then @showFiles
 
