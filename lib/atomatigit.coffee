@@ -36,7 +36,6 @@ module.exports =
   activate: (state) ->
     @insertCommands()
     return @errorNoGitRepo() unless atom.project.getRepo()
-    @loadClasses()
     atom.workspaceView.trigger 'atomatigit:show' if atom.config.get('atomatigit.show_on_startup')
 
   # Public: Close the atomatigit pane.
