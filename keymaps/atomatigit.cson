@@ -1,7 +1,7 @@
-'.platform-darwin .workspace':
+'.platform-darwin atom-workspace':
   'cmd-alt-g': 'atomatigit:show'
 
-'.platform-win32 .workspace, .platform-linux .workspace':
+'.platform-win32 atom-workspace, .platform-linux atom-workspace':
   'ctrl-alt-g': 'atomatigit:show'
 
 '.platform-darwin .atomatigit':
@@ -41,7 +41,7 @@
   'shift-enter': 'atomatigit:hard-reset-to-commit'
   'o': 'atomatigit:showCommit'
 
-'.atomatigit .input.block .editor':
+'.atomatigit .input.block atom-text-editor':
   'enter': 'atomatigit:input:newline'
   'shift-enter': 'core:confirm'
   'up': 'atomatigit:input:up'
