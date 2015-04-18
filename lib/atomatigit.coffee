@@ -72,8 +72,8 @@ module.exports =
 
   # Internal: Register package commands with atom.
   insertCommands: ->
-    atom.workspaceView.command 'atomatigit:show', => @show()
-    atom.workspaceView.command 'atomatigit:close', => @hide()
+    atom.commands.add 'atom-workspace', 'atomatigit:show', => @show()
+    atom.commands.add 'atom-workspace', 'atomatigit:close', => @hide()
 
   # Internal: Load required classes on activation
   loadClasses: ->

@@ -43,43 +43,42 @@ class RepoView extends View
 
   # Internal: Register atomatigit commands with atom.
   insertCommands: =>
-    atom.workspaceView.command 'atomatigit:next', => @model.activeList.next()
-    atom.workspaceView.command 'atomatigit:previous', => @model.activeList.previous()
+    atom.commands.add 'atom-workspace', 'atomatigit:next', => @model.activeList.next()
+    atom.commands.add 'atom-workspace', 'atomatigit:previous', => @model.activeList.previous()
 
-    atom.workspaceView.command 'atomatigit:files', @showFiles
-    atom.workspaceView.command 'atomatigit:branches', @showBranches
-    atom.workspaceView.command 'atomatigit:commit-log', @showCommits
+    atom.commands.add 'atom-workspace', 'atomatigit:files', @showFiles
+    atom.commands.add 'atom-workspace', 'atomatigit:branches', @showBranches
+    atom.commands.add 'atom-workspace', 'atomatigit:commit-log', @showCommits
 
-    atom.workspaceView.command 'atomatigit:commit', =>
+    atom.commands.add 'atom-workspace', 'atomatigit:commit', =>
       @model.initiateCommit()
       @unfocus()
-    atom.workspaceView.command 'atomatigit:git-command', =>
+    atom.commands.add 'atom-workspace', 'atomatigit:git-command', =>
       @model.initiateGitCommand()
       @unfocus()
 
-    atom.workspaceView.command 'atomatigit:input:down', @inputDown
-    atom.workspaceView.command 'atomatigit:input:newline', @inputNewline
-    atom.workspaceView.command 'atomatigit:input:up', @inputUp
+    atom.commands.add 'atom-workspace', 'atomatigit:input:down', @inputDown
+    atom.commands.add 'atom-workspace', 'atomatigit:input:newline', @inputNewline
+    atom.commands.add 'atom-workspace', 'atomatigit:input:up', @inputUp
 
-    atom.workspaceView.command 'atomatigit:stage', => @model.leaf()?.stage()
-    atom.workspaceView.command 'atomatigit:stash', @model.stash
-    atom.workspaceView.command 'atomatigit:stash-pop', @model.stashPop
-    atom.workspaceView.command 'atomatigit:toggle-diff', => @model.selection()?.toggleDiff()
-    atom.workspaceView.command 'atomatigit:unstage', => @model.leaf()?.unstage()
-    atom.workspaceView.command 'atomatigit:hard-reset-to-commit', => @model.selection()?.confirmHardReset()
+    atom.commands.add 'atom-workspace', 'atomatigit:stage', => @model.leaf()?.stage()
+    atom.commands.add 'atom-workspace', 'atomatigit:stash', @model.stash
+    atom.commands.add 'atom-workspace', 'atomatigit:stash-pop', @model.stashPop
+    atom.commands.add 'atom-workspace', 'atomatigit:toggle-diff', => @model.selection()?.toggleDiff()
+    atom.commands.add 'atom-workspace', 'atomatigit:unstage', => @model.leaf()?.unstage()
+    atom.commands.add 'atom-workspace', 'atomatigit:hard-reset-to-commit', => @model.selection()?.confirmHardReset()
 
-    atom.workspaceView.command 'atomatigit:create-branch', @model.initiateCreateBranch
-    atom.workspaceView.command 'atomatigit:fetch', @model.fetch
-    atom.workspaceView.command 'atomatigit:kill', => @model.leaf()?.kill()
-    atom.workspaceView.command 'atomatigit:open', => @model.selection()?.open()
-    atom.workspaceView.command 'atomatigit:push', @model.push
-    atom.workspaceView.command 'atomatigit:refresh', @refresh
-    atom.workspaceView.command 'atomatigit:showCommit', => @model.selection()?.showCommit?()
+    atom.commands.add 'atom-workspace', 'atomatigit:create-branch', @model.initiateCreateBranch
+    atom.commands.add 'atom-workspace', 'atomatigit:fetch', @model.fetch
+    atom.commands.add 'atom-workspace', 'atomatigit:kill', => @model.leaf()?.kill()
+    atom.commands.add 'atom-workspace', 'atomatigit:open', => @model.selection()?.open()
+    atom.commands.add 'atom-workspace', 'atomatigit:push', @model.push
+    atom.commands.add 'atom-workspace', 'atomatigit:refresh', @refresh
+    atom.commands.add 'atom-workspace', 'atomatigit:showCommit', => @model.selection()?.showCommit?()
 
-    atom.workspaceView.command 'atomatigit:focus', @focus
-    atom.workspaceView.command 'atomatigit:unfocus', @unfocus
-    atom.workspaceView.command 'atomatigit:toggle-focus', @toggleFocus
-
+    atom.commands.add 'atom-workspace', 'atomatigit:focus', @focus
+    atom.commands.add 'atom-workspace', 'atomatigit:unfocus', @unfocus
+    atom.commands.add 'atom-workspace', 'atomatigit:toggle-focus', @toggleFocus
   # Public: Force a full refresh.
   refresh: =>
     @model.reload().then => @activeView.repaint()
