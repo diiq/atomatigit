@@ -24,10 +24,10 @@ class LocalBranch extends Branch
         @comparison = 'No upstream configured'
         return @trigger 'comparison-loaded'
       tracking_branch = @tracking_branch
-      git.cmd("rev-list #{name}@{u}..#{name} |wc -l").then (output) =>
+      git.cmd("rev-list --count #{name}@{u}..#{name}").then (output) =>
         number = +output.trim()
         comparison = @getComparisonString number, 'ahead of', tracking_branch if number isnt 0
-        git.cmd("rev-list #{name}..#{name}@{u} |wc -l").then (output) =>
+        git.cmd("rev-list --count #{name}..#{name}@{u}").then (output) =>
           number = +output.trim()
           if number isnt 0
             comparison += '<br>' if comparison isnt ''
