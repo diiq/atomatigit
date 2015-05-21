@@ -82,11 +82,11 @@ class Repo extends Model
 
     fs.writeFileSync(@commitMessagePath(), @commitMessage())
 
-    editorPromise = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
+    editorPromise = atom.workspace.open(@commitMessagePath(), {activatePane: true})
     editorPromise.then (editor) =>
-      editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
+      editor.setGrammar atom.grammars.grammarForScopeName('text.git-commit')
       editor.setCursorBufferPosition [0, 0]
-      editor.buffer.on 'saved', @completeCommit
+      editor.onDidSave @completeCommit
 
   # Internal: Writes the commit message template to the message file.
   #
