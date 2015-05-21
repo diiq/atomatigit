@@ -1,6 +1,6 @@
 _          = require 'lodash'
 prettyjson = require 'prettyjson'
-{$, View}  = require 'atom'
+{$, View}  = require 'atom-space-pen-views'
 
 # Public: The {OutputView} class generates an output message box.
 class OutputView extends View

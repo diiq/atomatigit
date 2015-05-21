@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 # Public: Visual representation of a {DiffLine}.
 class DiffLineView extends View

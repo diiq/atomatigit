@@ -1,5 +1,5 @@
 _            = require 'lodash'
-{View}       = require 'atom'
+{View}       = require 'atom-space-pen-views'
 DiffLineView = require './diff-line-view'
 
 # Public: Visual representation of a {DiffChunk}.
@@ -12,8 +12,8 @@ class DiffChunkView extends View
     @model.on 'change:selected', @showSelection
     _.each @model.lines, (line) => @append new DiffLineView(line)
 
-  # Public: 'beforeRemove' handler.
-  beforeRemove: =>
+  # Public: 'detached' hook.
+  detached: =>
     @model.off 'change:selected', @showSelection
 
   # Public: 'clicked' handler.

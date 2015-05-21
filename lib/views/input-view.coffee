@@ -1,4 +1,4 @@
-{$, EditorView, View} = require 'atom'
+{$, View, TextEditorView} = require 'atom-space-pen-views'
 ErrorView = require './error-view'
 OutputView = require './output-view'
 git = require '../git'
@@ -6,7 +6,7 @@ git = require '../git'
 class InputView extends View
   @content: ({message}={}) ->
     @div class: 'overlay from-top', =>
-      @subview 'inputEditor', new EditorView(mini: true, placeholderText: message)
+      @subview 'inputEditor', new TextEditorView(mini: true, placeholderText: message)
 
   initialize: ({callback}={}) ->
     @currentPane = atom.workspace.getActivePane()

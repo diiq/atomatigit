@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 # Hash to store commit comparisons based on branch names
 branch_comparisons = {}
@@ -17,8 +17,8 @@ class CurrentBranchView extends View
     @model.on 'comparison-loaded', @updateComparison
     @repaint()
 
-  # Public: 'beforeRemove' handler.
-  beforeRemove: =>
+  # Public: 'detached' hook.
+  detached: =>
     @model.off 'repaint', @repaint
     @model.off 'comparison-loaded', @updateComparison
 

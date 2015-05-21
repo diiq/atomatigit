@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 # Public: Visual representation of a commit object.
 class CommitView extends View
@@ -12,8 +12,8 @@ class CommitView extends View
   initialize: (@model) ->
     @model.on 'change:selected', @showSelection
 
-  # Internal: 'beforeRemove' handler.
-  beforeRemove: =>
+  # Internal: 'detached' handler.
+  detached: =>
     @model.off 'change:selected', @showSelection
 
   # Internal: 'Clicked' handler.

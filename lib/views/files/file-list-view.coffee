@@ -1,5 +1,5 @@
 _      = require 'lodash'
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 FileView = require './file-view'
 
@@ -20,7 +20,7 @@ class FileListView extends View
     @model.on 'repaint', @repaint
 
   # Internal: Prepare removing this view.
-  beforeRemove: =>
+  detached: =>
     @model.off 'repaint', @repaint
 
   # Internal: Trigger repopulation of the untracked file list view.

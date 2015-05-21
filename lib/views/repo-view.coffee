@@ -1,4 +1,4 @@
-{$, View, EditorView} = require 'atom'
+{$, View} = require 'atom-space-pen-views'
 
 {FileListView}                       = require './files'
 {CurrentBranchView, BranchListView}  = require './branches'
@@ -36,7 +36,7 @@ class RepoView extends View
     @resizeHandle.on 'mousedown', @resizeStarted
 
     atomGit = atom.project.getRepositories()[0]
-    @subscribe(atomGit, 'status-changed', @model.reload) if atomGit?
+    @subscription = atomGit.onDidChangeStatus(@model.reload) if atomGit?
 
     @insertCommands()
     @InitPromise = @model.reload().then @showFiles
@@ -163,6 +163,7 @@ class RepoView extends View
 
   # Public: Destructor.
   destroy: =>
+    @subscription?.dispose()
     @detach()
 
 module.exports = RepoView

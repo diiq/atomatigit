@@ -1,5 +1,5 @@
 _      = require 'lodash'
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 CommitView = require './commit-view'
 
@@ -12,8 +12,8 @@ class CommitListView extends View
   initialize: (@model) ->
     @model.on 'repaint', @repaint
 
-  # Public: 'beforeRemove' handler.
-  beforeRemove: =>
+  # Public: 'detached' hook.
+  detached: =>
     @model.off 'repaint', @repaint
 
   # Public: Trigger a repaint.

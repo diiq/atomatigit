@@ -1,6 +1,6 @@
 _          = require 'lodash'
 prettyjson = require 'prettyjson'
-{$, View}  = require 'atom'
+{$, View}     = require 'atom-space-pen-views'
 
 # Public: The {ErrorView} class generates an error message box.
 class ErrorView extends View
