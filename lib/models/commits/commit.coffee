@@ -99,7 +99,7 @@ class Commit extends ListItem
         @showCommit()
       .catch (error) -> new ErrorView(error)
     else
-      gitPath = atom.project?.getRepo()?.getPath() or atom.project?.getPath()
+      gitPath = atom.project?.getRepositories()[0]?.getPath() or atom.project?.getPath()
       fs.writeFileSync path.join(gitPath, ".git/#{@commitID()}"), @gitShowMessage
       editor = atom.workspace.open(path.join(gitPath, ".git/#{@commitID()}"))
       editor.then (@editor) =>

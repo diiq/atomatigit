@@ -46,12 +46,12 @@ class Repo extends Model
   # Returns the commit message file path as {String}.
   commitMessagePath: ->
     path.join(
-      atom.project.getRepo()?.getWorkingDirectory(),
+      atom.project.getRepositories()[0]?.getWorkingDirectory(),
       '/.git/COMMIT_EDITMSG_ATOMATIGIT'
     )
 
   headRefsCount: ->
-    atom.project.getRepo()?.getReferences()?.heads?.length ? 0
+    atom.project.getRepositories()[0]?.getReferences()?.heads?.length ? 0
 
   fetch: ->
     git.cmd 'fetch'
@@ -117,7 +117,7 @@ class Repo extends Model
     else
       atom.workspace.destroyActivePane()
     try fs.unlinkSync @commitMessagePath()
-    atom.project.getRepo()?.refreshStatus?()
+    atom.project.getRepositories()[0]?.refreshStatus?()
 
   # Internal: Commit the changes.
   completeCommit: =>

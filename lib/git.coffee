@@ -1,8 +1,8 @@
 Git = require 'promised-git'
 
 getPath = ->
-  if atom.project?.getRepo()
-    atom.project.getRepo().getWorkingDirectory()
+  if atom.project?.getRepositories()[0]
+    atom.project.getRepositories()[0].getWorkingDirectory()
   else if atom.project
     atom.project.getPath()
   else

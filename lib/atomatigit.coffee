@@ -35,7 +35,7 @@ module.exports =
   # Public: Package activation.
   activate: (state) ->
     @insertCommands()
-    return @errorNoGitRepo() unless atom.project.getRepo()
+    return @errorNoGitRepo() unless atom.project.getRepositories()[0]
     atom.workspaceView.trigger 'atomatigit:show' if atom.config.get('atomatigit.show_on_startup')
 
   # Public: Close the atomatigit pane.
@@ -50,7 +50,7 @@ module.exports =
 
   # Public: Open (or focus) the atomatigit window.
   show: ->
-    return @errorNoGitRepo() unless atom.project.getRepo()
+    return @errorNoGitRepo() unless atom.project.getRepositories()[0]
     @loadClasses() unless Repo and RepoView
     @repo ?= new Repo()
     if !@repoView?
