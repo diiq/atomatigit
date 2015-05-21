@@ -36,7 +36,8 @@ module.exports =
   activate: (state) ->
     @insertCommands()
     return @errorNoGitRepo() unless atom.project.getRepositories()[0]
-    atom.workspaceView.trigger 'atomatigit:show' if atom.config.get('atomatigit.show_on_startup')
+    if atom.config.get('atomatigit.show_on_startup')
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:show')
 
   # Public: Close the atomatigit pane.
   hide: ->
@@ -45,7 +46,7 @@ module.exports =
 
   # Internal: Append the repoView (if not already) and focus the pane
   append: ->
-    atom.workspaceView.appendToRight(@repoView) unless @repoView?.hasParent()
+    atom.workspace.addRightPanel(item: @repoView) unless @repoView?.hasParent()
     @repoView.focus()
 
   # Public: Open (or focus) the atomatigit window.

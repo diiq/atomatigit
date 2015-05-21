@@ -87,7 +87,7 @@ class LocalBranch extends Branch
   push: (remote='origin') =>
     git.cmd 'push', [remote, @getName()]
     .then =>
-      atom.workspaceView.trigger 'atomatigit:refresh'
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
       new OutputView('Pushing to remote repository successful')
     .catch (error) -> new ErrorView(error)
 

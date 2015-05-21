@@ -56,7 +56,8 @@ class Repo extends Model
   fetch: ->
     git.cmd 'fetch'
     .catch (error) -> new ErrorView(error)
-    .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+    .done ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
 
   # checkoutBranch: =>
   #   @branchList.checkoutBranch
@@ -64,17 +65,20 @@ class Repo extends Model
   stash: ->
     git.cmd 'stash'
     .catch (error) -> new ErrorView(error)
-    .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+    .done ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
 
   stashPop: ->
     git.cmd 'stash pop'
     .catch (error) -> new ErrorView(error)
-    .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+    .done ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
 
   # Internal: Initiate a new commit.
   initiateCommit: =>
     preCommitHook = atom.config.get('atomatigit.pre_commit_hook')
-    atom.workspaceView.trigger(preCommitHook) if preCommitHook?.length > 0
+    if preCommitHook?.length > 0
+      atom.commands.dispatch(atom.views.getView(atom.workspace), preCommitHook)
 
     fs.writeFileSync(@commitMessagePath(), @commitMessage())
 
@@ -123,7 +127,8 @@ class Repo extends Model
   completeCommit: =>
     git.commit @commitMessagePath()
     .then @reload
-    .then -> atom.workspaceView.trigger 'atomatigit:focus'
+    .then ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
     .catch (error) -> new ErrorView(error)
     .finally @cleanupCommitMessageFile
 
@@ -134,7 +139,8 @@ class Repo extends Model
       callback: (name) ->
         git.cmd "checkout -b #{name}"
         .catch (error) -> new ErrorView(error)
-        .done -> atom.workspaceView.trigger 'atomatigit:focus'
+        .done ->
+          atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: =>
@@ -144,7 +150,8 @@ class Repo extends Model
         git.cmd command
         .then (output) -> new OutputView(output)
         .catch (error) -> new ErrorView(error)
-        .done -> atom.workspaceView.trigger 'atomatigit:focus'
+        .done ->
+          atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
 
   # Public: Push the repository to the remote.
   push: =>
