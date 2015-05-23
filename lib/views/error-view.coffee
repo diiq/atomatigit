@@ -1,6 +1,6 @@
 _          = require 'lodash'
 prettyjson = require 'prettyjson'
-{$, View}  = require 'atom'
+{$, View}     = require 'atom-space-pen-views'
 
 # Public: The {ErrorView} class generates an error message box.
 class ErrorView extends View
@@ -16,7 +16,7 @@ class ErrorView extends View
       console.trace prettyjson.render(error, noColor: true)
 
     @messagePanel.on 'click', @detach
-    atom.workspaceView.append(this)
+    atom.views.getView(atom.workspace).appendChild(@element)
     setTimeout (=> @detach()), 10000
 
 module.exports = ErrorView

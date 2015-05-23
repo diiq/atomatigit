@@ -46,17 +46,18 @@ class Repo extends Model
   # Returns the commit message file path as {String}.
   commitMessagePath: ->
     path.join(
-      atom.project.getRepo()?.getWorkingDirectory(),
+      atom.project.getRepositories()[0]?.getWorkingDirectory(),
       '/.git/COMMIT_EDITMSG_ATOMATIGIT'
     )
 
   headRefsCount: ->
-    atom.project.getRepo()?.getReferences()?.heads?.length ? 0
+    atom.project.getRepositories()[0]?.getReferences()?.heads?.length ? 0
 
   fetch: ->
     git.cmd 'fetch'
     .catch (error) -> new ErrorView(error)
-    .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+    .done ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
 
   # checkoutBranch: =>
   #   @branchList.checkoutBranch
@@ -64,25 +65,28 @@ class Repo extends Model
   stash: ->
     git.cmd 'stash'
     .catch (error) -> new ErrorView(error)
-    .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+    .done ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
 
   stashPop: ->
     git.cmd 'stash pop'
     .catch (error) -> new ErrorView(error)
-    .done -> atom.workspaceView.trigger 'atomatigit:refresh'
+    .done ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
 
   # Internal: Initiate a new commit.
   initiateCommit: =>
     preCommitHook = atom.config.get('atomatigit.pre_commit_hook')
-    atom.workspaceView.trigger(preCommitHook) if preCommitHook?.length > 0
+    if preCommitHook?.length > 0
+      atom.commands.dispatch(atom.views.getView(atom.workspace), preCommitHook)
 
     fs.writeFileSync(@commitMessagePath(), @commitMessage())
 
-    editorPromise = atom.workspace.open(@commitMessagePath(), {changeFocus: true})
+    editorPromise = atom.workspace.open(@commitMessagePath(), {activatePane: true})
     editorPromise.then (editor) =>
-      editor.setGrammar atom.syntax.grammarForScopeName('text.git-commit')
+      editor.setGrammar atom.grammars.grammarForScopeName('text.git-commit')
       editor.setCursorBufferPosition [0, 0]
-      editor.buffer.on 'saved', @completeCommit
+      editor.onDidSave @completeCommit
 
   # Internal: Writes the commit message template to the message file.
   #
@@ -117,13 +121,14 @@ class Repo extends Model
     else
       atom.workspace.destroyActivePane()
     try fs.unlinkSync @commitMessagePath()
-    atom.project.getRepo()?.refreshStatus?()
+    atom.project.getRepositories()[0]?.refreshStatus?()
 
   # Internal: Commit the changes.
   completeCommit: =>
     git.commit @commitMessagePath()
     .then @reload
-    .then -> atom.workspaceView.trigger 'atomatigit:focus'
+    .then ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
     .catch (error) -> new ErrorView(error)
     .finally @cleanupCommitMessageFile
 
@@ -134,7 +139,8 @@ class Repo extends Model
       callback: (name) ->
         git.cmd "checkout -b #{name}"
         .catch (error) -> new ErrorView(error)
-        .done -> atom.workspaceView.trigger 'atomatigit:focus'
+        .done ->
+          atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: =>
@@ -144,7 +150,8 @@ class Repo extends Model
         git.cmd command
         .then (output) -> new OutputView(output)
         .catch (error) -> new ErrorView(error)
-        .done -> atom.workspaceView.trigger 'atomatigit:focus'
+        .done ->
+          atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
 
   # Public: Push the repository to the remote.
   push: =>

@@ -1,4 +1,4 @@
-{$$, View} = require 'atom'
+{$$, View} = require 'atom-space-pen-views'
 DiffView = require '../diffs/diff-view'
 
 # Public: Visual representation of a file.
@@ -15,8 +15,8 @@ class FileView extends View
     @showSelection()
     @showDiff()
 
-  # Public: 'beforeRemove' handler.
-  beforeRemove: =>
+  # Public: 'detached' hook.
+  detached: =>
     @model.off 'change:selected', @showSelection
     @model.off 'change:diff', @showDiff
 

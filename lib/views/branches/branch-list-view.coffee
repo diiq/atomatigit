@@ -1,5 +1,5 @@
 _      = require 'lodash'
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 
 BranchBriefView = require './branch-brief-view'
 
@@ -16,8 +16,8 @@ class BranchListView extends View
   initialize: (@model) ->
     @model.on 'repaint', @repaint
 
-  # Public: 'beforeRemove' handler.
-  beforeRemove: =>
+  # Public: 'detached' hook.
+  detached: =>
     @model.off 'repaint', @repaint
 
   # Internal: Empty the 'localDom' and 'remoteDom' lists.

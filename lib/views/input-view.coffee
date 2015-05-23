@@ -1,4 +1,4 @@
-{$, EditorView, View} = require 'atom'
+{$, View, TextEditorView} = require 'atom-space-pen-views'
 ErrorView = require './error-view'
 OutputView = require './output-view'
 git = require '../git'
@@ -6,14 +6,16 @@ git = require '../git'
 class InputView extends View
   @content: ({message}={}) ->
     @div class: 'overlay from-top', =>
-      @subview 'inputEditor', new EditorView(mini: true, placeholderText: message)
+      @subview 'inputEditor', new TextEditorView(mini: true, placeholderText: message)
 
   initialize: ({callback}={}) ->
     @currentPane = atom.workspace.getActivePane()
-    atom.workspaceView.append(this)
+    atom.views.getView(atom.workspace).appendChild(@element)
     @inputEditor.focus()
     @on 'focusout', @detach
-    @on 'core:cancel', -> atom.workspaceView.trigger 'atomatigit:focus'
-    @inputEditor.on 'core:confirm', => callback?(@inputEditor.getText())
+    atom.commands.add @element, 'core:cancel', ->
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
+    atom.commands.add @inputEditor.element, 'core:confirm', =>
+      callback?(@inputEditor.getText())
 
 module.exports = InputView

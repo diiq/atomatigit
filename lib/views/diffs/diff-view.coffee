@@ -1,5 +1,5 @@
 _             = require 'lodash'
-{View}        = require 'atom'
+{View}        = require 'atom-space-pen-views'
 DiffChunkView = require './diff-chunk-view'
 
 # Public: Visual representation of a diff object.
