@@ -103,8 +103,8 @@ class Commit extends ListItem
       fs.writeFileSync path.join(gitPath, ".git/#{@commitID()}"), @gitShowMessage
       editor = atom.workspace.open(path.join(gitPath, ".git/#{@commitID()}"))
       editor.then (@editor) =>
-        @editor.setGrammar atom.syntax.grammarForScopeName('diff.diff')
-        @editor.buffer.once 'destroyed', =>
+        @editor.setGrammar atom.grammars.grammarForScopeName('diff.diff')
+        @editor.buffer.onDidDestroy =>
           fs.removeSync path.join(gitPath, ".git/#{@commitID()}")
 
 module.exports = Commit
