@@ -43,7 +43,11 @@
 
   '.atomatigit .file-list-view': [
     {
-      'label': 'Fetch (f)'
+      'label': 'Commit (c)'
+      'command': 'atomatigit:commit'
+    }
+    {
+      'label': 'Fetch (p)'
       'command': 'atomatigit:fetch'
     }
     {
