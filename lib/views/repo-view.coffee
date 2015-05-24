@@ -15,7 +15,7 @@ class RepoView extends View
 
       @ul class: 'list-inline tab-bar inset-panel', =>
         @li outlet: 'fileTab', class: 'tab active', click: 'showFiles', =>
-          @div class: 'title', 'Files'
+          @div class: 'title', 'Staging'
         @li outlet: 'branchTab', class: 'tab', click: 'showBranches', =>
           @div class: 'title', 'Branches'
         @li outlet: 'commitTab', class: 'tab', click: 'showCommits', =>
