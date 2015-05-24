@@ -93,7 +93,7 @@ class Commit extends ListItem
   # Public: Show this commit.
   showCommit: =>
     if not @gitShowMessage?
-      git.show @commitID()
+      git.show @commitID(), format: 'full'
       .then (data) =>
         @gitShowMessage = @unicodify(data)
         @showCommit()
