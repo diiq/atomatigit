@@ -12,10 +12,8 @@ class CurrentBranchView extends View
       @div class: 'comparison', outlet: 'comparison'
 
   # Public: Constructor.
-  initialize: (@model) ->
-    @model.on 'repaint', @repaint
-    @model.on 'comparison-loaded', @updateComparison
-    @repaint()
+  initialize: (@repo) ->
+    @refresh()
 
   # Public: 'detached' hook.
   detached: =>
@@ -29,6 +27,13 @@ class CurrentBranchView extends View
     comparison = @model.comparison || branch_comparisons[name]
     branch_comparisons[name] = comparison if comparison isnt ''
     @comparison.html(comparison || 'Calculating...')
+
+  # Public: Refresh the current branch
+  refresh: =>
+    @model = @repo.currentBranch
+    @model.on 'repaint', @refresh
+    @model.on 'comparison-loaded', @updateComparison
+    @repaint()
 
   # Public: Trigger a repaint.
   repaint: =>

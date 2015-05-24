@@ -11,7 +11,7 @@ class RepoView extends View
   @content: (model) ->
     @div class: 'atomatigit', =>
       @div class: 'resize-handle', outlet: 'resizeHandle'
-      @subview 'currentBranchView', new CurrentBranchView(model.currentBranch)
+      @subview 'currentBranchView', new CurrentBranchView(model)
 
       @ul class: 'list-inline tab-bar inset-panel', =>
         @li outlet: 'fileTab', class: 'tab active', click: 'showFiles', =>
@@ -79,6 +79,7 @@ class RepoView extends View
     atom.commands.add 'atom-workspace', 'atomatigit:focus', @focus
     atom.commands.add 'atom-workspace', 'atomatigit:unfocus', @unfocus
     atom.commands.add 'atom-workspace', 'atomatigit:toggle-focus', @toggleFocus
+
   # Public: Force a full refresh.
   refresh: =>
     @model.reload().then => @activeView.repaint()
