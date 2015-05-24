@@ -19,12 +19,12 @@
   'escape': 'atomatigit:close'
   'backspace': 'atomatigit:kill'
   'b': 'atomatigit:branches'
-  's': 'atomatigit:files'
+  'f': 'atomatigit:files'
   'l': 'atomatigit:commit-log'
   ':': 'atomatigit:git-command'
   'r': 'atomatigit:refresh'
   'shift-p': 'atomatigit:push'
-  'f': 'atomatigit:fetch'
+  'p': 'atomatigit:fetch'
 
 '.atomatigit .file-list-view':
   'shift-s': 'atomatigit:stage'
