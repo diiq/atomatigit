@@ -13,9 +13,12 @@ class BranchBriefView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
+    @repaint()
+
+  # Public: 'attached' hook.
+  attached: =>
     @model.on 'change:selected', @showSelection
     @model.on 'comparison-loaded', @updateComparison if @model.local
-    @repaint()
 
   # Public: 'detached' hook.
   detached: =>

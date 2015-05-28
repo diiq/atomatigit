@@ -10,10 +10,13 @@ class FileView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
-    @model.on 'change:selected', @showSelection
-    @model.on 'change:diff', @showDiff
     @showSelection()
     @showDiff()
+
+  # Public: 'attached' hook.
+  attached: =>
+    @model.on 'change:selected', @showSelection
+    @model.on 'change:diff', @showDiff
 
   # Public: 'detached' hook.
   detached: =>
