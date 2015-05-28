@@ -9,8 +9,11 @@ class DiffChunkView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
-    @model.on 'change:selected', @showSelection
     _.each @model.lines, (line) => @append new DiffLineView(line)
+
+  # Public: 'attached' hook.
+  attached: =>
+    @model.on 'change:selected', @showSelection
 
   # Public: 'detached' hook.
   detached: =>

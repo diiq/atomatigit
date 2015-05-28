@@ -17,6 +17,8 @@ class FileListView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
+
+  attached: =>
     @model.on 'repaint', @repaint
 
   # Internal: Prepare removing this view.

@@ -10,6 +10,9 @@ class CommitView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
+
+  # Public: 'attached' hook.
+  attached: =>
     @model.on 'change:selected', @showSelection
 
   # Internal: 'detached' handler.

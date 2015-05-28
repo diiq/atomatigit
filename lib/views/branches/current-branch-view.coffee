@@ -13,7 +13,13 @@ class CurrentBranchView extends View
 
   # Public: Constructor.
   initialize: (@repo) ->
-    @refresh()
+    @model = @repo.currentBranch
+    @repaint()
+
+  # Public: 'attached' hook.
+  attached: =>
+    @model.on 'repaint', @repaint
+    @model.on 'comparison-loaded', @updateComparison
 
   # Public: 'detached' hook.
   detached: =>
@@ -30,9 +36,6 @@ class CurrentBranchView extends View
 
   # Public: Refresh the current branch
   refresh: =>
-    @model = @repo.currentBranch
-    @model.on 'repaint', @refresh
-    @model.on 'comparison-loaded', @updateComparison
     @repaint()
 
   # Public: Trigger a repaint.

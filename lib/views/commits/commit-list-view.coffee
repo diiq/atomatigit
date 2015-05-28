@@ -10,6 +10,9 @@ class CommitListView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
+
+  # Public: 'attached' hook.
+  attached: =>
     @model.on 'repaint', @repaint
 
   # Public: 'detached' hook.
