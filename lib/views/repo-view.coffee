@@ -31,6 +31,8 @@ class RepoView extends View
   initialize: (@model) ->
     @subscriptions = new CompositeDisposable
     @model.on 'needInput', @getInput
+    @model.on 'complete', @focus
+    @model.on 'update', @refresh
 
     @on 'click', @focus
     $(document.body).on 'click', @unfocusIfNotClicked
@@ -58,9 +60,6 @@ class RepoView extends View
       'atomatigit:git-command': =>
         @model.initiateGitCommand()
         @unfocus()
-      'atomatigit:input:down': @inputDown
-      'atomatigit:input:newline': @inputNewline
-      'atomatigit:input:up': @inputUp
       'atomatigit:stage': => @model.leaf()?.stage()
       'atomatigit:stash': @model.stash
       'atomatigit:stash-pop': @model.stashPop
@@ -75,8 +74,6 @@ class RepoView extends View
       'atomatigit:push': @model.push
       'atomatigit:refresh': @refresh
       'atomatigit:showCommit': => @model.selection()?.showCommit?()
-      'atomatigit:focus': @focus
-      'atomatigit:unfocus': @unfocus
       'atomatigit:toggle-focus': @toggleFocus
 
   # Public: Force a full refresh.

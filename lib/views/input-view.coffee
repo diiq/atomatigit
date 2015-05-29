@@ -14,7 +14,7 @@ class InputView extends View
     @inputEditor.focus()
     @on 'focusout', @detach
     atom.commands.add @element, 'core:cancel', ->
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
+      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:toggle')
     atom.commands.add @inputEditor.element, 'core:confirm', =>
       callback?(@inputEditor.getText())
 

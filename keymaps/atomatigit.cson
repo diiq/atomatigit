@@ -7,6 +7,7 @@
 '.atomatigit .file-list-view, .atomatigit .branch-list-view, .atomatigit .commit-list-view':
   'j': 'core:move-down'
   'k': 'core:move-up'
+  'escape': 'core:cancel'
   'enter': 'atomatigit:open'
   'backspace': 'atomatigit:kill'
   'b': 'atomatigit:branches'
@@ -31,9 +32,3 @@
 '.atomatigit .commit-list-view':
   'shift-enter': 'atomatigit:hard-reset-to-commit'
   'o': 'atomatigit:showCommit'
-
-'.atomatigit .input.block atom-text-editor':
-  'enter': 'atomatigit:input:newline'
-  'shift-enter': 'core:confirm'
-  'up': 'atomatigit:input:up'
-  'down': 'atomatigit:input:down'
