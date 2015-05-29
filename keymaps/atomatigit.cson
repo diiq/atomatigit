@@ -1,22 +1,13 @@
 '.platform-darwin atom-workspace':
-  'cmd-alt-g': 'atomatigit:show'
+  'cmd-alt-g': 'atomatigit:toggle'
 
 '.platform-win32 atom-workspace, .platform-linux atom-workspace':
-  'ctrl-alt-g': 'atomatigit:show'
-
-'.platform-darwin .atomatigit':
-  'cmd-alt-g': 'atomatigit:close'
-
-'.platform-win32 .atomatigit, .platform-linux .atomatigit':
-  'ctrl-alt-g': 'atomatigit:close'
+  'ctrl-alt-g': 'atomatigit:toggle'
 
 '.atomatigit .file-list-view, .atomatigit .branch-list-view, .atomatigit .commit-list-view':
-  'down': 'atomatigit:next'
-  'j': 'atomatigit:next'
-  'up': 'atomatigit:previous'
-  'k': 'atomatigit:previous'
+  'j': 'core:move-down'
+  'k': 'core:move-up'
   'enter': 'atomatigit:open'
-  'escape': 'atomatigit:close'
   'backspace': 'atomatigit:kill'
   'b': 'atomatigit:branches'
   'f': 'atomatigit:files'
