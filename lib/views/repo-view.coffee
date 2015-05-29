@@ -29,25 +29,40 @@ class RepoView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
-    @subscriptions = new CompositeDisposable
+    @InitPromise = @model.reload().then @showFiles
+
+  # Public: 'attached' hook.
+  attached: =>
     @model.on 'needInput', @getInput
     @model.on 'complete', @focus
     @model.on 'update', @refresh
-
     @on 'click', @focus
-    $(document.body).on 'click', @unfocusIfNotClicked
-      .on 'keyup', @unfocusIfNotActive
     @resizeHandle.on 'mousedown', @resizeStarted
 
-    atomGit = atom.project.getRepositories()[0]
-    @subscriptions.add(atomGit.onDidChangeStatus(@model.reload)) if atomGit?
+    @fileListView.on 'blur', @unfocusIfNotActive
+    @branchListView.on 'blur', @unfocusIfNotActive
+    @commitListView.on 'blur', @unfocusIfNotActive
 
-    @insertCommands()
-    @InitPromise = @model.reload().then @showFiles
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add(@insertCommands())
+
+  # Internal: 'detached' handler.
+  detached: =>
+    @model.off 'needInput', @getInput
+    @model.off 'complete', @focus
+    @model.off 'update', @refresh
+    @off 'click', @focus
+    @resizeHandle.off 'mousedown', @resizeStarted
+
+    @fileListView.off 'blur', @unfocusIfNotActive
+    @branchListView.off 'blur', @unfocusIfNotActive
+    @commitListView.off 'blur', @unfocusIfNotActive
+
+    @subscriptions.dispose()
 
   # Internal: Register atomatigit commands with atom.
   insertCommands: =>
-    @subscriptions.add atom.commands.add @element,
+    atom.commands.add @element,
       'core:move-down': => @model.activeList.next()
       'core:move-up': => @model.activeList.previous()
       'core:cancel': @hide
@@ -65,15 +80,11 @@ class RepoView extends View
       'atomatigit:stash-pop': @model.stashPop
       'atomatigit:toggle-diff': => @model.selection()?.toggleDiff()
       'atomatigit:unstage': => @model.leaf()?.unstage()
-      'atomatigit:hard-reset-to-commit': =>
-        @model.selection()?.confirmHardReset()
-      'atomatigit:create-branch': @model.initiateCreateBranch
       'atomatigit:fetch': @model.fetch
       'atomatigit:kill': => @model.leaf()?.kill()
       'atomatigit:open': => @model.selection()?.open()
       'atomatigit:push': @model.push
       'atomatigit:refresh': @refresh
-      'atomatigit:showCommit': => @model.selection()?.showCommit?()
       'atomatigit:toggle-focus': @toggleFocus
 
   # Public: Force a full refresh.
@@ -136,16 +147,19 @@ class RepoView extends View
   hasFocus: =>
     @activeView?.is(':focus') or document.activeElement is @activeView
 
-  # Internal: Determine if the atomatigit pane was clicked. If not, remove focus.
-  unfocusIfNotClicked: (e) =>
-    return @unfocus() unless e.target.matches '.atomatigit, .atomatigit *'
-
   # Internal: Unfocus when losing focus by keyboard.
-  unfocusIfNotActive: (e) =>
-    return @unfocus() unless @hasFocus()
+  unfocusIfNotActive: =>
+    # new element isn't focused as the blur event happens
+    @unfocusTimeoutId = setTimeout =>
+      @unfocus() unless @hasFocus()
+    , 300
 
   # Public: Focus the atomatigit pane. Refresh if we're not refocusing.
   focus: =>
+    if @unfocusTimeoutId?
+      clearTimeout(@unfocusTimeoutId)
+      @unfocusTimeoutId = null
+
     @activeView?.focus?() and (@hasClass('focused') or @refresh()) and @addClass 'focused'
 
   # Public: Unfocus the atomatigit pane.

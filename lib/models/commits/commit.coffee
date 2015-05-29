@@ -7,6 +7,12 @@ ListItem  = require '../list-item'
 ErrorView = require '../../views/error-view'
 
 class Commit extends ListItem
+  defaults:
+    showMessage: null
+    author: null
+    id: null
+    message: null
+
   # Public: Constructor.
   #
   # gitCommit - The promisedgit commit object as {Object}.
@@ -92,19 +98,19 @@ class Commit extends ListItem
 
   # Public: Show this commit.
   showCommit: =>
-    if not @gitShowMessage?
+    if not @has('showMessage')
       git.show @commitID(), format: 'full'
       .then (data) =>
-        @gitShowMessage = @unicodify(data)
+        @set('showMessage', @unicodify(data))
         @showCommit()
       .catch (error) -> new ErrorView(error)
     else
       gitPath = atom.project?.getRepositories()[0]?.getPath() or atom.project?.getPath()
-      fs.writeFileSync path.join(gitPath, ".git/#{@commitID()}"), @gitShowMessage
-      editor = atom.workspace.open(path.join(gitPath, ".git/#{@commitID()}"))
-      editor.then (@editor) =>
-        @editor.setGrammar atom.grammars.grammarForScopeName('diff.diff')
-        @editor.buffer.onDidDestroy =>
-          fs.removeSync path.join(gitPath, ".git/#{@commitID()}")
+      diffPath = path.join(gitPath, ".git/#{@commitID()}")
+      fs.writeFileSync diffPath, @get('showMessage')
+      atom.workspace.open(diffPath).then (editor) ->
+        editor.setGrammar atom.grammars.grammarForScopeName('diff.diff')
+        editor.buffer.onDidDestroy ->
+          fs.removeSync(diffPath)
 
 module.exports = Commit

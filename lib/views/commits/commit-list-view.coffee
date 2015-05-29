@@ -1,5 +1,6 @@
 _      = require 'lodash'
 {View} = require 'atom-space-pen-views'
+{CompositeDisposable} = require 'atom'
 
 CommitView = require './commit-view'
 
@@ -14,10 +15,16 @@ class CommitListView extends View
   # Public: 'attached' hook.
   attached: =>
     @model.on 'repaint', @repaint
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.commands.add @element,
+      'atomatigit:showCommit': => @model.selection()?.showCommit?()
+      'atomatigit:hard-reset-to-commit': =>
+        @model.selection()?.confirmHardReset()
 
   # Public: 'detached' hook.
   detached: =>
     @model.off 'repaint', @repaint
+    @subscriptions.dispose()
 
   # Public: Trigger a repaint.
   repaint: =>

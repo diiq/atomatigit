@@ -2,6 +2,7 @@ _       = require 'lodash'
 fs      = require 'fs'
 path    = require 'path'
 {Model} = require 'backbone'
+{CompositeDisposable} = require 'atom'
 
 ErrorView                   = require '../views/error-view'
 OutputView                  = require '../views/output-view'
@@ -19,9 +20,17 @@ class Repo extends Model
     @commitList    = new CommitList []
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
 
-    @branchList.on 'repaint', =>
+    @subscriptions = new CompositeDisposable
+    @listenTo @branchList, 'repaint', =>
       @commitList.reload()
       @currentBranch.reload()
+
+    atomGit = atom.project.getRepositories()[0]
+    @subscriptions.add(atomGit.onDidChangeStatus(@reload)) if atomGit?
+
+  destroy: =>
+    @stopListening()
+    @subscriptions.dispose()
 
   # Public: Forces a reload on the repository.
   reload: =>

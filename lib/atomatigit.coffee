@@ -31,15 +31,11 @@ module.exports =
   repo: null
   repoView: null
 
-  startup_error_shown: false
-
   # Public: Package activation.
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @insertCommands()
-    return @errorNoGitRepo() unless atom.project.getRepositories()[0]
-    if atom.config.get('atomatigit.show_on_startup')
-      @toggle()
+    @toggle() if atom.config.get('atomatigit.show_on_startup')
 
   # Public: Toggle the atomatigit pane.
   toggle: ->
@@ -60,9 +56,7 @@ module.exports =
 
   # Internal: Display error message if the project is no git repository.
   errorNoGitRepo: ->
-    ErrorView = require './views/error-view'
-    new ErrorView(message: 'Project is no git repository!') if @startup_error_shown
-    @startup_error_shown = true
+    atom.notifications.addError('Project is no git repository!')
 
   # Internal: Register package commands with atom.
   insertCommands: ->
@@ -71,5 +65,5 @@ module.exports =
 
   # Internal: Load required classes on activation
   loadClasses: ->
-    Repo      = require './models/repo'
-    RepoView  = require './views/repo-view'
+    Repo     = require './models/repo'
+    RepoView = require './views/repo-view'
