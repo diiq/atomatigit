@@ -50,8 +50,8 @@ module.exports =
 
   # Internal: Destroy atomatigit instance.
   deactivate: ->
-    @repo.destroy()
-    @repoView.destroy()
+    @repo?.destroy()
+    @repoView?.destroy()
     @subscriptions.dispose()
 
   # Internal: Display error message if the project is no git repository.

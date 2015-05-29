@@ -191,7 +191,7 @@ class RepoView extends View
 
   # Public: Destructor.
   destroy: =>
-    @subscriptions.dispose()
+    @subscriptions?.dispose()
     @detach()
 
 module.exports = RepoView
