@@ -2,6 +2,7 @@ _       = require 'lodash'
 fs      = require 'fs'
 path    = require 'path'
 {Model} = require 'backbone'
+{CompositeDisposable} = require 'atom'
 
 ErrorView                   = require '../views/error-view'
 OutputView                  = require '../views/output-view'
@@ -19,9 +20,17 @@ class Repo extends Model
     @commitList    = new CommitList []
     @currentBranch = new CurrentBranch(@headRefsCount() > 0)
 
-    @branchList.on 'repaint', =>
+    @subscriptions = new CompositeDisposable
+    @listenTo @branchList, 'repaint', =>
       @commitList.reload()
       @currentBranch.reload()
+
+    atomGit = atom.project.getRepositories()[0]
+    @subscriptions.add(atomGit.onDidChangeStatus(@reload)) if atomGit?
+
+  destroy: =>
+    @stopListening()
+    @subscriptions.dispose()
 
   # Public: Forces a reload on the repository.
   reload: =>
@@ -56,8 +65,8 @@ class Repo extends Model
   fetch: ->
     git.cmd 'fetch'
     .catch (error) -> new ErrorView(error)
-    .done ->
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
+    .done =>
+      @trigger('update')
 
   # checkoutBranch: =>
   #   @branchList.checkoutBranch
@@ -65,14 +74,14 @@ class Repo extends Model
   stash: ->
     git.cmd 'stash'
     .catch (error) -> new ErrorView(error)
-    .done ->
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
+    .done =>
+      @trigger('update')
 
   stashPop: ->
     git.cmd 'stash pop'
     .catch (error) -> new ErrorView(error)
-    .done ->
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:refresh')
+    .done =>
+      @trigger('update')
 
   # Internal: Initiate a new commit.
   initiateCommit: =>
@@ -127,8 +136,8 @@ class Repo extends Model
   completeCommit: =>
     git.commit @commitMessagePath()
     .then @reload
-    .then ->
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
+    .then =>
+      @trigger('complete')
     .catch (error) -> new ErrorView(error)
     .finally @cleanupCommitMessageFile
 
@@ -139,19 +148,19 @@ class Repo extends Model
       callback: (name) ->
         git.cmd "checkout -b #{name}"
         .catch (error) -> new ErrorView(error)
-        .done ->
-          atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
+        .done =>
+          @trigger('complete')
 
   # Public: Initiate a user defined git command.
   initiateGitCommand: =>
     @trigger 'needInput',
       message: 'Git command'
-      callback: (command) ->
+      callback: (command) =>
         git.cmd command
         .then (output) -> new OutputView(output)
         .catch (error) -> new ErrorView(error)
-        .done ->
-          atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:focus')
+        .done =>
+          @trigger('complete')
 
   # Public: Push the repository to the remote.
   push: =>

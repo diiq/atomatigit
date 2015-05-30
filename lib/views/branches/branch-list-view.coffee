@@ -1,5 +1,6 @@
 _      = require 'lodash'
 {View} = require 'atom-space-pen-views'
+{CompositeDisposable} = require 'atom'
 
 BranchBriefView = require './branch-brief-view'
 

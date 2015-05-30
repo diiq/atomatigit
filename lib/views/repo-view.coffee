@@ -1,4 +1,5 @@
 {$, View} = require 'atom-space-pen-views'
+{CompositeDisposable} = require 'atom'
 
 {FileListView}                       = require './files'
 {CurrentBranchView, BranchListView}  = require './branches'
@@ -28,57 +29,63 @@ class RepoView extends View
 
   # Public: Constructor.
   initialize: (@model) ->
-    @model.on 'needInput', @getInput
+    @InitPromise = @model.reload().then @showFiles
 
+  # Public: 'attached' hook.
+  attached: =>
+    @model.on 'needInput', @getInput
+    @model.on 'complete', @focus
+    @model.on 'update', @refresh
     @on 'click', @focus
-    $(document.body).on 'click', @unfocusIfNotClicked
-      .on 'keyup', @unfocusIfNotActive
     @resizeHandle.on 'mousedown', @resizeStarted
 
-    atomGit = atom.project.getRepositories()[0]
-    @subscription = atomGit.onDidChangeStatus(@model.reload) if atomGit?
+    @fileListView.on 'blur', @unfocusIfNotActive
+    @branchListView.on 'blur', @unfocusIfNotActive
+    @commitListView.on 'blur', @unfocusIfNotActive
 
-    @insertCommands()
-    @InitPromise = @model.reload().then @showFiles
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add(@insertCommands())
+
+  # Internal: 'detached' handler.
+  detached: =>
+    @model.off 'needInput', @getInput
+    @model.off 'complete', @focus
+    @model.off 'update', @refresh
+    @off 'click', @focus
+    @resizeHandle.off 'mousedown', @resizeStarted
+
+    @fileListView.off 'blur', @unfocusIfNotActive
+    @branchListView.off 'blur', @unfocusIfNotActive
+    @commitListView.off 'blur', @unfocusIfNotActive
+
+    @subscriptions.dispose()
 
   # Internal: Register atomatigit commands with atom.
   insertCommands: =>
-    atom.commands.add 'atom-workspace', 'atomatigit:next', => @model.activeList.next()
-    atom.commands.add 'atom-workspace', 'atomatigit:previous', => @model.activeList.previous()
-
-    atom.commands.add 'atom-workspace', 'atomatigit:files', @showFiles
-    atom.commands.add 'atom-workspace', 'atomatigit:branches', @showBranches
-    atom.commands.add 'atom-workspace', 'atomatigit:commit-log', @showCommits
-
-    atom.commands.add 'atom-workspace', 'atomatigit:commit', =>
-      @model.initiateCommit()
-      @unfocus()
-    atom.commands.add 'atom-workspace', 'atomatigit:git-command', =>
-      @model.initiateGitCommand()
-      @unfocus()
-
-    atom.commands.add 'atom-workspace', 'atomatigit:input:down', @inputDown
-    atom.commands.add 'atom-workspace', 'atomatigit:input:newline', @inputNewline
-    atom.commands.add 'atom-workspace', 'atomatigit:input:up', @inputUp
-
-    atom.commands.add 'atom-workspace', 'atomatigit:stage', => @model.leaf()?.stage()
-    atom.commands.add 'atom-workspace', 'atomatigit:stash', @model.stash
-    atom.commands.add 'atom-workspace', 'atomatigit:stash-pop', @model.stashPop
-    atom.commands.add 'atom-workspace', 'atomatigit:toggle-diff', => @model.selection()?.toggleDiff()
-    atom.commands.add 'atom-workspace', 'atomatigit:unstage', => @model.leaf()?.unstage()
-    atom.commands.add 'atom-workspace', 'atomatigit:hard-reset-to-commit', => @model.selection()?.confirmHardReset()
-
-    atom.commands.add 'atom-workspace', 'atomatigit:create-branch', @model.initiateCreateBranch
-    atom.commands.add 'atom-workspace', 'atomatigit:fetch', @model.fetch
-    atom.commands.add 'atom-workspace', 'atomatigit:kill', => @model.leaf()?.kill()
-    atom.commands.add 'atom-workspace', 'atomatigit:open', => @model.selection()?.open()
-    atom.commands.add 'atom-workspace', 'atomatigit:push', @model.push
-    atom.commands.add 'atom-workspace', 'atomatigit:refresh', @refresh
-    atom.commands.add 'atom-workspace', 'atomatigit:showCommit', => @model.selection()?.showCommit?()
-
-    atom.commands.add 'atom-workspace', 'atomatigit:focus', @focus
-    atom.commands.add 'atom-workspace', 'atomatigit:unfocus', @unfocus
-    atom.commands.add 'atom-workspace', 'atomatigit:toggle-focus', @toggleFocus
+    atom.commands.add @element,
+      'core:move-down': => @model.activeList.next()
+      'core:move-up': => @model.activeList.previous()
+      'core:cancel': @hide
+      'atomatigit:files': @showFiles
+      'atomatigit:branches': @showBranches
+      'atomatigit:commit-log': @showCommits
+      'atomatigit:commit': =>
+        @model.initiateCommit()
+        @unfocus()
+      'atomatigit:git-command': =>
+        @model.initiateGitCommand()
+        @unfocus()
+      'atomatigit:stage': => @model.leaf()?.stage()
+      'atomatigit:stash': @model.stash
+      'atomatigit:stash-pop': @model.stashPop
+      'atomatigit:toggle-diff': => @model.selection()?.toggleDiff()
+      'atomatigit:unstage': => @model.leaf()?.unstage()
+      'atomatigit:fetch': @model.fetch
+      'atomatigit:kill': => @model.leaf()?.kill()
+      'atomatigit:open': => @model.selection()?.open()
+      'atomatigit:push': @model.push
+      'atomatigit:refresh': @refresh
+      'atomatigit:toggle-focus': @toggleFocus
 
   # Public: Force a full refresh.
   refresh: =>
@@ -136,20 +143,23 @@ class RepoView extends View
   getInput: (options) ->
     new InputView(options)
 
-  # Internal: Checks if the atomatigit pane has focus.
+  # Public: Checks if the atomatigit pane has focus.
   hasFocus: =>
     @activeView?.is(':focus') or document.activeElement is @activeView
 
-  # Internal: Determine if the atomatigit pane was clicked. If not, remove focus.
-  unfocusIfNotClicked: (e) =>
-    return @unfocus() unless e.target.matches '.atomatigit, .atomatigit *'
-
   # Internal: Unfocus when losing focus by keyboard.
-  unfocusIfNotActive: (e) =>
-    return @unfocus() unless @hasFocus()
+  unfocusIfNotActive: =>
+    # new element isn't focused as the blur event happens
+    @unfocusTimeoutId = setTimeout =>
+      @unfocus() unless @hasFocus()
+    , 300
 
   # Public: Focus the atomatigit pane. Refresh if we're not refocusing.
   focus: =>
+    if @unfocusTimeoutId?
+      clearTimeout(@unfocusTimeoutId)
+      @unfocusTimeoutId = null
+
     @activeView?.focus?() and (@hasClass('focused') or @refresh()) and @addClass 'focused'
 
   # Public: Unfocus the atomatigit pane.
@@ -162,9 +172,26 @@ class RepoView extends View
     @unfocus()
     atom.workspace.getActivePane().activate()
 
+  # Public: Toggle the atomatigit pane.
+  toggle: =>
+    if @hasParent() and @hasFocus()
+      @hide()
+    else
+      @show()
+
+  # Public: Append (if not already) and focus the pane
+  show: =>
+    atom.workspace.addRightPanel(item: this) unless @hasParent()
+    @focus()
+
+  # Public: Close the atomatigit pane.
+  hide: =>
+    @detach() if @hasParent()
+    atom.workspace.getActivePane().activate()
+
   # Public: Destructor.
   destroy: =>
-    @subscription?.dispose()
+    @subscriptions?.dispose()
     @detach()
 
 module.exports = RepoView

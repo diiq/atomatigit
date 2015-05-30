@@ -1,3 +1,4 @@
+{CompositeDisposable} = require 'atom'
 Repo = RepoView = ErrorView = null
 
 module.exports =
@@ -30,53 +31,39 @@ module.exports =
   repo: null
   repoView: null
 
-  startup_error_shown: false
-
   # Public: Package activation.
   activate: (state) ->
+    @subscriptions = new CompositeDisposable
     @insertCommands()
-    return @errorNoGitRepo() unless atom.project.getRepositories()[0]
-    if atom.config.get('atomatigit.show_on_startup')
-      atom.commands.dispatch(atom.views.getView(atom.workspace), 'atomatigit:show')
+    @toggle() if atom.config.get('atomatigit.show_on_startup')
 
-  # Public: Close the atomatigit pane.
-  hide: ->
-    @repoView.detach() if @repoView.hasParent()
-    atom.workspace.getActivePane().activate()
-
-  # Internal: Append the repoView (if not already) and focus the pane
-  append: ->
-    atom.workspace.addRightPanel(item: @repoView) unless @repoView?.hasParent()
-    @repoView.focus()
-
-  # Public: Open (or focus) the atomatigit window.
-  show: ->
+  # Public: Toggle the atomatigit pane.
+  toggle: ->
     return @errorNoGitRepo() unless atom.project.getRepositories()[0]
     @loadClasses() unless Repo and RepoView
     @repo ?= new Repo()
     if !@repoView?
       @repoView = new RepoView(@repo)
-      @repoView.InitPromise.then => @append()
+      @repoView.InitPromise.then => @repoView.toggle()
     else
-      @append()
+      @repoView.toggle()
 
   # Internal: Destroy atomatigit instance.
   deactivate: ->
-    @repo.destroy()
-    @repoView.destroy()
+    @repo?.destroy()
+    @repoView?.destroy()
+    @subscriptions.dispose()
 
   # Internal: Display error message if the project is no git repository.
   errorNoGitRepo: ->
-    ErrorView = require './views/error-view'
-    new ErrorView(message: 'Project is no git repository!') if @startup_error_shown
-    @startup_error_shown = true
+    atom.notifications.addError('Project is no git repository!')
 
   # Internal: Register package commands with atom.
   insertCommands: ->
-    atom.commands.add 'atom-workspace', 'atomatigit:show', => @show()
-    atom.commands.add 'atom-workspace', 'atomatigit:close', => @hide()
+    @subscriptions.add atom.commands.add 'atom-workspace',
+      'atomatigit:toggle': => @toggle()
 
   # Internal: Load required classes on activation
   loadClasses: ->
-    Repo      = require './models/repo'
-    RepoView  = require './views/repo-view'
+    Repo     = require './models/repo'
+    RepoView = require './views/repo-view'
