@@ -35,6 +35,7 @@ module.exports =
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @insertCommands()
+    @installPackageDependencies()
     @toggle() if atom.config.get('atomatigit.show_on_startup')
 
   # Public: Toggle the atomatigit pane.
@@ -67,3 +68,10 @@ module.exports =
   loadClasses: ->
     Repo     = require './models/repo'
     RepoView = require './views/repo-view'
+
+  # Internal: Install all the package dependencies
+  installPackageDependencies: ->
+    return if atom.packages.getLoadedPackage('language-diff')
+    require('atom-package-dependencies').install ->
+      atom.notifications.addSuccess('Atomatigit: Dependencies installed correctly.', dismissable: true)
+      atom.packages.activatePackage('language-diff')
