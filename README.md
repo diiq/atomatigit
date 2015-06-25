@@ -18,7 +18,13 @@ Atomatigit is inspired by the
 ![screenshot: file list](http://i.imgur.com/rRk5sSy.png)
 ![screenshot: dark theme; branch list; context menu](http://i.imgur.com/axszNyW.png)
 
-## Making changes and stagin files
+## Installing
+Using `apm`:
+``` shell
+  apm install atomatigit
+```
+
+## Making changes and staging files
 
 Press `cmd-alt-g` to show the atomatigit pane on the right.
 
