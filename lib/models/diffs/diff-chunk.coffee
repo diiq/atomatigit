@@ -38,21 +38,21 @@ class DiffChunk extends ListItem
   # Public: Revert this chunk.
   kill: =>
     fs.writeFileSync(@patchPath(), @patch())
-    git.cmd "apply --reverse #{@patchPath()}"
+    git.cmd "apply --reverse '#{@patchPath()}'"
     .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Stage this chunk.
   stage: =>
     fs.writeFileSync(@patchPath(), @patch())
-    git.cmd "apply --cached #{@patchPath()}"
+    git.cmd "apply --cached '#{@patchPath()}'"
     .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
   # Public: Unstage this chunk.
   unstage: =>
     fs.writeFileSync(@patchPath(), @patch())
-    git.cmd "apply --cached --reverse #{@patchPath()}"
+    git.cmd "apply --cached --reverse '#{@patchPath()}'"
     .then => @trigger 'update'
     .catch (error) -> new ErrorView(error)
 
