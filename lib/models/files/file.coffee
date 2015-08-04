@@ -55,7 +55,7 @@ class File extends ListItem
 
   # Public: Open the file in atom.
   open: =>
-    atom.workspaceView.open @path()
+    atom.workspace.open @path()
 
   commitMessage: =>
     switchState = (type) ->
