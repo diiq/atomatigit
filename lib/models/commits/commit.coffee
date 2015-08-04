@@ -109,7 +109,8 @@ class Commit extends ListItem
       diffPath = path.join(gitPath, ".git/#{@commitID()}")
       fs.writeFileSync diffPath, @get('showMessage')
       atom.workspace.open(diffPath).then (editor) ->
-        editor.setGrammar atom.grammars.grammarForScopeName('diff.diff')
+        grammar = atom.grammars.grammarForScopeName('source.diff')
+        editor.setGrammar(grammar) if grammar
         editor.buffer.onDidDestroy ->
           fs.removeSync(diffPath)
 
