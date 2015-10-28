@@ -15,12 +15,15 @@
 
 .atomatigit {
   position: relative;
-  overflow: auto;
   width: 300 * @units;
   padding: 0px;
   border-left: 1px solid @tree-view-border-color;
   background-color: darken(@tree-view-background-color, 5%);
   color: @text-color;
+
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  height: 100vh;
 
 
   .hidden {
@@ -146,6 +149,7 @@
     padding: 20 * @units;
     padding-bottom: 10 * @units;
     background-color: @dark-background;
+    -webkit-flex: 0 0 auto;
     &.selected {
       background-color: @dark-background;
     }
@@ -165,6 +169,11 @@
     }
   }
 
+  .lists {
+      -webkit-flex: 1 1 auto;
+      overflow: auto;
+  }
+
   &.focused {
     background-color: darken(@tree-view-background-color, 2%);
     .selected .filename, .branch-brief-view.selected, .commit.selected, .file.selected {
@@ -181,8 +190,8 @@
   }
   .tab-bar {
     display: -webkit-flex;
+    -webkit-flex: 0 0 auto;
   	margin: 0px;
-    margin-bottom: 30 * @units;
     border-bottom: 0px #fff;
     background: @dark-background;
     .tab {
