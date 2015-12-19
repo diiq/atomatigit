@@ -148,7 +148,7 @@
     text-align: right;
     padding: 20 * @units;
     padding-bottom: 10 * @units;
-    background-color: @dark-background;
+    background-color: @tree-view-background-color;
     -webkit-flex: 0 0 auto;
     &.selected {
       background-color: @dark-background;
@@ -165,17 +165,19 @@
       display: block;
     }
     &:hover {
-      background-color: @dark-background;
+      background-color: @tree-view-background-color;
     }
   }
 
   .lists {
       -webkit-flex: 1 1 auto;
+      background-color:@tree-view-background-color;
       overflow: auto;
   }
 
   &.focused {
     background-color: darken(@tree-view-background-color, 2%);
+    border-color:@tree-view-border-color !important;
     .selected .filename, .branch-brief-view.selected, .commit.selected, .file.selected {
       background-color: @background-color-selected;
       .message {
@@ -185,7 +187,7 @@
 
     border-left: solid 1px @background-color-selected;
     .current-branch-view .name {
-      color: @background-color-selected;
+      color: @text-color-highlight;
     }
   }
   .tab-bar {
@@ -193,17 +195,19 @@
     -webkit-flex: 0 0 auto;
   	margin: 0px;
     border-bottom: 0px #fff;
-    background: @dark-background;
+    background: @tree-view-background-color;
+    height:34px;
     .tab {
+      background-color: @tree-view-background-color;
       -webkit-flex: 1;
       font-size: 11px;
       position: relative;
-      padding-left: 10px;
-      padding-right: 10px;
+      padding:0;
       max-width: 100px;
       min-width: 40px;
       &.active {
         -webkit-flex: 2;
+        background-color: @tab-background-color-active !important;
       }
       .title {
         overflow: hidden;
