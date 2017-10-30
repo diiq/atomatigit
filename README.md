@@ -1,3 +1,7 @@
+# STILL SEEKING NEW MAINTAINER!
+
+Folks continue to star and fork this repo, for which I am very glad. I no longer use atom, nor atomatigit, so I'd love to pass the reins on to someone whos wants to keep things rolling. Drop me a note!
+
 # atomatigit
 
 Real git integration for the Atom text editor.
