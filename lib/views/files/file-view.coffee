@@ -5,7 +5,7 @@ DiffView = require '../diffs/diff-view'
 class FileView extends View
   @content: (file) ->
     @div class: 'file', mousedown: 'clicked', =>
-      @span class: 'mode', file.getMode()
+      @span class: 'mode', file.getMode() || ""
       @span class: 'path', file.path()
 
   # Public: Constructor.
