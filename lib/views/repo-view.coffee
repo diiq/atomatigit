@@ -76,8 +76,8 @@ class RepoView extends View
         @model.initiateGitCommand()
         @unfocus()
       'atomatigit:stage': => @model.leaf()?.stage()
-      'atomatigit:stash': @model.stash
-      'atomatigit:stash-pop': @model.stashPop
+      'atomatigit:stash': => @model.stash()
+      'atomatigit:stash-pop': => @model.stashPop()
       'atomatigit:toggle-diff': => @model.selection()?.toggleDiff()
       'atomatigit:unstage': => @model.leaf()?.unstage()
       'atomatigit:fetch': @model.fetch
