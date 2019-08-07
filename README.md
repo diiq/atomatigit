@@ -85,7 +85,7 @@ Atomatigit is usable, but still in active development. Feel free to make feature
 
 ## Missing features (coming soon)
 
-You cannot merge, ammend, or rebase through the UI (though you can perform the commands using `atomatigit:git-command`).
+You cannot merge, amend, or rebase through the UI (though you can perform the commands using `atomatigit:git-command`).
 
 Moved and deleted files have bad interactions (in terms of toggle-diff, etc).
 
